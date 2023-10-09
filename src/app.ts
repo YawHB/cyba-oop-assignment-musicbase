@@ -3,6 +3,7 @@
 import { Album } from "./Model/Album.js";
 import { Artist } from "./Model/Artist.js";
 import { Track } from "./Model/Track.js";
+import DataHandler from "./components/dataHandler.js";
 
 const globalArtists: Artist[] = [];
 const globalAlbums: Album[] = [];
