@@ -18,5 +18,8 @@
     "bugs": {
         "url": "https://github.com/YawHB/cyba-oop-assignment-musicbase/issues"
     },
-    "homepage": "https://github.com/YawHB/cyba-oop-assignment-musicbase#readme"
+    "homepage": "https://github.com/YawHB/cyba-oop-assignment-musicbase#readme",
+    "devDependencies": {
+        "typescript": "^5.2.2"
+    }
 }
