@@ -1,20 +1,27 @@
 export class Artist {
-    
-    constructor(private name: string, private image: string) {}
+    constructor(
+        private name: string,
+        private image: string,
+        private id: number
+    ) {}
 
-    getName(): string {
+    public getName(): string {
         return this.name;
     }
 
-    setName(newName: string): void {
+    public setName(newName: string): void {
         this.name = newName;
     }
 
-    getImage(): string {
+    public getImage(): string {
         return this.image;
     }
 
-    setImage(newImage: string): void {
+    public setImage(newImage: string): void {
         this.image = newImage;
+    }
+
+    public getId(): number {
+        return this.id;
     }
 }
