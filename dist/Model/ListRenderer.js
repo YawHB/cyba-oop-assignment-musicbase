@@ -1,11 +1,11 @@
 export class ListRenderer {
-    list;
     itemRenderer;
     container;
+    list;
     constructor(list, container, itemRenderer) {
-        this.list = list;
         this.itemRenderer = itemRenderer;
         this.container = document.querySelector(container);
+        this.list = [];
         this.setList(list);
     }
     renderList() {

@@ -10,6 +10,6 @@ export class AlbumRenderer extends ItemRenderer {
         `;
         return html;
     }
-    postRenderer(lastElementChild) {
+    postRender(lastElementChild) {
     }
 }

@@ -1,12 +1,21 @@
+import { Album } from "./Album.js";
+import { AlbumRenderer } from "./AlbumRenderer.js";
+import { Artist } from "./Artist.js";
+import { ArtistRenderer } from "./ArtistRenderer.js";
+import { Track } from "./Track.js";
+import { TrackRenderer } from "./TrackRenderer.js";
+
 export class ListRenderer {
     container: HTMLElement;
+    private list: AlbumRenderer[] | TrackRenderer[] | ArtistRenderer[];
 
     constructor(
-        private list: any[],
+        list: Album[] | Track[] | Artist[],
         container: string,
-        private itemRenderer: any
+        private itemRenderer: any //TODO skal rettes fra any
     ) {
         this.container = document.querySelector(container) as HTMLElement;
+        this.list = [];
         this.setList(list);
     }
 

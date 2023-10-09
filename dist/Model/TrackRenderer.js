@@ -1,5 +1,5 @@
 import { ItemRenderer } from "./ItemRenderer.js";
-export class ArtistRenderer extends ItemRenderer {
+export class TrackRenderer extends ItemRenderer {
     constructor(item) {
         super();
         this.item = item;
@@ -10,6 +10,6 @@ export class ArtistRenderer extends ItemRenderer {
         `;
         return html;
     }
-    postRenderer(lastElementChild) {
+    postRender(lastElementChild) {
     }
 }

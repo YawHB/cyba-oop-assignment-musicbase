@@ -1,7 +1,7 @@
 import { Artist } from "./Artist.js";
 import { ItemRenderer } from "./ItemRenderer.js";
 
-export class ArtistRenderer extends ItemRenderer {
+export class TrackRenderer extends ItemRenderer {
     declare item: Artist;
 
     constructor(item: any) {
@@ -15,7 +15,7 @@ export class ArtistRenderer extends ItemRenderer {
         return html;
     }
 
-    public postRenderer(lastElementChild: Element): void {
+    public postRender(lastElementChild: Element): void {
         //TODO Tilføj eventlisteners
     }
 }

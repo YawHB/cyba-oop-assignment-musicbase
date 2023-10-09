@@ -10,6 +10,6 @@ export class ArtistRenderer extends ItemRenderer {
         `;
         return html;
     }
-    postRenderer(lastElementChild) {
+    postRender(lastElementChild) {
     }
 }

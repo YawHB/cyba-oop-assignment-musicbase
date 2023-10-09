@@ -15,7 +15,7 @@ export class ArtistRenderer extends ItemRenderer {
         return html;
     }
 
-    public postRenderer(lastElementChild: Element): void {
+    public postRender(lastElementChild: Element): void {
         //TODO Tilføj eventlisteners
     }
 }

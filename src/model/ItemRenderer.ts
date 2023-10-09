@@ -1,7 +1,11 @@
 export abstract class ItemRenderer {
     protected item: any;
 
+    constructor() {
+        
+    }
+
     public abstract renderHTML(): string;
 
-    public abstract postRenderer(lastElementChild: Element): void;
+    public abstract postRender(lastElementChild: Element): void;
 }
