@@ -1,8 +1,8 @@
-import Album from "./Album.js";
+import Album from "../model/Album.js";
 import AlbumRenderer from "./AlbumRenderer.js";
-import Artist from "./Artist.js";
+import Artist from "../model/Artist.js";
 import ArtistRenderer from "./ArtistRenderer.js";
-import Track from "./Track.js";
+import Track from "../model/Track.js";
 import TrackRenderer from "./TrackRenderer.js";
 
 export default class ListRenderer {

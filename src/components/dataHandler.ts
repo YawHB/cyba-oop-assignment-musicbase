@@ -1,6 +1,6 @@
-import Album from "../Model/Album.js";
-import Artist from "../Model/Artist.js";
-import Track from "../Model/Track.js";
+import Album from "../model/Album.js";
+import Artist from "../model/Artist.js";
+import Track from "../model/Track.js";
 
 class DataHandler {
     private static apiURL: string = "http://127.0.0.1:3000";
@@ -9,14 +9,14 @@ class DataHandler {
     public static tracksArr: Track[] = [];
 
     // CRUD Methods
-    static async postData(endpoint:string, data:any): Promise<any> {
+    static async postData(endpoint: string, data: any): Promise<any> {
         try {
-            const response = await fetch (`${this.apiURL}/${endpoint}`, {
+            const response = await fetch(`${this.apiURL}/${endpoint}`, {
                 method: "POST",
                 body: JSON.stringify(data),
                 headers: {
-                    "Content-Type": "application/json"
-                }
+                    "Content-Type": "application/json",
+                },
             });
             if (!response.ok) {
                 throw new Error(`Failed to post data ${response.statusText}`);
@@ -26,11 +26,13 @@ class DataHandler {
             console.error((error as Error).message);
         }
     }
-    static async getData(endpoint:string): Promise<any> {
+    static async getData(endpoint: string): Promise<any> {
         try {
-            const response = await fetch (`${this.apiURL}/${endpoint}`);
+            const response = await fetch(`${this.apiURL}/${endpoint}`);
             if (!response.ok) {
-                throw new Error(`Failed to fetch data ${response.status}: ${response.statusText}`);
+                throw new Error(
+                    `Failed to fetch data ${response.status}: ${response.statusText}`
+                );
             }
             if (endpoint === "artists") {
                 this.artistsArr = this.prepareArtistData(await response.json());
@@ -41,16 +43,17 @@ class DataHandler {
             } else {
                 throw new Error(`Invalid endpoint: ${endpoint}`);
             }
-
         } catch (error) {
             console.error((error as Error).message);
         }
     }
-    static async getDataById(endpoint:string, id:string): Promise<any> {
+    static async getDataById(endpoint: string, id: string): Promise<any> {
         try {
-            const response = await fetch (`${this.apiURL}/${endpoint}/${id}`);
+            const response = await fetch(`${this.apiURL}/${endpoint}/${id}`);
             if (!response.ok) {
-                throw new Error(`Failed to fetch data: ${response.status}: ${response.statusText}`);
+                throw new Error(
+                    `Failed to fetch data: ${response.status}: ${response.statusText}`
+                );
             }
             return await response.json();
         } catch (error) {
@@ -58,17 +61,23 @@ class DataHandler {
         }
     }
 
-    static async putData(endpoint:string, id:string, data:any): Promise<any> {
+    static async putData(
+        endpoint: string,
+        id: string,
+        data: any
+    ): Promise<any> {
         try {
-            const response = await fetch (`${this.apiURL}/${endpoint}/${id}`, {
+            const response = await fetch(`${this.apiURL}/${endpoint}/${id}`, {
                 method: "PUT",
                 body: JSON.stringify(data),
                 headers: {
-                    "Content-Type": "application/json"
-                }
+                    "Content-Type": "application/json",
+                },
             });
             if (!response.ok) {
-                throw new Error(`Failed to put data ${response.status}: ${response.statusText}`);
+                throw new Error(
+                    `Failed to put data ${response.status}: ${response.statusText}`
+                );
             }
             return await response.json();
         } catch (error) {
@@ -76,13 +85,15 @@ class DataHandler {
         }
     }
 
-    static async deleteData(endpoint:string, id:string): Promise<any> {
+    static async deleteData(endpoint: string, id: string): Promise<any> {
         try {
-            const response = await fetch (`${this.apiURL}/${endpoint}/${id}`, {
-                method: "DELETE"
+            const response = await fetch(`${this.apiURL}/${endpoint}/${id}`, {
+                method: "DELETE",
             });
             if (!response.ok) {
-                throw new Error(`Failed to delete data ${response.status}: ${response.statusText}`);
+                throw new Error(
+                    `Failed to delete data ${response.status}: ${response.statusText}`
+                );
             }
             return await response.json();
         } catch (error) {
@@ -91,9 +102,14 @@ class DataHandler {
     }
 
     // Search Methods
-    static async searchData(endpoint:string, searchValue:string): Promise<any> {
+    static async searchData(
+        endpoint: string,
+        searchValue: string
+    ): Promise<any> {
         try {
-            const response = await fetch (`${this.apiURL}/${endpoint}/search/${searchValue}`);
+            const response = await fetch(
+                `${this.apiURL}/${endpoint}/search/${searchValue}`
+            );
             if (response.ok) {
                 return [];
             }
@@ -103,9 +119,11 @@ class DataHandler {
         }
     }
 
-    static async searchAllData(searchValue:string): Promise<any> {
+    static async searchAllData(searchValue: string): Promise<any> {
         try {
-            const response = await fetch (`${this.apiURL}/artists/albums/tracks/${searchValue}`);
+            const response = await fetch(
+                `${this.apiURL}/artists/albums/tracks/${searchValue}`
+            );
             if (!response.ok) {
                 throw new Error(`${response.status}: ${response.statusText}`);
             }
@@ -116,19 +134,26 @@ class DataHandler {
     }
 
     // misc methods
-    static async createAllInOneGo(artistData: string | number | [], albumData: string | number | [], trackData: []): Promise<any> {
+    static async createAllInOneGo(
+        artistData: string | number | [],
+        albumData: string | number | [],
+        trackData: []
+    ): Promise<any> {
         try {
-            const response = await fetch (`${this.apiURL}/artists/albums/tracks`, {
-                method: "POST",
-                body: JSON.stringify({
-                    artistData,
-                    albumData,
-                    trackData
-                }),
-                headers: {
-                    "Content-Type": "application/json"
+            const response = await fetch(
+                `${this.apiURL}/artists/albums/tracks`,
+                {
+                    method: "POST",
+                    body: JSON.stringify({
+                        artistData,
+                        albumData,
+                        trackData,
+                    }),
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
                 }
-            });
+            );
             if (!response.ok) {
                 throw new Error(`${response.status}: ${response.statusText}`);
             }
@@ -140,7 +165,7 @@ class DataHandler {
 
     static async getAllAlbumData(id: string): Promise<any> {
         try {
-            const response = await fetch (`${this.apiURL}/albums/${id}/tracks`);
+            const response = await fetch(`${this.apiURL}/albums/${id}/tracks`);
             if (!response.ok) {
                 throw new Error(`${response.status}: ${response.statusText}`);
             }
@@ -152,7 +177,7 @@ class DataHandler {
 
     static async getAllAlbumsByArtistId(id: string): Promise<any> {
         try {
-            const response = await fetch (`${this.apiURL}/artists/albums/${id}`);
+            const response = await fetch(`${this.apiURL}/artists/albums/${id}`);
             if (!response.ok) {
                 throw new Error(`${response.status}: ${response.statusText}`);
             }
@@ -171,13 +196,24 @@ class DataHandler {
 
     private static prepareAlbumData(rawData: RawAlbum[]): Album[] {
         return rawData.map((album: RawAlbum) => {
-            return new Album(album.title, album.yearOfRelease, album.image, album.id);
+            return new Album(
+                album.title,
+                album.yearOfRelease,
+                album.image,
+                album.id
+            );
         });
     }
 
     private static prepareTrackData(rawData: RawTrack[]): Track[] {
         return rawData.map((track: RawTrack) => {
-            return new Track(track.title, track.duration, track.artists, track.albums, track.id)
+            return new Track(
+                track.title,
+                track.duration,
+                track.artists,
+                track.albums,
+                track.id
+            );
         });
     }
 }

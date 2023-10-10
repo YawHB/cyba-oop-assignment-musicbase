@@ -1,6 +1,6 @@
-import Album from "../Model/Album.js";
-import Artist from "../Model/Artist.js";
-import Track from "../Model/Track.js";
+import Album from "../model/Album.js";
+import Artist from "../model/Artist.js";
+import Track from "../model/Track.js";
 class DataHandler {
     static apiURL = "http://127.0.0.1:3000";
     static artistsArr = [];
@@ -12,8 +12,8 @@ class DataHandler {
                 method: "POST",
                 body: JSON.stringify(data),
                 headers: {
-                    "Content-Type": "application/json"
-                }
+                    "Content-Type": "application/json",
+                },
             });
             if (!response.ok) {
                 throw new Error(`Failed to post data ${response.statusText}`);
@@ -65,8 +65,8 @@ class DataHandler {
                 method: "PUT",
                 body: JSON.stringify(data),
                 headers: {
-                    "Content-Type": "application/json"
-                }
+                    "Content-Type": "application/json",
+                },
             });
             if (!response.ok) {
                 throw new Error(`Failed to put data ${response.status}: ${response.statusText}`);
@@ -80,7 +80,7 @@ class DataHandler {
     static async deleteData(endpoint, id) {
         try {
             const response = await fetch(`${this.apiURL}/${endpoint}/${id}`, {
-                method: "DELETE"
+                method: "DELETE",
             });
             if (!response.ok) {
                 throw new Error(`Failed to delete data ${response.status}: ${response.statusText}`);
@@ -122,11 +122,11 @@ class DataHandler {
                 body: JSON.stringify({
                     artistData,
                     albumData,
-                    trackData
+                    trackData,
                 }),
                 headers: {
-                    "Content-Type": "application/json"
-                }
+                    "Content-Type": "application/json",
+                },
             });
             if (!response.ok) {
                 throw new Error(`${response.status}: ${response.statusText}`);

@@ -1,4 +1,4 @@
-import Artist from "./Artist.js";
+import Artist from "../model/Artist.js";
 import ItemRenderer from "./ItemRenderer.js";
 
 export default class TrackRenderer extends ItemRenderer {

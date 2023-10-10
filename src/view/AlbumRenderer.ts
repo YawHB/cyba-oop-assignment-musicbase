@@ -1,4 +1,4 @@
-import Album from "./Album.js";
+import Album from "../model/Album.js";
 import ItemRenderer from "./ItemRenderer.js";
 
 export default class AlbumRenderer extends ItemRenderer {

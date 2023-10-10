@@ -1,9 +1,9 @@
 "use strict";
 import DataHandler from "./components/dataHandler.js";
-import AlbumRenderer from "./Model/AlbumRenderer.js";
-import ArtistRenderer from "./Model/ArtistRenderer.js";
-import ListRenderer from "./Model/ListRenderer.js";
-import TrackRenderer from "./Model/TrackRenderer.js";
+import AlbumRenderer from "./view/AlbumRenderer.js";
+import ArtistRenderer from "./view/ArtistRenderer.js";
+import ListRenderer from "./view/ListRenderer.js";
+import TrackRenderer from "./view/TrackRenderer.js";
 
 window.addEventListener("load", app);
 
