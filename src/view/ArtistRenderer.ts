@@ -1,5 +1,6 @@
 import Artist from "../model/Artist.js";
 import ItemRenderer from "./ItemRenderer.js";
+import ArtistDialog from "./ArtistDialog.js";
 
 export default class ArtistRenderer extends ItemRenderer {
     constructor(item: Artist) {
@@ -21,6 +22,9 @@ export default class ArtistRenderer extends ItemRenderer {
     }
 
     public postRender(lastElementChild: Element): void {
-        //TODO Tilføj eventlisteners
+        lastElementChild.addEventListener('click', () => {
+            // TODO RENDER DIALOG CONTENT
+            new ArtistDialog().details(this.item)
+        })
     }
 }
