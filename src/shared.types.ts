@@ -40,4 +40,5 @@ interface Track {
     duration: number;
     artists: string;
     albums: string;
+    getDuration(): string;
 }
