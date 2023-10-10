@@ -12,6 +12,8 @@ export default abstract class Dialog {
     }
 
     static close(): void {
+        console.log("click?");
+
         this.dialogWindow.close();
     }
 

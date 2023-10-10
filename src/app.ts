@@ -4,6 +4,7 @@ import AlbumRenderer from "./view/AlbumRenderer.js";
 import ArtistRenderer from "./view/ArtistRenderer.js";
 import ListRenderer from "./view/ListRenderer.js";
 import TrackRenderer from "./view/TrackRenderer.js";
+import Dialog from "./view/dialog.js";
 
 window.addEventListener("load", app);
 
@@ -38,4 +39,9 @@ async function app() {
     artistRenders.renderList();
     albumRenders.renderList();
     tracksRenders.renderList();
+
+    document
+        .querySelector("#btn-close-dialog-frame")
+        ?.addEventListener("click", () => Dialog.close());
+
 }
