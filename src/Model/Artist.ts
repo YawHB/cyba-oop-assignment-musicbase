@@ -1,4 +1,4 @@
-export class Artist {
+export default class Artist {
     constructor(
         private name: string,
         private image: string,

@@ -1,4 +1,4 @@
-export class Album {
+export default class Album {
     constructor(
         private title: string,
         private yearOfRelease: number,
