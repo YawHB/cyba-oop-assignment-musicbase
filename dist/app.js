@@ -4,7 +4,7 @@ import AlbumRenderer from "./view/AlbumRenderer.js";
 import ArtistRenderer from "./view/ArtistRenderer.js";
 import ListRenderer from "./view/ListRenderer.js";
 import TrackRenderer from "./view/TrackRenderer.js";
-import Dialog from "./view/dialog.js";
+import Dialog from "./view/Dialog.js";
 window.addEventListener("load", app);
 async function app() {
     console.log("hello there!");
