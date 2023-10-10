@@ -1,5 +1,5 @@
-import { Artist } from "./Artist.js";
-import { ItemRenderer } from "./ItemRenderer.js";
+import Artist from "./Artist.js";
+import ItemRenderer from "./ItemRenderer.js";
 
 export class ArtistRenderer extends ItemRenderer {
     declare item: Artist;

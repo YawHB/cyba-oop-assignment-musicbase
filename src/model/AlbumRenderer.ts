@@ -1,5 +1,5 @@
-import { Album } from "./Album.js";
-import { ItemRenderer } from "./ItemRenderer.js";
+import Album from "./Album.js";
+import ItemRenderer from "./ItemRenderer.js";
 
 export class AlbumRenderer extends ItemRenderer {
     declare item: Album;

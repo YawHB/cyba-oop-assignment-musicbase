@@ -1,9 +1,7 @@
-export abstract class ItemRenderer {
+export default abstract class ItemRenderer {
     protected item: any;
 
-    constructor() {
-        
-    }
+    constructor() {}
 
     public abstract renderHTML(): string;
 
