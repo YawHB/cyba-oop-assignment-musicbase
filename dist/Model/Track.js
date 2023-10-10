@@ -1,4 +1,4 @@
-export class Track {
+export default class Track {
     title;
     artists;
     albums;

@@ -1,16 +1,14 @@
 "use strict";
-
-import { Album } from "./Model/Album.js";
-import { Artist } from "./Model/Artist.js";
-import { Track } from "./Model/Track.js";
 import DataHandler from "./components/dataHandler.js";
-
-const globalArtists: Artist[] = [];
-const globalAlbums: Album[] = [];
-const globalTracks: Track[] = [];
 
 window.addEventListener("load", app);
 
-function app() {
+async function app() {
     console.log("hello there!");
+    await DataHandler.getData("artists")
+    await DataHandler.getData("albums");
+    await DataHandler.getData("tracks");
+    console.log(DataHandler.artistsArr);
+    console.log(DataHandler.albumsArr);
+    console.log(DataHandler.tracksArr);
 }

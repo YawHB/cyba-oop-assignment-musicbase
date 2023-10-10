@@ -1,4 +1,4 @@
-export class Artist {
+export default class Artist {
     name;
     image;
     id;
