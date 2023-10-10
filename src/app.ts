@@ -1,5 +1,6 @@
 "use strict";
 import DataHandler from "./components/dataHandler.js";
+import search from "./components/search.js";
 import AlbumRenderer from "./view/AlbumRenderer.js";
 import ArtistRenderer from "./view/ArtistRenderer.js";
 import ListRenderer from "./view/ListRenderer.js";
@@ -38,4 +39,14 @@ async function app() {
     artistRenders.renderList();
     albumRenders.renderList();
     tracksRenders.renderList();
+
+    const searchbar = document.querySelector("#searchbar") as HTMLInputElement;
+
+    searchbar?.addEventListener("input", () => {
+        if (searchbar.value === null) {
+            throw new Error("Missing html element");
+        }
+
+        search(searchbar.value);
+    });
 }
