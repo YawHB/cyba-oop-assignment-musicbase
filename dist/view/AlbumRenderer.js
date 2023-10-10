@@ -1,4 +1,5 @@
 import ItemRenderer from "./ItemRenderer.js";
+import AlbumDialog from "./AlbumDialog.js";
 export default class AlbumRenderer extends ItemRenderer {
     constructor(item) {
         super();
@@ -19,5 +20,8 @@ export default class AlbumRenderer extends ItemRenderer {
         `;
     }
     postRender(lastElementChild) {
+        lastElementChild.addEventListener('click', () => {
+            new AlbumDialog().details(this.item);
+        });
     }
 }
