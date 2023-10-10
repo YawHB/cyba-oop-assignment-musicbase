@@ -5,7 +5,6 @@ export default class Dialog {
         this.dialogWindow.showModal();
     }
     static close() {
-        console.log("click?");
         this.dialogWindow.close();
     }
     static clear() {
