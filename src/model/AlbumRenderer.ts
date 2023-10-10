@@ -1,18 +1,24 @@
 import Album from "./Album.js";
 import ItemRenderer from "./ItemRenderer.js";
 
-export class AlbumRenderer extends ItemRenderer {
-    declare item: Album;
-
-    constructor(item: any) {
+export default class AlbumRenderer extends ItemRenderer {
+    constructor(item: Album) {
         super();
         this.item = item;
     }
     public renderHTML(): string {
-        const html = /*html*/ `
+        return /*html*/ `
+        <article class="album-card">
+        <div class="album-card-image">
+            <img src="${this.item.image}" alt="${this.item.title}">
+        </div>
+        <div class="album-card-content">
+            <h4>${this.item.title}</h4>
+            <p>${this.item.yearOfRelease}</p>
+        </div>
+        </article>
         
         `;
-        return html;
     }
 
     public postRender(lastElementChild: Element): void {

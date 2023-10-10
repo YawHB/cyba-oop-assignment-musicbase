@@ -1,18 +1,24 @@
 import Artist from "./Artist.js";
 import ItemRenderer from "./ItemRenderer.js";
 
-export class TrackRenderer extends ItemRenderer {
-    declare item: Artist;
+export default class TrackRenderer extends ItemRenderer {
+    // declare item: Track;
 
-    constructor(item: any) {
+    constructor(item: Track) {
         super();
         this.item = item;
     }
     public renderHTML(): string {
-        const html = /*html*/ `
+        return /*html*/ `
+
+        <tr>
+            <td>${this.item.title}</td>
+            <td>${this.item.getDuration()}</td>
+            <td>${this.item.artists}</td>
+            <td>${this.item.albums}</td>
+        </tr>
         
         `;
-        return html;
     }
 
     public postRender(lastElementChild: Element): void {
