@@ -1,11 +1,11 @@
 import Album from "./Album.js";
-import { AlbumRenderer } from "./AlbumRenderer.js";
+import AlbumRenderer from "./AlbumRenderer.js";
 import Artist from "./Artist.js";
-import { ArtistRenderer } from "./ArtistRenderer.js";
+import ArtistRenderer from "./ArtistRenderer.js";
 import Track from "./Track.js";
-import { TrackRenderer } from "./TrackRenderer.js";
+import TrackRenderer from "./TrackRenderer.js";
 
-export class ListRenderer {
+export default class ListRenderer {
     container: HTMLElement;
     private list: AlbumRenderer[] | TrackRenderer[] | ArtistRenderer[];
 
@@ -14,7 +14,7 @@ export class ListRenderer {
         container: string,
         private itemRenderer: any //TODO skal rettes fra any
     ) {
-        this.container = document.querySelector(container) as HTMLElement;
+        this.container = document.querySelector(`.${container}`) as HTMLElement;
         this.list = [];
         this.setList(list);
     }
