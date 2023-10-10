@@ -1,11 +1,11 @@
 export default class Track {
-    private duration: number;
+    public duration: number;
 
     constructor(
-        private title: string,
+        public title: string,
         duration: number | string,
-        private artists: string,
-        private albums: string,
+        public artists: string,
+        public albums: string,
         private id: number
     ) {
         typeof duration == "number"
