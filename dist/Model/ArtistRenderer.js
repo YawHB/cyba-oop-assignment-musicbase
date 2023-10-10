@@ -1,14 +1,21 @@
-import { ItemRenderer } from "./ItemRenderer.js";
-export class ArtistRenderer extends ItemRenderer {
+import ItemRenderer from "./ItemRenderer.js";
+export default class ArtistRenderer extends ItemRenderer {
     constructor(item) {
         super();
         this.item = item;
     }
     renderHTML() {
-        const html = `
+        return `
+         <article class="artist-card">
+        <div class="artist-card-image">
+            <img src="${this.item.image}" alt="${this.item.name}">
+        </div>
+        <div class="artist-card-content">
+            <h4>${this.item.name}</h4>
+        </div>
+        </article>
         
         `;
-        return html;
     }
     postRender(lastElementChild) {
     }

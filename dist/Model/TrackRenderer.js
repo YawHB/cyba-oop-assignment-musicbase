@@ -1,14 +1,20 @@
-import { ItemRenderer } from "./ItemRenderer.js";
-export class TrackRenderer extends ItemRenderer {
+import ItemRenderer from "./ItemRenderer.js";
+export default class TrackRenderer extends ItemRenderer {
     constructor(item) {
         super();
         this.item = item;
     }
     renderHTML() {
-        const html = `
+        return `
+
+        <tr>
+            <td>${this.item.title}</td>
+            <td>${this.item.getDuration()}</td>
+            <td>${this.item.artists}</td>
+            <td>${this.item.albums}</td>
+        </tr>
         
         `;
-        return html;
     }
     postRender(lastElementChild) {
     }

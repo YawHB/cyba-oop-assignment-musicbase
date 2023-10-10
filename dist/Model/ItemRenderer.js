@@ -1,5 +1,4 @@
-export class ItemRenderer {
+export default class ItemRenderer {
     item;
-    constructor() {
-    }
+    constructor() { }
 }
