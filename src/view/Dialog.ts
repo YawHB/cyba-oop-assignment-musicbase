@@ -23,9 +23,9 @@ export default abstract class Dialog {
         this.dialogContent.innerHTML = "";
     }
 
-    protected abstract renderHTML(html: string): void;
+    protected abstract renderHTML(item: Artist | Album | Track, html: string): void;
 
-    protected abstract postRender(): void;
+    protected abstract postRender(item: Artist | Album | Track): void;
 
     public abstract create(item: Artist | Album | Track): void
 
