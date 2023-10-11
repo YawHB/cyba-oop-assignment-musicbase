@@ -18,13 +18,11 @@ export default class ListRenderer {
         this.searchValue = "";
         this.postRender();
     }
-
     clearList() {
         this.container.innerHTML = "";
     }
-
     renderList(filteredList) {
-        this.clear();
+        this.clearList();
         this.sort(filteredList ?? this.list);
         for (const item of filteredList ?? this.list) {
             const html = item.renderHTML();
@@ -42,7 +40,7 @@ export default class ListRenderer {
         }
     }
     search(searchValue) {
-        if (searchValue) {
+        if (searchValue || searchValue == "") {
             this.searchValue = searchValue;
         }
         if (!this.searchValue) {
@@ -81,8 +79,5 @@ export default class ListRenderer {
             this.sortByValue = this.sortContainer.querySelector(".sort-order")?.value;
             this.search();
         });
-    }
-    clear() {
-        this.container.innerHTML = "";
     }
 }

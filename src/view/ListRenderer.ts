@@ -37,7 +37,7 @@ export default class ListRenderer {
 
 
     public renderList(filteredList?: (AlbumRenderer | TrackRenderer | ArtistRenderer)[]): void {
-        this.clear();
+        this.clearList();
 
         this.sort(filteredList ?? this.list);
 
@@ -60,10 +60,11 @@ export default class ListRenderer {
     }
 
     public search(searchValue?: string) {
-        if (searchValue) {
+
+        if (searchValue || searchValue == "") {
             this.searchValue = searchValue;
         }
-
+        
         if (!this.searchValue) {
             this.renderList();
             return;
@@ -106,7 +107,4 @@ export default class ListRenderer {
         });
     }
 
-    private clear() {
-        this.container.innerHTML = "";
-    }
 }
