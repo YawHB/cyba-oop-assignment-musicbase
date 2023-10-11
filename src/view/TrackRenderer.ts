@@ -4,7 +4,6 @@ import TrackDialog from "./TrackDialog.js";
 
 export default class TrackRenderer extends ItemRenderer {
     public override item: Track;
-    // declare item: Track;
 
     constructor(item: Track) {
         super();

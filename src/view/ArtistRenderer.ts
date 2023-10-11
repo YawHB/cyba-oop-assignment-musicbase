@@ -30,9 +30,4 @@ export default class ArtistRenderer extends ItemRenderer {
             new ArtistDialog().details(this.item);
         });
     }
-
-    public getItem(): Artist {
-        return this.item;
-    }
-
 }

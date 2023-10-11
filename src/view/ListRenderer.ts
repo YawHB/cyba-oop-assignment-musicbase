@@ -27,7 +27,7 @@ export default class ListRenderer {
         this.sortValue = (this.sortContainer.querySelector(".sort") as HTMLSelectElement)?.value;
         this.sortByValue = (this.sortContainer.querySelector(".sort-order") as HTMLSelectElement)?.value;
         this.searchValue = "";
-        this.initiateEventListeners();
+        this.postRender();
     }
 
     public renderList(filteredList?: (AlbumRenderer | TrackRenderer | ArtistRenderer)[]): void {
@@ -62,11 +62,11 @@ export default class ListRenderer {
             return;
         }
 
-        const filteredList = this.list.filter((index) => {
-            if (index instanceof ArtistRenderer) {
-                return index.item.name.toLowerCase().includes(this.searchValue);
+        const filteredList = this.list.filter((item) => {
+            if (item instanceof ArtistRenderer) {
+                return item.item.name.toLowerCase().includes(this.searchValue);
             } else {
-                return index.item.title.toLowerCase().includes(this.searchValue);
+                return item.item.title.toLowerCase().includes(this.searchValue);
             }
         });
 
@@ -87,7 +87,7 @@ export default class ListRenderer {
         }
     }
 
-    private initiateEventListeners() {
+    private postRender() {
         this.sortContainer.querySelector(".sort")?.addEventListener("change", () => {
             this.sortValue = (this.sortContainer.querySelector(".sort") as HTMLSelectElement)?.value;
             this.search();

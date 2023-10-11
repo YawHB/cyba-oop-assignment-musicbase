@@ -16,7 +16,7 @@ export default class ListRenderer {
         this.sortValue = this.sortContainer.querySelector(".sort")?.value;
         this.sortByValue = this.sortContainer.querySelector(".sort-order")?.value;
         this.searchValue = "";
-        this.initiateEventListeners();
+        this.postRender();
     }
     renderList(filteredList) {
         this.clear();
@@ -43,12 +43,12 @@ export default class ListRenderer {
             this.renderList();
             return;
         }
-        const filteredList = this.list.filter((index) => {
-            if (index instanceof ArtistRenderer) {
-                return index.item.name.toLowerCase().includes(this.searchValue);
+        const filteredList = this.list.filter((item) => {
+            if (item instanceof ArtistRenderer) {
+                return item.item.name.toLowerCase().includes(this.searchValue);
             }
             else {
-                return index.item.title.toLowerCase().includes(this.searchValue);
+                return item.item.title.toLowerCase().includes(this.searchValue);
             }
         });
         this.renderList(filteredList);
@@ -66,7 +66,7 @@ export default class ListRenderer {
             list.reverse();
         }
     }
-    initiateEventListeners() {
+    postRender() {
         this.sortContainer.querySelector(".sort")?.addEventListener("change", () => {
             this.sortValue = this.sortContainer.querySelector(".sort")?.value;
             this.search();
