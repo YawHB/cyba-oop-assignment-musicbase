@@ -3,10 +3,13 @@ import ItemRenderer from "./ItemRenderer.js";
 import ArtistDialog from "./ArtistDialog.js";
 
 export default class ArtistRenderer extends ItemRenderer {
+    public override item: Artist
+
     constructor(item: Artist) {
         super();
         this.item = item;
     }
+
     public renderHTML(): string {
         return /*html*/ `
          <article class="artist-card">
@@ -22,9 +25,9 @@ export default class ArtistRenderer extends ItemRenderer {
     }
 
     public postRender(lastElementChild: Element): void {
-        lastElementChild.addEventListener('click', () => {
+        lastElementChild.addEventListener("click", () => {
             // TODO RENDER DIALOG CONTENT
-            new ArtistDialog().details(this.item)
-        })
+            new ArtistDialog().details(this.item);
+        });
     }
 }

@@ -9,9 +9,7 @@ export default class Track {
         this.artists = artists;
         this.albums = albums;
         this.id = id;
-        typeof duration == "number"
-            ? (this.duration = duration)
-            : (this.duration = this.setDuration(duration));
+        typeof duration == "number" ? (this.duration = duration) : (this.duration = this.setDuration(duration));
     }
     getTitle() {
         return this.title;

@@ -1,9 +1,6 @@
 export default class Artist {
-    constructor(
-        public name: string,
-        public image: string,
-        private id: number
-    ) {}
+    [key: string]: any;
+    constructor(public name: string, public image: string, private id: number) {}
 
     // public getName(): string {
     //     return this.name;

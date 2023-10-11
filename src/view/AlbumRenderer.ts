@@ -3,6 +3,8 @@ import ItemRenderer from "./ItemRenderer.js";
 import AlbumDialog from "./AlbumDialog.js";
 
 export default class AlbumRenderer extends ItemRenderer {
+    public override item: Album;
+
     constructor(item: Album) {
         super();
         this.item = item;
@@ -23,9 +25,9 @@ export default class AlbumRenderer extends ItemRenderer {
     }
 
     public postRender(lastElementChild: Element): void {
-        lastElementChild.addEventListener('click', () => {
+        lastElementChild.addEventListener("click", () => {
             // TODO RENDER DIALOG CONTENT
-            new AlbumDialog().details(this.item)
-        })
+            new AlbumDialog().details(this.item);
+        });
     }
 }
