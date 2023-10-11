@@ -5,7 +5,7 @@ import Track from "../model/Track.js";
 
 export default class TrackDialog extends Dialog {
 
-    protected renderHTML(html: string): void {
+    protected renderHTML(item: Track, html: string): void {
         Dialog.clear()
         Dialog.open()
         Dialog.dialogContent.insertAdjacentHTML('beforeend', html)
@@ -21,7 +21,7 @@ export default class TrackDialog extends Dialog {
     }
 
     public details(item: Track): void {
-        this.renderHTML(/*html*/ `
+        this.renderHTML(item, /*html*/ `
         <h2>${item.title}</h2>
     `);
     }
