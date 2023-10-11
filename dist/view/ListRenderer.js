@@ -8,6 +8,9 @@ export default class ListRenderer {
         this.list = [];
         this.setList(list);
     }
+    clearList() {
+        this.container.innerHTML = "";
+    }
     renderList() {
         for (const item of this.list) {
             const html = item.renderHTML();

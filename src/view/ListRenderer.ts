@@ -19,6 +19,10 @@ export default class ListRenderer {
         this.setList(list);
     }
 
+    public clearList(): void {
+        this.container.innerHTML = "";
+    }
+
     public renderList(): void {
         for (const item of this.list) {
             const html = item.renderHTML();
