@@ -30,6 +30,12 @@ export default class ListRenderer {
         this.postRender();
     }
 
+
+    public clearList(): void {
+        this.container.innerHTML = "";
+    }
+
+
     public renderList(filteredList?: (AlbumRenderer | TrackRenderer | ArtistRenderer)[]): void {
         this.clear();
 
@@ -46,6 +52,7 @@ export default class ListRenderer {
     }
 
     public setList(newList: any[]) {
+        console.log(newList);
         this.list = [];
         for (const item of newList) {
             this.list.push(new this.itemRenderer(item));

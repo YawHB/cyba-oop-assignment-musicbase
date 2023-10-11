@@ -5,21 +5,27 @@ import ArtistRenderer from "./view/ArtistRenderer.js";
 import ListRenderer from "./view/ListRenderer.js";
 import TrackRenderer from "./view/TrackRenderer.js";
 import Dialog from "./view/Dialog.js";
+import ArtistDialog from "./view/ArtistDialog.js";
 window.addEventListener("load", app);
+let artistRenders, albumRenders, trackRenders;
 async function app() {
     console.log(`App is running 🎉`);
     await DataHandler.getData("artists");
     await DataHandler.getData("albums");
     await DataHandler.getData("tracks");
-    console.log(DataHandler.artistsArr);
-    console.log(DataHandler.albumsArr);
-    console.log(DataHandler.tracksArr);
-    const artistRenders = new ListRenderer(DataHandler.artistsArr, "artists-grid", ArtistRenderer, "artist-sort-container");
-    const albumRenders = new ListRenderer(DataHandler.albumsArr, "albums-grid", AlbumRenderer, "album-sort-container");
-    const tracksRenders = new ListRenderer(DataHandler.tracksArr, "tracks-table tbody", TrackRenderer, "track-sort-container");
+
+    artistRenders = new ListRenderer(DataHandler.artistsArr, "artists-grid", ArtistRenderer);
+    albumRenders = new ListRenderer(DataHandler.albumsArr, "albums-grid", AlbumRenderer);
+    trackRenders = new ListRenderer(DataHandler.tracksArr, "tracks-table tbody", TrackRenderer);
     artistRenders.renderList();
     albumRenders.renderList();
-    tracksRenders.renderList();
+    trackRenders.renderList();
+    document.querySelector("#btn-close-dialog-frame")?.addEventListener("click", () => Dialog.close());
+    document.querySelector("#btn-create-artist")?.addEventListener('click', () => {
+        console.log("eventlistener");
+        new ArtistDialog().create();
+    });
+
     const searchbar = document.querySelector("#searchbar");
     searchbar?.addEventListener("input", () => {
         const searchValue = searchbar.value.toLowerCase();
@@ -27,7 +33,6 @@ async function app() {
         albumRenders.search(searchValue);
         tracksRenders.search(searchValue);
     });
-    document
-        .querySelector("#btn-close-dialog-frame")
-        ?.addEventListener("click", () => Dialog.close());
+
 }
+export { artistRenders, albumRenders, trackRenders };

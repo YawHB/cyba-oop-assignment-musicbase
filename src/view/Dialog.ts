@@ -25,7 +25,7 @@ export default abstract class Dialog {
 
     protected abstract renderHTML(html: string): void;
 
-    protected abstract postRender(): void;
+    protected abstract postRender(item: Artist | Album | Track): void;
 
     public abstract create(item: Artist | Album | Track): void
 

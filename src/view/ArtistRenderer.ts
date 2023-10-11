@@ -24,8 +24,9 @@ export default class ArtistRenderer extends ItemRenderer {
         `;
     }
 
-    public postRender(lastElementChild: Element): void {
-        lastElementChild.addEventListener("click", () => {
+
+    public async postRender(lastElementChild: Element): Promise<void> {
+        lastElementChild.addEventListener('click', () => {
             // TODO RENDER DIALOG CONTENT
             new ArtistDialog().details(this.item);
         });

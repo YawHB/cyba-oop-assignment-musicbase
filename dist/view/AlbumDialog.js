@@ -12,10 +12,9 @@ export default class AlbumDialog extends Dialog {
     delete(item) {
     }
     details(item) {
-        this.renderHTML(`
-        <h2>${item.title}</h2>
-        <img src="${item.image}" alt="${item.title}">
-    `);
+        const html = `<h2>${item.title}</h2>
+        <img src="${item.image}" alt="${item.title}">`;
+        this.renderHTML(html);
     }
     update(item) {
     }

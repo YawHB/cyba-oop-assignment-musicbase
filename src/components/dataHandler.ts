@@ -47,7 +47,7 @@ class DataHandler {
             console.error((error as Error).message);
         }
     }
-    static async getDataById(endpoint: string, id: string): Promise<any> {
+    static async getDataById(endpoint: string, id: number): Promise<any> {
         try {
             const response = await fetch(`${this.apiURL}/${endpoint}/${id}`);
             if (!response.ok) {
@@ -63,7 +63,7 @@ class DataHandler {
 
     static async putData(
         endpoint: string,
-        id: string,
+        id: number,
         data: any
     ): Promise<any> {
         try {
@@ -85,7 +85,7 @@ class DataHandler {
         }
     }
 
-    static async deleteData(endpoint: string, id: string): Promise<any> {
+    static async deleteData(endpoint: string, id: number): Promise<any> {
         try {
             const response = await fetch(`${this.apiURL}/${endpoint}/${id}`, {
                 method: "DELETE",
@@ -175,7 +175,7 @@ class DataHandler {
         }
     }
 
-    static async getAllAlbumsByArtistId(id: string): Promise<any> {
+    static async getAllAlbumsByArtistId(id: number): Promise<any> {
         try {
             const response = await fetch(`${this.apiURL}/artists/albums/${id}`);
             if (!response.ok) {

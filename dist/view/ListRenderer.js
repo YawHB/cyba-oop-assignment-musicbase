@@ -18,6 +18,11 @@ export default class ListRenderer {
         this.searchValue = "";
         this.postRender();
     }
+
+    clearList() {
+        this.container.innerHTML = "";
+    }
+
     renderList(filteredList) {
         this.clear();
         this.sort(filteredList ?? this.list);
@@ -30,6 +35,7 @@ export default class ListRenderer {
         }
     }
     setList(newList) {
+        console.log(newList);
         this.list = [];
         for (const item of newList) {
             this.list.push(new this.itemRenderer(item));

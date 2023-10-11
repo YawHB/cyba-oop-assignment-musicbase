@@ -21,10 +21,10 @@ export default class AlbumDialog extends Dialog {
     }
 
     public details(item: Album): void {
-        this.renderHTML(/*html*/ `
-        <h2>${item.title}</h2>
-        <img src="${item.image}" alt="${item.title}">
-    `);
+        const html = /*html*/ `<h2>${item.title}</h2>
+        <img src="${item.image}" alt="${item.title}">`
+        
+        this.renderHTML(html);
     }
 
     update(item: Artist | Album | Track): void {
