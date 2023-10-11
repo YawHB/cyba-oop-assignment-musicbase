@@ -18,7 +18,7 @@ export default class ArtistRenderer extends ItemRenderer {
         
         `;
     }
-    postRender(lastElementChild) {
+    async postRender(lastElementChild) {
         lastElementChild.addEventListener('click', () => {
             new ArtistDialog().details(this.item);
         });
