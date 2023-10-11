@@ -302,3 +302,49 @@ header .search-container select:focus {
         grid-template-columns: repeat(5, 1fr);
     }
 }
+
+/* create dropdown btn */
+
+.create-dropdown {
+    float: right;
+}
+
+.create-dropdown-btn {
+    position: relative;
+    display: inline-block;
+    margin: 0 var(--spacing-base);
+    height: 2.75em;
+    width: 6em;
+}
+
+.create-dropdown-content {
+    display: block;
+    position: absolute;
+    background-color: var(--color-tertiary);
+    min-width: 5em;
+    right: 1.85em;
+    box-shadow: var(--shadow);
+    z-index: 1;
+    opacity: 0; /* Initially hidden */
+}
+
+.create-dropdown-content.visible {
+    opacity: 1; /* Visible when the "visible" class is added */
+}
+
+.create-dropdown-content button {
+    display: block;
+    padding: var(--spacing-sm);
+    width: 100%;
+    text-align: center;
+    border: none;
+    background-color: var(--color-tertiary);
+    color: var(--color-primary);
+    font-size: var(--font-size-base);
+    transition: var(--transition);
+}
+
+.create-dropdown-content button:hover {
+    background-color: var(--color-quaternary);
+}
+

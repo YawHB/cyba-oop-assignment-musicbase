@@ -17,13 +17,20 @@
                 <label for="searchbar"></label>
                 <input type="text" id="searchbar" placeholder="Search" />
             </div>
+            <div class="create-dropdown">
+                <button class="create-dropdown-btn">Create</button>
+                <div class="create-dropdown-content hidden">
+                    <button id="create-artist-btn">Artist</button>
+                    <button id="create-album-btn">Album</button>
+                    <button id="create-track-btn">Track</button>
+                </div>
+            </div>
+
         </header>
 
         <main>
             <!--  Artists grid  -->
             <h2>Artists</h2>
-            <button id="btn-create-artist">Create Artist</button>
-
             <div id="artist-sort-container">
                 <select name="sort" class="sort">
                     <option value="name">Name</option>
@@ -83,7 +90,7 @@
             </section>
 
             <dialog id="main-dialog-frame">
-                <button id="btn-close-dialog-frame">X</button>
+                <button id="close-dialog-frame-btn">X</button>
                 <section id="main-dialog-content">
                     <!-- dialog content -->
                     <p>HELLO WORLD</p>
