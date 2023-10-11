@@ -1,5 +1,6 @@
 import Album from "../model/Album.js";
 import ItemRenderer from "./ItemRenderer.js";
+import AlbumDialog from "./AlbumDialog.js";
 
 export default class AlbumRenderer extends ItemRenderer {
     constructor(item: Album) {
@@ -22,6 +23,9 @@ export default class AlbumRenderer extends ItemRenderer {
     }
 
     public postRender(lastElementChild: Element): void {
-        //TODO Tilføj eventlisteners
+        lastElementChild.addEventListener('click', () => {
+            // TODO RENDER DIALOG CONTENT
+            new AlbumDialog().details(this.item)
+        })
     }
 }

@@ -1,4 +1,5 @@
 import ItemRenderer from "./ItemRenderer.js";
+import ArtistDialog from "./ArtistDialog.js";
 export default class ArtistRenderer extends ItemRenderer {
     constructor(item) {
         super();
@@ -18,5 +19,8 @@ export default class ArtistRenderer extends ItemRenderer {
         `;
     }
     postRender(lastElementChild) {
+        lastElementChild.addEventListener('click', () => {
+            new ArtistDialog().details(this.item);
+        });
     }
 }
