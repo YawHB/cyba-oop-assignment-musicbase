@@ -25,6 +25,7 @@ interface Artist {
     id: number;
     name: string;
     image: string;
+    getId(): number;
 }
 
 interface Album {
