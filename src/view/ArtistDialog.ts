@@ -124,22 +124,52 @@ export default class ArtistDialog extends Dialog {
     }
 
     async update(item: Artist): Promise<void> {
-        // await this.renderHTML(
-        //     item,
-        //     /*html*/ `
+        const html = /*html*/ `
 
-        // <h2>Update Artist</h2>
+        <h2>Update Artist</h2>
 
-        // <form class="update-artist-form form">
-        //     <div class="update-form-content">
-        //         <label for="name"></label>
-        //          <input type=text name="name" id="name" value="${item.name}">
+        <form class="update-artist-form">
+            <div class="update-form-content">
+                <label for="artistName"></label>
+                 <input type=text name="artistName" id="artistName" value="${item.name}">
+                <label for="image"></label>
+                 <input type=text name="image" id="image" value="${item.image}">
+            </div>
+            <input type="submit" value="Confirm">
 
-        //     </div>
+        </form>
+        `;
 
-        // </form>
-        // `
-        // );
+        await this.renderHTML(html);
+
+        Dialog.dialogContent
+            .querySelector(".update-artist-form")
+            ?.addEventListener("submit", async (event: Event) => {
+                event.preventDefault();
+                const artistId = item.getId();
+                const form = event.target as HTMLFormElement;
+
+                const updatedArtist = {
+                    name: form.artistName.value,
+                    image: form.image.value,
+                };
+
+                const response = await DataHandler.putData(
+                    `artists`,
+                    artistId,
+                    updatedArtist
+                );
+                console.log(response);
+
+                //TODO: Validering på response.affectedRows. Hvis den er større end 0, så skal vi opdatere artisten i globale array med vores nye updatedArtistArray, hvor id'et matcher.
+
+                const index = DataHandler.artistsArr.findIndex(
+                    (artist) => artist.getId() === item.getId()
+                );
+
+                DataHandler.artistsArr[index] = { ...updatedArtist, artistId };
+                // DataHandler.artistsArr.splice(index,1,{...updatedArtist});
+            });
 
         console.log("update");
     }

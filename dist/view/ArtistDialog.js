@@ -88,6 +88,34 @@ export default class ArtistDialog extends Dialog {
         await this.postRender(item);
     }
     async update(item) {
+        const html = `
+
+        <h2>Update Artist</h2>
+
+        <form class="update-artist-form">
+            <div class="update-form-content">
+                <label for="artistName"></label>
+                 <input type=text name="artistName" id="artistName" value="${item.name}">
+                <label for="image"></label>
+                 <input type=text name="image" id="image" value="${item.image}">
+            </div>
+            <input type="submit" value="Confirm">
+
+        </form>
+        `;
+        await this.renderHTML(html);
+        Dialog.dialogContent
+            .querySelector(".update-artist-form")
+            ?.addEventListener("submit", async (event) => {
+            event.preventDefault();
+            const form = event.target;
+            const updatedArtist = {
+                name: form.artistName.value,
+                image: form.image.value,
+            };
+            const response = await DataHandler.putData(`artists`, item.getId(), updatedArtist);
+            console.log(response);
+        });
         console.log("update");
     }
 }
