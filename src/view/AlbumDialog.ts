@@ -34,6 +34,42 @@ export default class AlbumDialog extends Dialog {
 
     public async create(): Promise<void> {
         console.log("create album")
+        const createFormHTML = /*html*/ `
+        <h2>Create Album</h2>
+        
+        <form class="create-album-form">
+            <div class="create-form-content">
+                <label for="albumTitle">Title</label>
+                <input type=text name="albumTitle" id="albumTitle" value="">
+                <label for="image">Image</label>
+                <input type=text name="image" id="image" value="">
+                <label for="yearOfRelease">Year of release</label>
+                <input type=text name="yearOfRelease" id="yearOfRelease" value="">
+                <label for="artist">Artist</label>
+                <input type=text name="artist" id="artist" value="">
+            </div>
+            <input type="submit" value="Submit album" />
+        </form>
+        `;
+        await this.renderHTML(createFormHTML);
+        Dialog.dialogContent.querySelector(".create-album-form")?.addEventListener("submit", async (event: Event) => {
+            event.preventDefault();
+            const form = event.target as HTMLFormElement;
+
+            const title: string = form.albumTitle.value;
+            const image: string = form.image.value;
+            const yearOfRelease: number = parseInt(form.yearOfRelease.value);
+            const artist: string = form.artist.value;
+
+            const newAlbumId: number = await DataHandler.postData("albums", { title, image, yearOfRelease, artist });
+
+            DataHandler.albumsArr.push(new Album(title, yearOfRelease, image, newAlbumId));
+
+            Dialog.close();
+            albumRenders.setList(DataHandler.albumsArr);
+            albumRenders.clearList();
+            albumRenders.renderList();
+        });
     }
 
     public async delete(item: Album): Promise<void> {
@@ -89,8 +125,44 @@ export default class AlbumDialog extends Dialog {
     }
 
     public async update(item: Album): Promise<void> {
-        console.log("update");
+        console.log(item)
+        const updateFormHTML = /*html*/ `
+        <h2>Update Album</h2>
+        
+        <form class="update-album-form" id="albumId-${item.getId()}">
+            <div class="update-form-content">
+                <label for="albumTitle">Title</label>
+                <input type=text name="albumTitle" id="albumTitle" value="${item.title}">
+                <label for="image">Image</label>
+                <input type=text name="image" id="image" value="${item.image}">
+                <label for="yearOfRelease">Year of release</label>
+                 <input type=text name="yearOfRelease" id="yearOfRelease" value="${item.yearOfRelease}">
+                <!-- <label for="artist">Artist</label> 
+                <input type=text name="artist" id="artist" value="${item.artist}"> -->
+            </div>
+            <input type="submit" value="Submit album" />
+        </form>
+        `;
+        await this.renderHTML(updateFormHTML);
+        Dialog.dialogContent.querySelector(".update-album-form")?.addEventListener("submit", async (event: Event) => {
+            event.preventDefault();
+            const form = event.target as HTMLFormElement;
+
+            const title: string = form.albumTitle.value;
+            const image: string = form.image.value;
+            const yearOfRelease: number = parseInt(form.yearOfRelease.value);
+            // const artist: string = form.artist.value;
+            const albumId = Number(form.id.split("-")[1]);
+
+            await DataHandler.putData("albums", albumId, { title, image, yearOfRelease, /*artist*/ });
+
+            const index = DataHandler.albumsArr.findIndex((album: Album) => album.getId() === albumId);
+            DataHandler.albumsArr[index] = new Album(title, yearOfRelease, image, albumId);
+
+            Dialog.close();
+            albumRenders.setList(DataHandler.albumsArr);
+            albumRenders.clearList();
+            albumRenders.renderList();
+        });
     }
-
-
 }
