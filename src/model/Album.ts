@@ -1,10 +1,6 @@
 export default class Album {
-    constructor(
-        public title: string,
-        public yearOfRelease: number,
-        public image: string,
-        private id: number
-    ) {}
+    [key: string]: any;
+    constructor(public title: string, public yearOfRelease: number, public image: string, private id: number) {}
 
     // public getTitle(): string {
     //     return this.title;

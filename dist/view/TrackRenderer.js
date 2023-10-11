@@ -1,6 +1,7 @@
 import ItemRenderer from "./ItemRenderer.js";
 import TrackDialog from "./TrackDialog.js";
 export default class TrackRenderer extends ItemRenderer {
+    item;
     constructor(item) {
         super();
         this.item = item;
@@ -18,7 +19,7 @@ export default class TrackRenderer extends ItemRenderer {
         `;
     }
     postRender(lastElementChild) {
-        lastElementChild.addEventListener('click', () => {
+        lastElementChild.addEventListener("click", () => {
             new TrackDialog().details(this.item);
         });
     }

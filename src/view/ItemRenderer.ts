@@ -1,5 +1,6 @@
 export default abstract class ItemRenderer {
-    protected item: any;
+    [key: string]: any;
+    public item: any;
 
     constructor() {}
 

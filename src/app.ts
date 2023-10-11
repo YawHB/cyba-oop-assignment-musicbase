@@ -1,5 +1,6 @@
 "use strict";
 import DataHandler from "./components/dataHandler.js";
+import search from "./components/search.js";
 import AlbumRenderer from "./view/AlbumRenderer.js";
 import ArtistRenderer from "./view/ArtistRenderer.js";
 import ListRenderer from "./view/ListRenderer.js";
@@ -14,36 +15,39 @@ let artistRenders: ListRenderer,
     trackRenders: ListRenderer;
 
 async function app() {
-    console.log("hello there!");
-    // await DataHandler.postData("artists", {
-    //     name: "Pharrell Williams",
-    //     image: "https://i.discogs.com/GEc6fi18WNAJL2GJuwyy5e8021jRuHrqHXV4id8bD-g/rs:fit/g:sm/q:90/h:512/w:512/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTkwMDM3/LTE0MzQzOTQ5MzQt/NDIxMi5qcGVn.jpeg",
-    // });
+
+    console.log(`App is running 🎉`);
 
     await DataHandler.getData("artists");
     await DataHandler.getData("albums");
     await DataHandler.getData("tracks");
 
+
     // instantiate list renderers
     artistRenders = new ListRenderer(
         DataHandler.artistsArr,
         "artists-grid",
-        ArtistRenderer
+        ArtistRenderer,
+      "artist-sort-container"
     );
     albumRenders = new ListRenderer(
         DataHandler.albumsArr,
         "albums-grid",
-        AlbumRenderer
+        AlbumRenderer,
+      "album-sort-container"
     );
     trackRenders = new ListRenderer(
         DataHandler.tracksArr,
         "tracks-table tbody",
-        TrackRenderer
+        TrackRenderer,
+      "track-sort-container"
     );
+
 
     artistRenders.renderList();
     albumRenders.renderList();
     trackRenders.renderList();
+
 
     document.querySelector("#btn-close-dialog-frame")?.addEventListener("click", () => Dialog.close());
 
@@ -52,6 +56,16 @@ async function app() {
         
         new ArtistDialog().create();
     });
+
+    const searchbar = document.querySelector("#searchbar") as HTMLInputElement;
+    searchbar?.addEventListener("input", () => {
+        const searchValue = searchbar.value.toLowerCase();
+
+        artistRenders.search(searchValue);
+        albumRenders.search(searchValue);
+        tracksRenders.search(searchValue);
+    });
+
 }
 
 export { artistRenders, albumRenders, trackRenders };
