@@ -19,8 +19,10 @@ export default class ListRenderer {
         this.setList(list);
     }
 
-    public renderList(): void {
-        for (const item of this.list) {
+    public renderList(filteredList?: (AlbumRenderer | TrackRenderer | ArtistRenderer)[]): void {
+        this.clear();
+
+        for (const item of filteredList ?? this.list) {
             const html = item.renderHTML();
             this.container.insertAdjacentHTML("beforeend", html);
 
@@ -35,5 +37,25 @@ export default class ListRenderer {
         for (const item of newList) {
             this.list.push(new this.itemRenderer(item));
         }
+    }
+
+    public search(searchValue: string) {
+        if (!searchValue) {
+            this.renderList();
+        }
+
+        const filteredList = this.list.filter((index) => {
+            if (index instanceof ArtistRenderer) {
+                return index.item.name.toLowerCase().includes(searchValue);
+            } else {
+                return index.item.title.toLowerCase().includes(searchValue);
+            }
+        });
+
+        this.renderList(filteredList);
+    }
+
+    private clear() {
+        this.container.innerHTML = "";
     }
 }

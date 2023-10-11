@@ -44,11 +44,18 @@ async function app() {
     const searchbar = document.querySelector("#searchbar") as HTMLInputElement;
 
     searchbar?.addEventListener("input", () => {
-        if (searchbar.value === null) {
-            throw new Error("Missing html element");
-        }
+        // if (searchbar.value === null) {
+        //     throw new Error("Missing html element");
+        // }
+        console.log("Click");
+        
+        
+        const searchValue = searchbar.value.toLowerCase();
 
-        search(searchbar.value);
+        artistRenders.search(searchValue);
+        albumRenders.search(searchValue);
+        tracksRenders.search(searchValue);
+
     });
 
     document

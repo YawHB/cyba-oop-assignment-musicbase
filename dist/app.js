@@ -20,6 +20,14 @@ async function app() {
     artistRenders.renderList();
     albumRenders.renderList();
     tracksRenders.renderList();
+    const searchbar = document.querySelector("#searchbar");
+    searchbar?.addEventListener("input", () => {
+        console.log("Click");
+        const searchValue = searchbar.value.toLowerCase();
+        artistRenders.search(searchValue);
+        albumRenders.search(searchValue);
+        tracksRenders.search(searchValue);
+    });
     document
         .querySelector("#btn-close-dialog-frame")
         ?.addEventListener("click", () => Dialog.close());

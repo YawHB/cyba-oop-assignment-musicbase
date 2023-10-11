@@ -1,7 +1,9 @@
+import Track from "../model/Track.js";
 import ItemRenderer from "./ItemRenderer.js";
 import TrackDialog from "./TrackDialog.js";
 
 export default class TrackRenderer extends ItemRenderer {
+    public override item: Track;
     // declare item: Track;
 
     constructor(item: Track) {
@@ -22,9 +24,9 @@ export default class TrackRenderer extends ItemRenderer {
     }
 
     public postRender(lastElementChild: Element): void {
-        lastElementChild.addEventListener('click', () => {
+        lastElementChild.addEventListener("click", () => {
             // TODO RENDER DIALOG CONTENT
-            new TrackDialog().details(this.item)
-        })
+            new TrackDialog().details(this.item);
+        });
     }
 }
