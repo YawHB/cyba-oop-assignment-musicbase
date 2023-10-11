@@ -10,7 +10,7 @@ import Dialog from "./view/Dialog.js";
 window.addEventListener("load", app);
 
 async function app() {
-    console.log("hello there!");
+    console.log(`App is running 🎉`);
     await DataHandler.getData("artists");
     await DataHandler.getData("albums");
     await DataHandler.getData("tracks");
@@ -30,20 +30,12 @@ async function app() {
     tracksRenders.renderList();
 
     const searchbar = document.querySelector("#searchbar") as HTMLInputElement;
-
     searchbar?.addEventListener("input", () => {
-        // if (searchbar.value === null) {
-        //     throw new Error("Missing html element");
-        // }
-        console.log("Click");
-        
-        
         const searchValue = searchbar.value.toLowerCase();
 
         artistRenders.search(searchValue);
         albumRenders.search(searchValue);
         tracksRenders.search(searchValue);
-
     });
 
     document

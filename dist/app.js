@@ -7,7 +7,7 @@ import TrackRenderer from "./view/TrackRenderer.js";
 import Dialog from "./view/Dialog.js";
 window.addEventListener("load", app);
 async function app() {
-    console.log("hello there!");
+    console.log(`App is running 🎉`);
     await DataHandler.getData("artists");
     await DataHandler.getData("albums");
     await DataHandler.getData("tracks");
@@ -22,7 +22,6 @@ async function app() {
     tracksRenders.renderList();
     const searchbar = document.querySelector("#searchbar");
     searchbar?.addEventListener("input", () => {
-        console.log("Click");
         const searchValue = searchbar.value.toLowerCase();
         artistRenders.search(searchValue);
         albumRenders.search(searchValue);

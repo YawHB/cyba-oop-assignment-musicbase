@@ -20,14 +20,14 @@ export default class ListRenderer {
         sortContainer: string
     ) {
         this.container = document.querySelector(`.${container}`) as HTMLElement;
+        this.sortContainer = document.querySelector(`#${sortContainer}`) as HTMLElement;
         this.list = [];
         this.setList(list);
-        this.sortContainer = document.querySelector(`#${sortContainer}`) as HTMLElement;
-        this.initiateEventListeners();
 
-        this.sortValue = this.initSortValue();
-        this.sortByValue = this.initSortByValue();
+        this.sortValue = (this.sortContainer.querySelector(".sort") as HTMLSelectElement)?.value;
+        this.sortByValue = (this.sortContainer.querySelector(".sort-order") as HTMLSelectElement)?.value;
         this.searchValue = "";
+        this.initiateEventListeners();
     }
 
     public renderList(filteredList?: (AlbumRenderer | TrackRenderer | ArtistRenderer)[]): void {
@@ -53,7 +53,6 @@ export default class ListRenderer {
     }
 
     public search(searchValue?: string) {
-
         if (searchValue) {
             this.searchValue = searchValue;
         }
@@ -74,40 +73,6 @@ export default class ListRenderer {
         this.renderList(filteredList);
     }
 
-    private initiateEventListeners() {
-        this.sortContainer.querySelector(".sort")?.addEventListener("change", () => {
-            const sortElement = this.sortContainer.querySelector(".sort") as HTMLSelectElement;
-            this.setSortValue(sortElement.value)
-            this.search()
-        })
-        
-        
-        this.sortContainer.querySelector(".sort-order")?.addEventListener("change", () => {
-            const sortByElement = this.sortContainer.querySelector(".sort-order") as HTMLSelectElement;
-            this.setSortByValue(sortByElement.value)
-            this.search()
-        })
-    }
-
-    //TODO Can props be initially set without these?
-    private initSortValue(): string {
-        const sortElement = this.sortContainer.querySelector(".sort") as HTMLSelectElement;
-        return sortElement.value;
-    }
-
-    private initSortByValue(): string {
-        const sortByElement = this.sortContainer.querySelector(".sort-order") as HTMLSelectElement;
-        return sortByElement.value;
-    }
-
-    private setSortValue(newSortValue: string): void {
-        this.sortValue = newSortValue;
-    }
-
-    private setSortByValue(newSortByValue: string): void {
-        this.sortByValue = newSortByValue;
-    }
-
     private sort(list: (AlbumRenderer | TrackRenderer | ArtistRenderer)[]): void {
         list.sort((b, a) => {
             if (a.item[this.sortValue] > b.item[this.sortValue]) {
@@ -115,11 +80,23 @@ export default class ListRenderer {
             } else {
                 return -1;
             }
-        })
-        
+        });
+
         if (this.sortByValue === "DESC") {
             list.reverse();
         }
+    }
+
+    private initiateEventListeners() {
+        this.sortContainer.querySelector(".sort")?.addEventListener("change", () => {
+            this.sortValue = (this.sortContainer.querySelector(".sort") as HTMLSelectElement)?.value;
+            this.search();
+        });
+
+        this.sortContainer.querySelector(".sort-order")?.addEventListener("change", () => {
+            this.sortByValue = (this.sortContainer.querySelector(".sort-order") as HTMLSelectElement)?.value;
+            this.search();
+        });
     }
 
     private clear() {
