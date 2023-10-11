@@ -18,8 +18,7 @@ export default class ArtistDialog extends Dialog {
             this.delete(item);
         });
     }
-    create() {
-        console.log("CREATE");
+    async create() {
         const html = `
         <h2>Create Artist</h2>
 
@@ -34,7 +33,7 @@ export default class ArtistDialog extends Dialog {
             <input type="submit" value="Submit artist" />
         </form>
         `;
-        this.renderHTML(html);
+        await this.renderHTML(html);
         Dialog.dialogContent.querySelector(".create-artist-form")?.addEventListener("submit", async (event) => {
             event.preventDefault();
             const form = event.target;
