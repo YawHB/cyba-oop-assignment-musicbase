@@ -35,11 +35,8 @@ export default class ArtistDialog extends Dialog {
         </form>
         `;
         this.renderHTML(html);
-        Dialog.dialogContent
-            .querySelector(".create-artist-form")
-            ?.addEventListener("submit", async (event) => {
+        Dialog.dialogContent.querySelector(".create-artist-form")?.addEventListener("submit", async (event) => {
             event.preventDefault();
-            Dialog.close();
             const form = event.target;
             const name = form.artistName.value;
             const image = form.image.value;
@@ -47,6 +44,7 @@ export default class ArtistDialog extends Dialog {
             const newArtistId = await DataHandler.postData("artists", newArtist);
             const instancedArtist = new Artist(newArtist.name, newArtist.image, newArtistId);
             DataHandler.artistsArr.push(instancedArtist);
+            Dialog.close();
             artistRenders.setList(DataHandler.artistsArr);
             artistRenders.clearList();
             artistRenders.renderList();
@@ -88,11 +86,12 @@ export default class ArtistDialog extends Dialog {
         await this.postRender(item);
     }
     async update(item) {
+        console.log("update");
         const html = `
 
         <h2>Update Artist</h2>
 
-        <form class="update-artist-form">
+        <form class="update-artist-form" id="artistId-${item.getId()}">
             <div class="update-form-content">
                 <label for="artistName"></label>
                  <input type=text name="artistName" id="artistName" value="${item.name}">
@@ -104,18 +103,23 @@ export default class ArtistDialog extends Dialog {
         </form>
         `;
         await this.renderHTML(html);
-        Dialog.dialogContent
-            .querySelector(".update-artist-form")
-            ?.addEventListener("submit", async (event) => {
+        Dialog.dialogContent.querySelector(".update-artist-form")?.addEventListener("submit", async (event) => {
             event.preventDefault();
             const form = event.target;
-            const updatedArtist = {
-                name: form.artistName.value,
-                image: form.image.value,
-            };
-            const response = await DataHandler.putData(`artists`, item.getId(), updatedArtist);
-            console.log(response);
+            const name = form.artistName.value;
+            const image = form.image.value;
+            const artistId = Number(form.id.split("-")[1]);
+            const updatedArtist = { name, image };
+            const response = await DataHandler.putData(`artists`, artistId, updatedArtist);
+            if (response.affectedRows > 0) {
+                const instancedArtist = new Artist(updatedArtist.name, updatedArtist.image, artistId);
+                const index = DataHandler.artistsArr.findIndex((artist) => artist.getId() === instancedArtist.getId());
+                DataHandler.artistsArr[index] = instancedArtist;
+                Dialog.close();
+                artistRenders.setList(DataHandler.artistsArr);
+                artistRenders.clearList();
+                artistRenders.renderList();
+            }
         });
-        console.log("update");
     }
 }

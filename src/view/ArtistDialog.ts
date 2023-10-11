@@ -12,16 +12,11 @@ export default class ArtistDialog extends Dialog {
         Dialog.clear();
         Dialog.open();
         Dialog.dialogContent.insertAdjacentHTML("beforeend", html);
-        // await this.postRender(item);
     }
 
     protected async postRender(item: Artist): Promise<void> {
-        const updateButton = document.querySelector(
-            ".artist-dialog-update-button"
-        ) as HTMLButtonElement;
-        const deleteButton = document.querySelector(
-            ".artist-dialog-delete-button"
-        ) as HTMLButtonElement;
+        const updateButton = document.querySelector(".artist-dialog-update-button") as HTMLButtonElement;
+        const deleteButton = document.querySelector(".artist-dialog-delete-button") as HTMLButtonElement;
 
         updateButton.addEventListener("click", () => {
             this.update(item);
@@ -50,35 +45,26 @@ export default class ArtistDialog extends Dialog {
         `;
 
         this.renderHTML(html);
-        Dialog.dialogContent
-            .querySelector(".create-artist-form")
-            ?.addEventListener("submit", async (event: Event) => {
-                event.preventDefault();
-                Dialog.close();
-                const form = event.target as HTMLFormElement;
+        Dialog.dialogContent.querySelector(".create-artist-form")?.addEventListener("submit", async (event: Event) => {
+            event.preventDefault();
+            const form = event.target as HTMLFormElement;
 
-                const name: string = form.artistName.value;
-                const image: string = form.image.value;
+            const name: string = form.artistName.value;
+            const image: string = form.image.value;
 
-                const newArtist = { name, image };
-                //TODO KALDER EN NY METODE(newArtist)
-                const newArtistId: number = await DataHandler.postData(
-                    "artists",
-                    newArtist
-                );
+            const newArtist = { name, image };
+            //TODO KALDER EN NY METODE(newArtist)
+            const newArtistId: number = await DataHandler.postData("artists", newArtist);
 
-                const instancedArtist = new Artist(
-                    newArtist.name,
-                    newArtist.image,
-                    newArtistId
-                );
+            const instancedArtist = new Artist(newArtist.name, newArtist.image, newArtistId);
 
-                DataHandler.artistsArr.push(instancedArtist);
+            DataHandler.artistsArr.push(instancedArtist);
 
-                artistRenders.setList(DataHandler.artistsArr);
-                artistRenders.clearList();
-                artistRenders.renderList();
-            });
+            Dialog.close();
+            artistRenders.setList(DataHandler.artistsArr);
+            artistRenders.clearList();
+            artistRenders.renderList();
+        });
     }
 
     async delete(item: Artist): Promise<void> {
@@ -94,9 +80,7 @@ export default class ArtistDialog extends Dialog {
     }
 
     public async details(item: Artist): Promise<void> {
-        const artistAlbums = await DataHandler.getAllAlbumsByArtistId(
-            item.getId()
-        );
+        const artistAlbums = await DataHandler.getAllAlbumsByArtistId(item.getId());
 
         const html = /*html*/ `
         <article class="artist-dialog">
@@ -124,11 +108,12 @@ export default class ArtistDialog extends Dialog {
     }
 
     async update(item: Artist): Promise<void> {
+        console.log("update");
         const html = /*html*/ `
 
         <h2>Update Artist</h2>
 
-        <form class="update-artist-form">
+        <form class="update-artist-form" id="artistId-${item.getId()}">
             <div class="update-form-content">
                 <label for="artistName"></label>
                  <input type=text name="artistName" id="artistName" value="${item.name}">
@@ -142,35 +127,28 @@ export default class ArtistDialog extends Dialog {
 
         await this.renderHTML(html);
 
-        Dialog.dialogContent
-            .querySelector(".update-artist-form")
-            ?.addEventListener("submit", async (event: Event) => {
-                event.preventDefault();
-                const artistId = item.getId();
-                const form = event.target as HTMLFormElement;
+        Dialog.dialogContent.querySelector(".update-artist-form")?.addEventListener("submit", async (event: Event) => {
+            event.preventDefault();
+            const form = event.target as HTMLFormElement;
 
-                const updatedArtist = {
-                    name: form.artistName.value,
-                    image: form.image.value,
-                };
+            const name: string = form.artistName.value;
+            const image: string = form.image.value;
+            const artistId = Number(form.id.split("-")[1]);
 
-                const response = await DataHandler.putData(
-                    `artists`,
-                    artistId,
-                    updatedArtist
-                );
-                console.log(response);
+            const updatedArtist = { name, image };
 
-                //TODO: Validering på response.affectedRows. Hvis den er større end 0, så skal vi opdatere artisten i globale array med vores nye updatedArtistArray, hvor id'et matcher.
+            const response = await DataHandler.putData(`artists`, artistId, updatedArtist);
 
-                const index = DataHandler.artistsArr.findIndex(
-                    (artist) => artist.getId() === item.getId()
-                );
+            if (response.affectedRows > 0) {
+                const instancedArtist = new Artist(updatedArtist.name, updatedArtist.image, artistId);
+                const index = DataHandler.artistsArr.findIndex((artist) => artist.getId() === instancedArtist.getId());
+                DataHandler.artistsArr[index] = instancedArtist;
 
-                DataHandler.artistsArr[index] = { ...updatedArtist, artistId };
-                // DataHandler.artistsArr.splice(index,1,{...updatedArtist});
-            });
-
-        console.log("update");
+                Dialog.close();
+                artistRenders.setList(DataHandler.artistsArr);
+                artistRenders.clearList();
+                artistRenders.renderList();
+            }
+        });
     }
 }
