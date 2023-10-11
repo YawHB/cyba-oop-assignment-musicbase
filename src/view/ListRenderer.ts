@@ -30,18 +30,17 @@ export default class ListRenderer {
         this.postRender();
     }
 
-
     public clearList(): void {
         this.container.innerHTML = "";
     }
 
-
-    public renderList(filteredList?: (AlbumRenderer | TrackRenderer | ArtistRenderer)[]): void {
+    public renderList(): void {
         this.clearList();
 
-        this.sort(filteredList ?? this.list);
+        const list = this.search();
+        this.sort(list);
 
-        for (const item of filteredList ?? this.list) {
+        for (const item of list) {
             const html = item.renderHTML();
             this.container.insertAdjacentHTML("beforeend", html);
 
@@ -52,22 +51,23 @@ export default class ListRenderer {
     }
 
     public setList(newList: any[]) {
-        console.log(newList);
         this.list = [];
         for (const item of newList) {
             this.list.push(new this.itemRenderer(item));
         }
     }
 
-    public search(searchValue?: string) {
-
-        if (searchValue || searchValue == "") {
-            this.searchValue = searchValue;
+    public setSearchValue(newSearchValue?: string) {
+        if (newSearchValue || newSearchValue == "") {
+            this.searchValue = newSearchValue;
         }
-        
+
+        this.renderList();
+    }
+
+    private search() {
         if (!this.searchValue) {
-            this.renderList();
-            return;
+            return this.list;
         }
 
         const filteredList = this.list.filter((item) => {
@@ -78,7 +78,7 @@ export default class ListRenderer {
             }
         });
 
-        this.renderList(filteredList);
+        return filteredList;
     }
 
     private sort(list: (AlbumRenderer | TrackRenderer | ArtistRenderer)[]): void {
@@ -98,13 +98,12 @@ export default class ListRenderer {
     private postRender() {
         this.sortContainer.querySelector(".sort")?.addEventListener("change", () => {
             this.sortValue = (this.sortContainer.querySelector(".sort") as HTMLSelectElement)?.value;
-            this.search();
+            this.setSearchValue();
         });
 
         this.sortContainer.querySelector(".sort-order")?.addEventListener("change", () => {
             this.sortByValue = (this.sortContainer.querySelector(".sort-order") as HTMLSelectElement)?.value;
-            this.search();
+            this.setSearchValue();
         });
     }
-
 }

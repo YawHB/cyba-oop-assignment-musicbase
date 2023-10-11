@@ -40,14 +40,10 @@ function initiateEventListeners() {
     const searchbar = document.querySelector("#searchbar") as HTMLInputElement;
     searchbar?.addEventListener("input", () => {
         const searchValue = searchbar.value.toLowerCase();
-        
-        
-        artistRenders.search(searchValue);
-        albumRenders.search(searchValue);
-        trackRenders.search(searchValue);
 
-        
-
+        artistRenders.setSearchValue(searchValue);
+        albumRenders.setSearchValue(searchValue);
+        trackRenders.setSearchValue(searchValue);
     });
 }
 
