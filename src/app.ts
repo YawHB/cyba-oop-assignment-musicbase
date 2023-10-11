@@ -19,23 +19,11 @@ async function app() {
     console.log(DataHandler.albumsArr);
     console.log(DataHandler.tracksArr);
 
-    const artistRenders = new ListRenderer(
-        DataHandler.artistsArr,
-        "artists-grid",
-        ArtistRenderer
-    );
+    const artistRenders = new ListRenderer(DataHandler.artistsArr, "artists-grid", ArtistRenderer, "artist-sort-container");
 
-    const albumRenders = new ListRenderer(
-        DataHandler.albumsArr,
-        "albums-grid",
-        AlbumRenderer
-    );
+    const albumRenders = new ListRenderer(DataHandler.albumsArr, "albums-grid", AlbumRenderer, "album-sort-container");
 
-    const tracksRenders = new ListRenderer(
-        DataHandler.tracksArr,
-        "tracks-table tbody",
-        TrackRenderer
-    );
+    const tracksRenders = new ListRenderer(DataHandler.tracksArr, "tracks-table tbody", TrackRenderer, "track-sort-container");
 
     artistRenders.renderList();
     albumRenders.renderList();

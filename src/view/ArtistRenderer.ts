@@ -9,6 +9,7 @@ export default class ArtistRenderer extends ItemRenderer {
         super();
         this.item = item;
     }
+
     public renderHTML(): string {
         return /*html*/ `
          <article class="artist-card">
@@ -33,4 +34,5 @@ export default class ArtistRenderer extends ItemRenderer {
     public getItem(): Artist {
         return this.item;
     }
+
 }
