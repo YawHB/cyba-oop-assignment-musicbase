@@ -254,6 +254,23 @@ header .search-container select:focus {
     box-shadow: var(--shadow);
 }
 
+/* Dialog */
+
+#main-dialog-frame {
+	/* max-height: 37em; */
+	/* margin: auto; */
+	padding: 1em;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#btn-close-dialog-modal {
+	float: right;
+    padding: 0.2rem;
+}
+
 /* Media queries */
 
 @media (max-width: 479px) {
