@@ -5,6 +5,7 @@ interface RawArtist {
     image: string;
 }
 
+
 interface RawAlbum {
     id: number;
     title: string;

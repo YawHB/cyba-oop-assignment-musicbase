@@ -8,11 +8,11 @@ import ListRenderer from "./ListRenderer.js";
 import { artistRenders } from "../app.js";
 
 export default class ArtistDialog extends Dialog {
-    protected async renderHTML(item: Artist, html: string): Promise<void> {
+    protected async renderHTML(html: string): Promise<void> {
         Dialog.clear();
         Dialog.open();
         Dialog.dialogContent.insertAdjacentHTML("beforeend", html);
-        await this.postRender(item);
+        // await this.postRender(item);
     }
 
     protected async postRender(item: Artist): Promise<void> {
@@ -22,6 +22,7 @@ export default class ArtistDialog extends Dialog {
         const deleteButton = document.querySelector(
             ".artist-dialog-delete-button"
         ) as HTMLButtonElement;
+
         updateButton.addEventListener("click", () => {
             this.update(item);
         });
@@ -30,7 +31,55 @@ export default class ArtistDialog extends Dialog {
         });
     }
 
-    create(item: Artist): void {}
+    create(): void {
+        console.log("CREATE");
+
+        const html = /*html*/ `
+        <h2>Create Artist</h2>
+
+        <form class="create-artist-form">
+            <div class="create-form-content">
+                <label for="artistName">Name</label>
+                <input type=text name="artistName" id="artistName" value="">
+                <label for="image">Image</label>
+                <input type=text name="image" id="image" value="">
+            </div>
+
+            <input type="submit" value="Submit artist" />
+        </form>
+        `;
+
+        this.renderHTML(html);
+        Dialog.dialogContent
+            .querySelector(".create-artist-form")
+            ?.addEventListener("submit", async (event: Event) => {
+                event.preventDefault();
+                Dialog.close();
+                const form = event.target as HTMLFormElement;
+
+                const name: string = form.artistName.value;
+                const image: string = form.image.value;
+
+                const newArtist = { name, image };
+                //TODO KALDER EN NY METODE(newArtist)
+                const newArtistId: number = await DataHandler.postData(
+                    "artists",
+                    newArtist
+                );
+
+                const instancedArtist = new Artist(
+                    newArtist.name,
+                    newArtist.image,
+                    newArtistId
+                );
+
+                DataHandler.artistsArr.push(instancedArtist);
+
+                artistRenders.setList(DataHandler.artistsArr);
+                artistRenders.clearList();
+                artistRenders.renderList();
+            });
+    }
 
     async delete(item: Artist): Promise<void> {
         await DataHandler.deleteData("artists", item.getId());
@@ -48,52 +97,49 @@ export default class ArtistDialog extends Dialog {
         const artistAlbums = await DataHandler.getAllAlbumsByArtistId(
             item.getId()
         );
-        await this.renderHTML(
-            item,
-            /*html*/ `
+
+        const html = /*html*/ `
         <article class="artist-dialog">
-        <h2>${item.name}</h2>
-        <img src="${item.image}" alt="${item.name}">
-        <h3>Albums</h3>
-        <ul>
-        ${artistAlbums
-            .map((album: Album) => {
-                return /*html*/ `
-            <li>${album.title}</li>
-            `;
-            })
-            .join("")}
-        </ul>
+            <h2>${item.name}</h2>
+            <img src="${item.image}" alt="${item.name}">
+            <h3>Albums</h3>
+            <ul>
+            ${artistAlbums
+                .map((album: Album) => {
+                    return /*html*/ `
+                <li>${album.title}</li>`;
+                })
+                .join("")}
+            </ul>
         
-        <div class="artist-dialog-buttons">
-        <button class="artist-dialog-update-button">Update</button>
-        <button class="artist-dialog-delete-button">Delete</button>
-        </div>
+            <div class="artist-dialog-buttons">
+                <button class="artist-dialog-update-button">Update</button>
+                <button class="artist-dialog-delete-button">Delete</button>
+            </div>
         </article>
-    `
-        );
+        `;
+
+        await this.renderHTML(html);
+        await this.postRender(item);
     }
 
     async update(item: Artist): Promise<void> {
-        await this.renderHTML(
-            item,
-            /*html*/ `
-        
-        
-        <h2>Update Artist</h2>
+        // await this.renderHTML(
+        //     item,
+        //     /*html*/ `
 
-        <form class="update-artist-form form">
-            <div class="update-form-content">
-                <label for="name"></label>
-                 <input type=text name="name" id="name" value="${item.name}">
+        // <h2>Update Artist</h2>
 
+        // <form class="update-artist-form form">
+        //     <div class="update-form-content">
+        //         <label for="name"></label>
+        //          <input type=text name="name" id="name" value="${item.name}">
 
-            </div>
+        //     </div>
 
-
-        </form>
-        `
-        );
+        // </form>
+        // `
+        // );
 
         console.log("update");
     }

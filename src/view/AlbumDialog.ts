@@ -5,7 +5,7 @@ import Track from "../model/Track.js";
 
 export default class AlbumDialog extends Dialog {
 
-    protected renderHTML(item: Album, html: string): void {
+    protected renderHTML(html: string): void {
         Dialog.clear()
         Dialog.open()
         Dialog.dialogContent.insertAdjacentHTML('beforeend', html)
@@ -21,10 +21,10 @@ export default class AlbumDialog extends Dialog {
     }
 
     public details(item: Album): void {
-        this.renderHTML(item, /*html*/ `
-        <h2>${item.title}</h2>
-        <img src="${item.image}" alt="${item.title}">
-    `);
+        const html = /*html*/ `<h2>${item.title}</h2>
+        <img src="${item.image}" alt="${item.title}">`
+        
+        this.renderHTML(html);
     }
 
     update(item: Artist | Album | Track): void {

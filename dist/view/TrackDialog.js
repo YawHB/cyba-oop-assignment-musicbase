@@ -1,6 +1,6 @@
 import Dialog from "./Dialog.js";
 export default class TrackDialog extends Dialog {
-    renderHTML(item, html) {
+    renderHTML(html) {
         Dialog.clear();
         Dialog.open();
         Dialog.dialogContent.insertAdjacentHTML('beforeend', html);
@@ -12,9 +12,9 @@ export default class TrackDialog extends Dialog {
     delete(item) {
     }
     details(item) {
-        this.renderHTML(item, `
-        <h2>${item.title}</h2>
-    `);
+        const html = `
+        <h2>${item.title}</h2>`;
+        this.renderHTML(html);
     }
     update(item) {
     }

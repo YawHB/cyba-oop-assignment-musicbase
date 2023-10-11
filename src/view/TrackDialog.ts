@@ -5,7 +5,7 @@ import Track from "../model/Track.js";
 
 export default class TrackDialog extends Dialog {
 
-    protected renderHTML(item: Track, html: string): void {
+    protected renderHTML( html: string): void {
         Dialog.clear()
         Dialog.open()
         Dialog.dialogContent.insertAdjacentHTML('beforeend', html)
@@ -21,9 +21,11 @@ export default class TrackDialog extends Dialog {
     }
 
     public details(item: Track): void {
-        this.renderHTML(item, /*html*/ `
-        <h2>${item.title}</h2>
-    `);
+
+        const html = /*html*/ `
+        <h2>${item.title}</h2>`;
+        
+        this.renderHTML(html);
     }
 
     update(item: Artist | Album | Track): void {
