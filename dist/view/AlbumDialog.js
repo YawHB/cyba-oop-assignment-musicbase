@@ -1,6 +1,6 @@
 import Dialog from "./Dialog.js";
 export default class AlbumDialog extends Dialog {
-    renderHTML(html) {
+    renderHTML(item, html) {
         Dialog.clear();
         Dialog.open();
         Dialog.dialogContent.insertAdjacentHTML('beforeend', html);
@@ -12,7 +12,7 @@ export default class AlbumDialog extends Dialog {
     delete(item) {
     }
     details(item) {
-        this.renderHTML(`
+        this.renderHTML(item, `
         <h2>${item.title}</h2>
         <img src="${item.image}" alt="${item.title}">
     `);
