@@ -10,38 +10,19 @@ window.addEventListener("load", app);
 
 async function app() {
     console.log("hello there!");
+
     await DataHandler.getData("artists");
     await DataHandler.getData("albums");
     await DataHandler.getData("tracks");
 
-    console.log(DataHandler.artistsArr);
-    console.log(DataHandler.albumsArr);
-    console.log(DataHandler.tracksArr);
-
-    const artistRenders = new ListRenderer(
-        DataHandler.artistsArr,
-        "artists-grid",
-        ArtistRenderer
-    );
-
-    const albumRenders = new ListRenderer(
-        DataHandler.albumsArr,
-        "albums-grid",
-        AlbumRenderer
-    );
-
-    const tracksRenders = new ListRenderer(
-        DataHandler.tracksArr,
-        "tracks-table tbody",
-        TrackRenderer
-    );
-
-    artistRenders.renderList();
-    albumRenders.renderList();
-    tracksRenders.renderList();
+    // instantiate list renderers
+    new ListRenderer(DataHandler.artistsArr, "artists-grid", ArtistRenderer).renderList();
+    new ListRenderer(DataHandler.albumsArr, "albums-grid", AlbumRenderer).renderList();
+    new ListRenderer(DataHandler.tracksArr, "tracks-table tbody", TrackRenderer).renderList();
 
     document
         .querySelector("#btn-close-dialog-frame")
         ?.addEventListener("click", () => Dialog.close());
+
 
 }
