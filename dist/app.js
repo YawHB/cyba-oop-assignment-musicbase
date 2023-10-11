@@ -6,15 +6,20 @@ import ListRenderer from "./view/ListRenderer.js";
 import TrackRenderer from "./view/TrackRenderer.js";
 import Dialog from "./view/Dialog.js";
 window.addEventListener("load", app);
+let artistRenders, albumRenders, trackRenders;
 async function app() {
     console.log("hello there!");
     await DataHandler.getData("artists");
     await DataHandler.getData("albums");
     await DataHandler.getData("tracks");
-    new ListRenderer(DataHandler.artistsArr, "artists-grid", ArtistRenderer).renderList();
-    new ListRenderer(DataHandler.albumsArr, "albums-grid", AlbumRenderer).renderList();
-    new ListRenderer(DataHandler.tracksArr, "tracks-table tbody", TrackRenderer).renderList();
+    artistRenders = new ListRenderer(DataHandler.artistsArr, "artists-grid", ArtistRenderer);
+    albumRenders = new ListRenderer(DataHandler.albumsArr, "albums-grid", AlbumRenderer);
+    trackRenders = new ListRenderer(DataHandler.tracksArr, "tracks-table tbody", TrackRenderer);
+    artistRenders.renderList();
+    albumRenders.renderList();
+    trackRenders.renderList();
     document
         .querySelector("#btn-close-dialog-frame")
         ?.addEventListener("click", () => Dialog.close());
 }
+export { artistRenders, albumRenders, trackRenders };

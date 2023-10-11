@@ -35,6 +35,7 @@ export default class ListRenderer {
     }
 
     public setList(newList: any[]) {
+        console.log(newList);
         this.list = [];
         for (const item of newList) {
             this.list.push(new this.itemRenderer(item));

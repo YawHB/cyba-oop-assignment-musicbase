@@ -1,35 +1,33 @@
 import Dialog from "./Dialog.js";
 import DataHandler from "../components/dataHandler.js";
-import ArtistRenderer from "./ArtistRenderer.js";
-import ListRenderer from "./ListRenderer.js";
+import { artistRenders } from "../app.js";
 export default class ArtistDialog extends Dialog {
     async renderHTML(item, html) {
         Dialog.clear();
         Dialog.open();
-        Dialog.dialogContent.insertAdjacentHTML('beforeend', html);
+        Dialog.dialogContent.insertAdjacentHTML("beforeend", html);
         await this.postRender(item);
     }
     async postRender(item) {
-        const updateButton = document.querySelector('.artist-dialog-update-button');
-        const deleteButton = document.querySelector('.artist-dialog-delete-button');
-        updateButton.addEventListener('click', () => {
+        const updateButton = document.querySelector(".artist-dialog-update-button");
+        const deleteButton = document.querySelector(".artist-dialog-delete-button");
+        updateButton.addEventListener("click", () => {
             this.update(item);
         });
-        deleteButton.addEventListener('click', () => {
+        deleteButton.addEventListener("click", () => {
             this.delete(item);
         });
     }
-    create(item) {
-    }
+    create(item) { }
     async delete(item) {
         await DataHandler.deleteData("artists", item.getId());
         const index = DataHandler.artistsArr.indexOf(item);
         console.log(index);
         DataHandler.artistsArr.splice(index, 1);
         Dialog.close();
-        const listRenderer = new ListRenderer(DataHandler.artistsArr, "artists-grid", ArtistRenderer);
-        listRenderer.clearList();
-        listRenderer.renderList();
+        artistRenders.setList(DataHandler.artistsArr);
+        artistRenders.clearList();
+        artistRenders.renderList();
     }
     async details(item) {
         const artistAlbums = await DataHandler.getAllAlbumsByArtistId(item.getId());
@@ -39,11 +37,13 @@ export default class ArtistDialog extends Dialog {
         <img src="${item.image}" alt="${item.name}">
         <h3>Albums</h3>
         <ul>
-        ${artistAlbums.map((album) => {
+        ${artistAlbums
+            .map((album) => {
             return `
             <li>${album.title}</li>
             `;
-        }).join('')}
+        })
+            .join("")}
         </ul>
         
         <div class="artist-dialog-buttons">
@@ -53,7 +53,23 @@ export default class ArtistDialog extends Dialog {
         </article>
     `);
     }
-    update(item) {
-        console.log('update');
+    async update(item) {
+        await this.renderHTML(item, `
+        
+        
+        <h2>Update Artist</h2>
+
+        <form class="update-artist-form form">
+            <div class="update-form-content">
+                <label for="name"></label>
+                 <input type=text name="name" id="name" value="${item.name}">
+
+
+            </div>
+
+
+        </form>
+        `);
+        console.log("update");
     }
 }
