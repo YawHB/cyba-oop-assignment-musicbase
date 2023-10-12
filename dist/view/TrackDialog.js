@@ -1,4 +1,5 @@
 import Dialog from "./Dialog.js";
+import Track from "../model/Track.js";
 import DataHandler from "../components/dataHandler.js";
 import { trackRenders } from "../app.js";
 export default class TrackDialog extends Dialog {
@@ -26,7 +27,38 @@ export default class TrackDialog extends Dialog {
         }
     }
     async create() {
-        console.log("create track");
+        const createFormHTML = `
+        <h2>Create Track</h2>
+        <form class="create-track-form">
+            <div class="create-form-content">
+                <label for="trackTitle">Title</label>
+                <input type=text name="trackTitle" id="trackTitle" value="">
+                <label for="duration">Duration</label>
+                <input type=text name="duration" id="duration" value="">
+                <label for="artists">Artist</label>
+                <input type=text name="artists" id="artists" value="">
+                <label for="albums">Album</label>
+                <input type=text name="albums" id="albums" value="">
+            </div>
+            <input type="submit" value="Submit track" />
+        </form>
+        `;
+        await this.renderHTML(createFormHTML);
+        Dialog.dialogContent.querySelector(".create-track-form")?.addEventListener("submit", async (event) => {
+            event.preventDefault();
+            const form = event.target;
+            const title = form.trackTitle.value;
+            const duration = parseInt(form.duration.value);
+            const artists = form.artists.value;
+            const albums = form.albums.value;
+            const newTrackId = await DataHandler.postData("tracks", { title, duration, artists, albums });
+            const instancedTrack = new Track(title, duration, artists, albums, newTrackId);
+            DataHandler.tracksArr.push(instancedTrack);
+            Dialog.close();
+            trackRenders.setList(DataHandler.tracksArr);
+            trackRenders.clearList();
+            trackRenders.renderList();
+        });
     }
     async delete(item) {
         try {
@@ -66,6 +98,38 @@ export default class TrackDialog extends Dialog {
         }
     }
     async update(item) {
-        console.log("update track");
+        const updateFormHTML = `
+        <h2>Update Track</h2>
+        <form class="update-track-form" id="trackId-${item.getId()}">
+            <div class="update-form-content">
+                <label for="trackTitle">Title</label>
+                <input type=text name="trackTitle" id="trackTitle" value="${item.title}">
+                <label for="duration">Duration</label>
+                <input type=text name="duration" id="duration" value="${item.duration}">
+                <label for="artists">Artist</label>
+                <input type=text name="artists" id="artists" value="${item.artists}">
+                <label for="albums">Album</label>
+                <input type=text name="albums" id="albums" value="${item.albums}"> 
+            </div>
+            <input type="submit" value="Submit track" />
+        </form>
+        `;
+        await this.renderHTML(updateFormHTML);
+        Dialog.dialogContent.querySelector(`#trackId-${item.getId()}`)?.addEventListener("submit", async (event) => {
+            event.preventDefault();
+            const form = event.target;
+            const title = form.trackTitle.value;
+            const duration = parseInt(form.duration.value);
+            const artists = form.artists.value;
+            const albums = form.albums.value;
+            const response = await DataHandler.putData("tracks", item.getId(), { title, duration, artists, albums });
+            console.log(response);
+            const index = DataHandler.tracksArr.indexOf(item);
+            DataHandler.tracksArr[index] = new Track(title, duration, artists, albums, item.getId());
+            Dialog.close();
+            trackRenders.setList(DataHandler.tracksArr);
+            trackRenders.clearList();
+            trackRenders.renderList();
+        });
     }
 }
