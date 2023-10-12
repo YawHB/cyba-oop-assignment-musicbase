@@ -2,11 +2,12 @@ import Dialog from "./Dialog.js";
 import Track from "../model/Track.js";
 import DataHandler from "../components/dataHandler.js";
 import { trackRenders } from "../app.js";
+import Artist from "../model/Artist.js";
 export default class TrackDialog extends Dialog {
     async renderHTML(html) {
         Dialog.clear();
         Dialog.open();
-        Dialog.dialogContent.insertAdjacentHTML('beforeend', html);
+        Dialog.dialogContent.insertAdjacentHTML("beforeend", html);
     }
     async postRender(item) {
         try {
@@ -44,7 +45,9 @@ export default class TrackDialog extends Dialog {
         </form>
         `;
         await this.renderHTML(createFormHTML);
-        Dialog.dialogContent.querySelector(".create-track-form")?.addEventListener("submit", async (event) => {
+        Dialog.dialogContent
+            .querySelector(".create-track-form")
+            ?.addEventListener("submit", async (event) => {
             event.preventDefault();
             const form = event.target;
             const title = form.trackTitle.value;
@@ -107,15 +110,24 @@ export default class TrackDialog extends Dialog {
                 <label for="duration">Duration</label>
                 <input type=text name="duration" id="duration" value="${item.duration}">
                 <label for="artists">Artist</label>
-                <input type=text name="artists" id="artists" value="${item.artists}">
+                <select name="artists" id="artist-select">
+                // Insert artists from global array
+                </select>
                 <label for="albums">Album</label>
-                <input type=text name="albums" id="albums" value="${item.albums}"> 
+                <select name="albums" id="album-select">
+                // Insert albums from global array
+                </select>
+
             </div>
             <input type="submit" value="Submit track" />
         </form>
         `;
         await this.renderHTML(updateFormHTML);
-        Dialog.dialogContent.querySelector(`#trackId-${item.getId()}`)?.addEventListener("submit", async (event) => {
+        this.populateDropdown(DataHandler.artistsArr);
+        this.populateDropdown(DataHandler.albumsArr);
+        Dialog.dialogContent
+            .querySelector(`#trackId-${item.getId()}`)
+            ?.addEventListener("submit", async (event) => {
             event.preventDefault();
             const form = event.target;
             const title = form.trackTitle.value;
@@ -130,6 +142,27 @@ export default class TrackDialog extends Dialog {
             trackRenders.setList(DataHandler.tracksArr);
             trackRenders.clearList();
             trackRenders.renderList();
+        });
+    }
+    populateDropdown(globalArr) {
+        let type;
+        let html;
+        globalArr.every(item => item instanceof Artist)
+            ? (type = "artist")
+            : (type = "album");
+        const dropdown = document.querySelector(`#${type}-select`);
+        globalArr.map(item => {
+            if (type === "artist") {
+                html = `
+            <option value="${item.name.toLowerCase()}">${item.name}</option>
+            `;
+            }
+            else {
+                html = `
+            <option value="${item.title.toLowerCase()}">${item.title}</option>
+            `;
+            }
+            dropdown?.insertAdjacentHTML("beforeend", html);
         });
     }
 }
