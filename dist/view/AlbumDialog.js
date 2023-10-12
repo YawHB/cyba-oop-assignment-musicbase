@@ -27,7 +27,6 @@ export default class AlbumDialog extends Dialog {
         }
     }
     async create() {
-        console.log("create album");
         const createFormHTML = `
         <h2>Create Album</h2>
         
@@ -110,10 +109,8 @@ export default class AlbumDialog extends Dialog {
         }
     }
     async update(item) {
-        console.log(item);
         const updateFormHTML = `
         <h2>Update Album</h2>
-        
         <form class="update-album-form" id="albumId-${item.getId()}">
             <div class="update-form-content">
                 <label for="albumTitle">Title</label>

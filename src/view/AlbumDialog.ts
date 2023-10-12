@@ -33,7 +33,6 @@ export default class AlbumDialog extends Dialog {
     }
 
     public async create(): Promise<void> {
-        console.log("create album")
         const createFormHTML = /*html*/ `
         <h2>Create Album</h2>
         
@@ -125,10 +124,8 @@ export default class AlbumDialog extends Dialog {
     }
 
     public async update(item: Album): Promise<void> {
-        console.log(item)
         const updateFormHTML = /*html*/ `
         <h2>Update Album</h2>
-        
         <form class="update-album-form" id="albumId-${item.getId()}">
             <div class="update-form-content">
                 <label for="albumTitle">Title</label>
