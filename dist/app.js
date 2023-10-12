@@ -6,6 +6,8 @@ import ListRenderer from "./view/ListRenderer.js";
 import TrackRenderer from "./view/TrackRenderer.js";
 import Dialog from "./view/Dialog.js";
 import ArtistDialog from "./view/ArtistDialog.js";
+import AlbumDialog from "./view/AlbumDialog.js";
+import TrackDialog from "./view/TrackDialog.js";
 window.addEventListener("load", app);
 let artistRenders, albumRenders, trackRenders;
 async function app() {
@@ -19,12 +21,20 @@ async function app() {
     artistRenders.renderList();
     albumRenders.renderList();
     trackRenders.renderList();
-    initiateEventListeners();
+    await initiateEventListeners();
 }
-function initiateEventListeners() {
-    document.querySelector("#btn-close-dialog-frame")?.addEventListener("click", () => Dialog.close());
-    document.querySelector("#btn-create-artist")?.addEventListener("click", () => {
+async function initiateEventListeners() {
+    document.querySelector(".create-dropdown-btn")?.addEventListener("click", showDropdownContent);
+    window.addEventListener("click", closeDropdown);
+    document.querySelector("#close-dialog-frame-btn")?.addEventListener("click", () => Dialog.close());
+    document.querySelector("#create-artist-btn")?.addEventListener("click", () => {
         new ArtistDialog().create();
+    });
+    document.querySelector("#create-album-btn")?.addEventListener("click", () => {
+        new AlbumDialog().create();
+    });
+    document.querySelector("#create-track-btn")?.addEventListener("click", () => {
+        new TrackDialog().create();
     });
     const searchbar = document.querySelector("#searchbar");
     searchbar?.addEventListener("input", () => {
@@ -33,5 +43,20 @@ function initiateEventListeners() {
         albumRenders.setSearchValue(searchValue);
         trackRenders.setSearchValue(searchValue);
     });
+}
+function showDropdownContent(event) {
+    const target = event.target;
+    const dropdownContent = target.nextElementSibling;
+    if (dropdownContent) {
+        dropdownContent.classList.toggle("visible");
+    }
+}
+function closeDropdown(event) {
+    const target = event.target;
+    const isInsideDropdown = target.closest(".create-dropdown");
+    if (!isInsideDropdown) {
+        const dropdownContent = document.querySelector(".create-dropdown-content");
+        dropdownContent.classList.remove("visible");
+    }
 }
 export { artistRenders, albumRenders, trackRenders };

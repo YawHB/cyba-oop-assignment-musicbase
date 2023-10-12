@@ -14,7 +14,8 @@ export default class TrackDialog extends Dialog {
     protected postRender(): void {
     }
 
-    create(item: Artist | Album | Track): void {
+    create(): void {
+        console.log("create track")
     }
 
     delete(item: Artist | Album | Track): void {

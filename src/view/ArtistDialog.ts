@@ -1,10 +1,7 @@
 import Dialog from "./Dialog.js";
 import Artist from "../model/Artist.js";
 import Album from "../model/Album.js";
-import Track from "../model/Track.js";
 import DataHandler from "../components/dataHandler.js";
-import ArtistRenderer from "./ArtistRenderer.js";
-import ListRenderer from "./ListRenderer.js";
 import { artistRenders } from "../app.js";
 
 export default class ArtistDialog extends Dialog {
@@ -26,8 +23,7 @@ export default class ArtistDialog extends Dialog {
         });
     }
 
-    create(): void {
-        console.log("CREATE");
+    async create(): Promise<void> {
 
         const html = /*html*/ `
         <h2>Create Artist</h2>
@@ -44,7 +40,7 @@ export default class ArtistDialog extends Dialog {
         </form>
         `;
 
-        this.renderHTML(html);
+        await this.renderHTML(html);
         Dialog.dialogContent.querySelector(".create-artist-form")?.addEventListener("submit", async (event: Event) => {
             event.preventDefault();
             const form = event.target as HTMLFormElement;

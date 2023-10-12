@@ -163,7 +163,7 @@ class DataHandler {
         }
     }
 
-    static async getAllAlbumData(id: string): Promise<any> {
+    static async getAllAlbumData(id: number): Promise<any> {
         try {
             const response = await fetch(`${this.apiURL}/albums/${id}/tracks`);
             if (!response.ok) {

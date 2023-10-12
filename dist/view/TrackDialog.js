@@ -7,7 +7,8 @@ export default class TrackDialog extends Dialog {
     }
     postRender() {
     }
-    create(item) {
+    create() {
+        console.log("create track");
     }
     delete(item) {
     }

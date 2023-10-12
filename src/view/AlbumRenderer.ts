@@ -24,9 +24,8 @@ export default class AlbumRenderer extends ItemRenderer {
         `;
     }
 
-    public postRender(lastElementChild: Element): void {
+    public async postRender(lastElementChild: Element): Promise<void> {
         lastElementChild.addEventListener("click", () => {
-            // TODO RENDER DIALOG CONTENT
             new AlbumDialog().details(this.item);
         });
     }
