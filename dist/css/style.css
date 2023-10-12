@@ -326,10 +326,12 @@ header .search-container select:focus {
     box-shadow: var(--shadow);
     z-index: 1;
     opacity: 0; /* Initially hidden */
+    pointer-events: none; /* Initially not clickable */
 }
 
 .create-dropdown-content.visible {
     opacity: 1; /* Visible when the "visible" class is added */
+    pointer-events: auto; /* clickable when visible */
 }
 
 .create-dropdown-content button {
