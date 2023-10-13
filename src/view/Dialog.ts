@@ -23,7 +23,11 @@ export default abstract class Dialog {
         this.dialogContent.innerHTML = "";
     }
 
-    protected abstract renderHTML(html: string): void;
+    protected async renderHTML(html: string): Promise<void> {
+        Dialog.clear()
+        Dialog.open()
+        Dialog.dialogContent.insertAdjacentHTML('beforeend', html)
+    }
 
     protected abstract postRender(item: Artist | Album | Track): void;
 

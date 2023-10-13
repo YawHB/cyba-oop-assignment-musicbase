@@ -3,11 +3,6 @@ import Album from "../model/Album.js";
 import DataHandler from "../components/dataHandler.js";
 import { albumRenders } from "../app.js";
 export default class AlbumDialog extends Dialog {
-    async renderHTML(html) {
-        Dialog.clear();
-        Dialog.open();
-        Dialog.dialogContent.insertAdjacentHTML('beforeend', html);
-    }
     async postRender(item) {
         try {
             const updateButton = document.querySelector(".album-dialog-update-button");

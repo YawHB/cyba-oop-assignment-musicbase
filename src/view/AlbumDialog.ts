@@ -6,12 +6,6 @@ import {albumRenders} from "../app.js";
 
 export default class AlbumDialog extends Dialog {
 
-    protected async renderHTML(html: string): Promise<void> {
-        Dialog.clear()
-        Dialog.open()
-        Dialog.dialogContent.insertAdjacentHTML('beforeend', html)
-    }
-
     protected async postRender(item: Album): Promise<void> {
         try {
             const updateButton = document.querySelector(".album-dialog-update-button") as HTMLButtonElement;

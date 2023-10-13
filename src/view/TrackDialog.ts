@@ -6,11 +6,6 @@ import Artist from "../model/Artist.js";
 import Album from "../model/Album.js";
 
 export default class TrackDialog extends Dialog {
-    protected async renderHTML(html: string): Promise<void> {
-        Dialog.clear();
-        Dialog.open();
-        Dialog.dialogContent.insertAdjacentHTML("beforeend", html);
-    }
 
     protected async postRender(item: Track): Promise<void> {
         try {

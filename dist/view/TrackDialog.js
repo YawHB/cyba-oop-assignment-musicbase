@@ -4,11 +4,6 @@ import DataHandler from "../components/dataHandler.js";
 import { trackRenders } from "../app.js";
 import Artist from "../model/Artist.js";
 export default class TrackDialog extends Dialog {
-    async renderHTML(html) {
-        Dialog.clear();
-        Dialog.open();
-        Dialog.dialogContent.insertAdjacentHTML("beforeend", html);
-    }
     async postRender(item) {
         try {
             const updateButton = document.querySelector(".track-dialog-update-button");

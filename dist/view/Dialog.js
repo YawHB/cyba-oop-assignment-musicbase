@@ -10,4 +10,9 @@ export default class Dialog {
     static clear() {
         this.dialogContent.innerHTML = "";
     }
+    async renderHTML(html) {
+        Dialog.clear();
+        Dialog.open();
+        Dialog.dialogContent.insertAdjacentHTML('beforeend', html);
+    }
 }
