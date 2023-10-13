@@ -106,6 +106,7 @@ export default class AlbumDialog extends Dialog {
             <p>Year of release: ${albumData.yearOfRelease}</p>
             <h3>Tracks</h3>
             <ul>
+            //TODO: tracks skal instanceres, hvilket giver mulighed for at tilgå .getDuration() method, der konverterer dens time-attribut fra number til string (MM:SS)
             ${albumData.tracks.map((track: Track): string => /*html*/ `<li>${track.title}</li>`).join("")}
             </ul>
         </div>
