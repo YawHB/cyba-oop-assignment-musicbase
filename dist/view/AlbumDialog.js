@@ -3,7 +3,7 @@ import Album from "../model/Album.js";
 import DataHandler from "../components/dataHandler.js";
 import { albumRenders } from "../app.js";
 export default class AlbumDialog extends Dialog {
-    async postRender(item) {
+
         try {
             const updateButton = document.querySelector(".album-dialog-update-button");
             const deleteButton = document.querySelector(".album-dialog-delete-button");
@@ -40,7 +40,9 @@ export default class AlbumDialog extends Dialog {
         </form>
         `;
         await this.renderHTML(createFormHTML);
-        Dialog.dialogContent.querySelector(".create-album-form")?.addEventListener("submit", async (event) => {
+        Dialog.dialogContent
+            .querySelector(".create-album-form")
+            ?.addEventListener("submit", async (event) => {
             event.preventDefault();
             const form = event.target;
             const title = form.albumTitle.value;
@@ -73,19 +75,21 @@ export default class AlbumDialog extends Dialog {
             if (!albumData) {
                 throw new Error("No album data found");
             }
+            console.log(albumData.tracks);
             const html = `
         <article class="album-details">
         <h2>${albumData.title}</h2>
         <div class="album-details-image">
             <img src="${albumData.image}" alt="${albumData.title}">
-        </div>
-        <div class="album-details-content">
-            <h3>Album Details</h3>
-            <p>Artist: ${albumData.artists.length === 1 ? albumData.artists[0].name : albumData.artists.map((item) => ` ${item.name}`)}</p>
-            <p>Year of release: ${albumData.yearOfRelease}</p>
+a.yearOfRelease}</p>
             <h3>Tracks</h3>
             <ul>
-            ${albumData.tracks.map((track) => `<li>${track.title}</li>`).join("")}
+            ${albumData.tracks
+                .map((track) => {
+                const foundTrack = DataHandler.tracksArr.find((instanciatedTrack) => instanciatedTrack.getId() === track.id);
+                return `<li>${foundTrack?.title} - ${foundTrack?.getDuration()} - ${foundTrack?.artists}</li>`;
+            })
+                .join("")}
             </ul>
         </div>
         <div class="album-dialog-buttons">
@@ -123,7 +127,9 @@ export default class AlbumDialog extends Dialog {
         </form>
         `;
         await this.renderHTML(updateFormHTML);
-        Dialog.dialogContent.querySelector(".update-album-form")?.addEventListener("submit", async (event) => {
+        Dialog.dialogContent
+            .querySelector(".update-album-form")
+            ?.addEventListener("submit", async (event) => {
             event.preventDefault();
             const form = event.target;
             const title = form.albumTitle.value;
@@ -132,13 +138,7 @@ export default class AlbumDialog extends Dialog {
             let artist;
             if (form.artist.value.includes(", ")) {
                 artist = form.artist.value.split(", ");
-            }
-            else {
-                artist = form.artist.value;
-            }
-            const albumId = Number(form.id.split("-")[1]);
-            console.log(artist);
-            await DataHandler.putData("albums", albumId, { title, image, yearOfRelease, artist });
+
             const index = DataHandler.albumsArr.findIndex((album) => album.getId() === albumId);
             DataHandler.albumsArr[index] = new Album(title, yearOfRelease, image, albumId);
             Dialog.close();
