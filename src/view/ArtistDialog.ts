@@ -53,7 +53,6 @@ export default class ArtistDialog extends Dialog {
 
             Dialog.close();
             artistRenders.setList(DataHandler.artistsArr);
-            artistRenders.clearList();
             artistRenders.renderList();
         });
     }
@@ -66,7 +65,6 @@ export default class ArtistDialog extends Dialog {
         Dialog.close();
         // render list again
         artistRenders.setList(DataHandler.artistsArr);
-        artistRenders.clearList();
         artistRenders.renderList();
     }
 
@@ -137,7 +135,6 @@ export default class ArtistDialog extends Dialog {
 
                 Dialog.close();
                 artistRenders.setList(DataHandler.artistsArr);
-                artistRenders.clearList();
                 artistRenders.renderList();
             }
         });

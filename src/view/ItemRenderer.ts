@@ -2,7 +2,7 @@ export default abstract class ItemRenderer {
     [key: string]: any;
     public item: any;
 
-    constructor() {}
+    protected constructor() {}
 
     public abstract renderHTML(): string;
 

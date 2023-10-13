@@ -76,7 +76,6 @@ export default class TrackDialog extends Dialog {
 
                 Dialog.close();
                 trackRenders.setList(DataHandler.tracksArr);
-                trackRenders.clearList();
                 trackRenders.renderList();
             });
     }
@@ -89,7 +88,6 @@ export default class TrackDialog extends Dialog {
             Dialog.close();
             // render tracks list again
             trackRenders.setList(DataHandler.tracksArr);
-            trackRenders.clearList();
             trackRenders.renderList();
         } catch (error) {
             console.error((error as Error).message);
@@ -97,6 +95,7 @@ export default class TrackDialog extends Dialog {
     }
 
     public async details(item: Track): Promise<void> {
+        console.log(item)
         try {
             const html = /*html*/ `
                 <article class="track-details">
@@ -135,12 +134,12 @@ export default class TrackDialog extends Dialog {
                     item.duration
                 }">
                 <label for="artists">Artist</label>
-                <select name="artists" id="artist-select">
-                // Insert artists from global array
+                <select multiple name="artists" id="artist-select">
+                <!-- Insert artists from global array --> 
                 </select>
                 <label for="albums">Album</label>
-                <select name="albums" id="album-select">
-                // Insert albums from global array
+                <select multiple name="albums" id="album-select">
+                <!-- Insert albums from global array -->
                 </select>
 
             </div>
@@ -181,7 +180,6 @@ export default class TrackDialog extends Dialog {
 
                 Dialog.close();
                 trackRenders.setList(DataHandler.tracksArr);
-                trackRenders.clearList();
                 trackRenders.renderList();
             });
     }

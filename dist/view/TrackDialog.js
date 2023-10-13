@@ -54,7 +54,6 @@ export default class TrackDialog extends Dialog {
             DataHandler.tracksArr.push(instancedTrack);
             Dialog.close();
             trackRenders.setList(DataHandler.tracksArr);
-            trackRenders.clearList();
             trackRenders.renderList();
         });
     }
@@ -65,7 +64,6 @@ export default class TrackDialog extends Dialog {
             DataHandler.tracksArr.splice(index, 1);
             Dialog.close();
             trackRenders.setList(DataHandler.tracksArr);
-            trackRenders.clearList();
             trackRenders.renderList();
         }
         catch (error) {
@@ -73,6 +71,7 @@ export default class TrackDialog extends Dialog {
         }
     }
     async details(item) {
+        console.log(item);
         try {
             const html = `
                 <article class="track-details">
@@ -105,12 +104,12 @@ export default class TrackDialog extends Dialog {
                 <label for="duration">Duration</label>
                 <input type=text name="duration" id="duration" value="${item.duration}">
                 <label for="artists">Artist</label>
-                <select name="artists" id="artist-select">
-                // Insert artists from global array
+                <select multiple name="artists" id="artist-select">
+                <!-- Insert artists from global array --> 
                 </select>
                 <label for="albums">Album</label>
-                <select name="albums" id="album-select">
-                // Insert albums from global array
+                <select multiple name="albums" id="album-select">
+                <!-- Insert albums from global array -->
                 </select>
 
             </div>
@@ -135,7 +134,6 @@ export default class TrackDialog extends Dialog {
             DataHandler.tracksArr[index] = new Track(title, duration, artists, albums, item.getId());
             Dialog.close();
             trackRenders.setList(DataHandler.tracksArr);
-            trackRenders.clearList();
             trackRenders.renderList();
         });
     }

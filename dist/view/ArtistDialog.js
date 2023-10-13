@@ -40,7 +40,6 @@ export default class ArtistDialog extends Dialog {
             DataHandler.artistsArr.push(instancedArtist);
             Dialog.close();
             artistRenders.setList(DataHandler.artistsArr);
-            artistRenders.clearList();
             artistRenders.renderList();
         });
     }
@@ -51,7 +50,6 @@ export default class ArtistDialog extends Dialog {
         DataHandler.artistsArr.splice(index, 1);
         Dialog.close();
         artistRenders.setList(DataHandler.artistsArr);
-        artistRenders.clearList();
         artistRenders.renderList();
     }
     async details(item) {
@@ -111,7 +109,6 @@ export default class ArtistDialog extends Dialog {
                 DataHandler.artistsArr[index] = instancedArtist;
                 Dialog.close();
                 artistRenders.setList(DataHandler.artistsArr);
-                artistRenders.clearList();
                 artistRenders.renderList();
             }
         });
