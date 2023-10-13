@@ -29,7 +29,7 @@ export default abstract class Dialog {
         Dialog.dialogContent.insertAdjacentHTML('beforeend', html)
     }
 
-    protected abstract postRender(item: Artist | Album | Track): void;
+    protected abstract postRender(type: string, item?: Artist | Album | Track): void;
 
     public abstract create(item: Artist | Album | Track): void
 

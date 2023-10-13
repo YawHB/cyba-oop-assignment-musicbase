@@ -6,28 +6,30 @@ import { albumRenders } from "../app.js";
 
 export default class AlbumDialog extends Dialog {
     
-    protected async postRender(item: Album): Promise<void> {
-        try {
-            const updateButton = document.querySelector(
-                ".album-dialog-update-button"
-            ) as HTMLButtonElement;
-            const deleteButton = document.querySelector(
-                ".album-dialog-delete-button"
-            ) as HTMLButtonElement;
+    protected async postRender(type: string, item?: Album): Promise<void> {
+        
+        switch (type) {
+            case "details":
+                const updateButton = document.querySelector(".album-dialog-update-button") as HTMLButtonElement;
+                const deleteButton = document.querySelector(".album-dialog-delete-button") as HTMLButtonElement;
 
-            if (!updateButton || !deleteButton) {
-                throw new Error("No buttons found");
-            }
+                if (!updateButton || !deleteButton) {
+                    throw new Error("No buttons found");
+                }
 
-            updateButton.addEventListener("click", () => {
-                this.update(item);
-            });
-            deleteButton.addEventListener("click", () => {
-                this.delete(item);
-            });
-        } catch (error) {
-            console.error((error as Error).message);
+                updateButton.addEventListener("click", () => {
+                    this.update(item!);
+                });
+                deleteButton.addEventListener("click", () => {
+                    this.delete(item!);
+                });
+                break;
+            case "":
+                
+                break;
+            
         }
+        
     }
 
     public async create(): Promise<void> {
@@ -135,7 +137,7 @@ export default class AlbumDialog extends Dialog {
         `;
 
             await this.renderHTML(html);
-            await this.postRender(item);
+            await this.postRender("details", item);
         } catch (error) {
             console.error((error as Error).message);
         }

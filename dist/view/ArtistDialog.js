@@ -1,17 +1,38 @@
 import Dialog from "./Dialog.js";
-import Artist from "../model/Artist.js";
 import DataHandler from "../components/dataHandler.js";
-import { artistRenders } from "../app.js";
+import { createArtist, deleteArtist, updateArtist } from "../controller/artist.controller.js";
 export default class ArtistDialog extends Dialog {
-    async postRender(item) {
-        const updateButton = document.querySelector(".artist-dialog-update-button");
-        const deleteButton = document.querySelector(".artist-dialog-delete-button");
-        updateButton.addEventListener("click", () => {
-            this.update(item);
-        });
-        deleteButton.addEventListener("click", () => {
-            this.delete(item);
-        });
+    async postRender(type, item) {
+        switch (type) {
+            case "details":
+                const updateButton = document.querySelector(".artist-dialog-details-update-button");
+                const deleteButton = document.querySelector(".artist-dialog-details-delete-button");
+                updateButton.addEventListener("click", () => {
+                    this.update(item);
+                });
+                deleteButton.addEventListener("click", () => {
+                    this.delete(item);
+                });
+                break;
+            case "delete":
+                const confirmButton = document.querySelector("#artist-dialog-delete-confirm-button");
+                const cancelButton = document.querySelector("#artist-dialog-delete-cancel-button");
+                confirmButton.addEventListener("click", () => {
+                    deleteArtist(item);
+                });
+                cancelButton.addEventListener("click", () => {
+                    Dialog.clear();
+                    Dialog.close();
+                });
+                break;
+            case "create":
+                const createArtistForm = Dialog.dialogContent.querySelector(".create-artist-form");
+                createArtistForm.addEventListener("submit", createArtist);
+                break;
+            case "update":
+                const updateArtistForm = Dialog.dialogContent.querySelector(".update-artist-form");
+                updateArtistForm.addEventListener("submit", updateArtist);
+        }
     }
     async create() {
         const html = `
@@ -25,32 +46,21 @@ export default class ArtistDialog extends Dialog {
                 <input type=text name="image" id="image" value="">
             </div>
 
-            <input type="submit" value="Submit artist" />
+            <button type="submit">Submit artist</button>
         </form>
         `;
         await this.renderHTML(html);
-        Dialog.dialogContent.querySelector(".create-artist-form")?.addEventListener("submit", async (event) => {
-            event.preventDefault();
-            const form = event.target;
-            const name = form.artistName.value;
-            const image = form.image.value;
-            const newArtist = { name, image };
-            const newArtistId = await DataHandler.postData("artists", newArtist);
-            const instancedArtist = new Artist(newArtist.name, newArtist.image, newArtistId);
-            DataHandler.artistsArr.push(instancedArtist);
-            Dialog.close();
-            artistRenders.setList(DataHandler.artistsArr);
-            artistRenders.renderList();
-        });
+        await this.postRender("create");
     }
     async delete(item) {
-        await DataHandler.deleteData("artists", item.getId());
-        const index = DataHandler.artistsArr.indexOf(item);
-        console.log(index);
-        DataHandler.artistsArr.splice(index, 1);
-        Dialog.close();
-        artistRenders.setList(DataHandler.artistsArr);
-        artistRenders.renderList();
+        const html = `
+        <h2>Are you sure you want to delete ${item.name}?</h2>
+
+        <button id="artist-dialog-delete-confirm-button">Yes</button>
+        <button id="artist-dialog-delete-cancel-button">Cancel</button>
+        `;
+        await this.renderHTML(html);
+        await this.postRender("delete", item);
     }
     async details(item) {
         const artistAlbums = await DataHandler.getAllAlbumsByArtistId(item.getId());
@@ -69,13 +79,13 @@ export default class ArtistDialog extends Dialog {
             </ul>
         
             <div class="artist-dialog-buttons">
-                <button class="artist-dialog-update-button">Update</button>
-                <button class="artist-dialog-delete-button">Delete</button>
+                <button class="artist-dialog-details-update-button">Update</button>
+                <button class="artist-dialog-details-delete-button">Delete</button>
             </div>
         </article>
         `;
         await this.renderHTML(html);
-        await this.postRender(item);
+        await this.postRender("details", item);
     }
     async update(item) {
         console.log("update");
@@ -95,22 +105,6 @@ export default class ArtistDialog extends Dialog {
         </form>
         `;
         await this.renderHTML(html);
-        Dialog.dialogContent.querySelector(".update-artist-form")?.addEventListener("submit", async (event) => {
-            event.preventDefault();
-            const form = event.target;
-            const name = form.artistName.value;
-            const image = form.image.value;
-            const artistId = Number(form.id.split("-")[1]);
-            const updatedArtist = { name, image };
-            const response = await DataHandler.putData(`artists`, artistId, updatedArtist);
-            if (response.affectedRows > 0) {
-                const instancedArtist = new Artist(updatedArtist.name, updatedArtist.image, artistId);
-                const index = DataHandler.artistsArr.findIndex((artist) => artist.getId() === instancedArtist.getId());
-                DataHandler.artistsArr[index] = instancedArtist;
-                Dialog.close();
-                artistRenders.setList(DataHandler.artistsArr);
-                artistRenders.renderList();
-            }
-        });
+        await this.postRender("update", item);
     }
 }

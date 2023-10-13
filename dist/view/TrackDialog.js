@@ -4,22 +4,23 @@ import DataHandler from "../components/dataHandler.js";
 import { trackRenders } from "../app.js";
 import Artist from "../model/Artist.js";
 export default class TrackDialog extends Dialog {
-    async postRender(item) {
-        try {
-            const updateButton = document.querySelector(".track-dialog-update-button");
-            const deleteButton = document.querySelector(".track-dialog-delete-button");
-            if (!updateButton || !deleteButton) {
-                throw new Error("No buttons found");
-            }
-            updateButton.addEventListener("click", () => {
-                this.update(item);
-            });
-            deleteButton.addEventListener("click", () => {
-                this.delete(item);
-            });
-        }
-        catch (error) {
-            console.error(error.message);
+    async postRender(type, item) {
+        switch (type) {
+            case "details":
+                const updateButton = document.querySelector(".track-dialog-update-button");
+                const deleteButton = document.querySelector(".track-dialog-delete-button");
+                if (!updateButton || !deleteButton) {
+                    throw new Error("No buttons found");
+                }
+                updateButton.addEventListener("click", () => {
+                    this.update(item);
+                });
+                deleteButton.addEventListener("click", () => {
+                    this.delete(item);
+                });
+                break;
+            case "":
+                break;
         }
     }
     async create() {
@@ -88,7 +89,7 @@ export default class TrackDialog extends Dialog {
                 </article>
                 `;
             await this.renderHTML(html);
-            await this.postRender(item);
+            await this.postRender("details", item);
         }
         catch (error) {
             console.error(error.message);

@@ -3,22 +3,23 @@ import Album from "../model/Album.js";
 import DataHandler from "../components/dataHandler.js";
 import { albumRenders } from "../app.js";
 export default class AlbumDialog extends Dialog {
-    async postRender(item) {
-        try {
-            const updateButton = document.querySelector(".album-dialog-update-button");
-            const deleteButton = document.querySelector(".album-dialog-delete-button");
-            if (!updateButton || !deleteButton) {
-                throw new Error("No buttons found");
-            }
-            updateButton.addEventListener("click", () => {
-                this.update(item);
-            });
-            deleteButton.addEventListener("click", () => {
-                this.delete(item);
-            });
-        }
-        catch (error) {
-            console.error(error.message);
+    async postRender(type, item) {
+        switch (type) {
+            case "details":
+                const updateButton = document.querySelector(".album-dialog-update-button");
+                const deleteButton = document.querySelector(".album-dialog-delete-button");
+                if (!updateButton || !deleteButton) {
+                    throw new Error("No buttons found");
+                }
+                updateButton.addEventListener("click", () => {
+                    this.update(item);
+                });
+                deleteButton.addEventListener("click", () => {
+                    this.delete(item);
+                });
+                break;
+            case "":
+                break;
         }
     }
     async create() {
@@ -101,7 +102,7 @@ export default class AlbumDialog extends Dialog {
         </article>
         `;
             await this.renderHTML(html);
-            await this.postRender(item);
+            await this.postRender("details", item);
         }
         catch (error) {
             console.error(error.message);

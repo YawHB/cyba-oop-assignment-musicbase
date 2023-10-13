@@ -7,28 +7,30 @@ import Album from "../model/Album.js";
 
 export default class TrackDialog extends Dialog {
 
-    protected async postRender(item: Track): Promise<void> {
-        try {
-            const updateButton = document.querySelector(
-                ".track-dialog-update-button"
-            ) as HTMLButtonElement;
-            const deleteButton = document.querySelector(
-                ".track-dialog-delete-button"
-            ) as HTMLButtonElement;
+    protected async postRender(type: string, item?: Track): Promise<void> {
+        
+        switch (type) {
+            case "details":
+                const updateButton = document.querySelector(".track-dialog-update-button") as HTMLButtonElement;
+                const deleteButton = document.querySelector(".track-dialog-delete-button") as HTMLButtonElement;
 
-            if (!updateButton || !deleteButton) {
-                throw new Error("No buttons found");
-            }
+                if (!updateButton || !deleteButton) {
+                    throw new Error("No buttons found");
+                }
 
-            updateButton.addEventListener("click", () => {
-                this.update(item);
-            });
-            deleteButton.addEventListener("click", () => {
-                this.delete(item);
-            });
-        } catch (error) {
-            console.error((error as Error).message);
+                updateButton.addEventListener("click", () => {
+                    this.update(item!);
+                });
+                deleteButton.addEventListener("click", () => {
+                    this.delete(item!);
+                });
+                break;
+        
+            case "":
+
+                break;
         }
+        
     }
 
     async create(): Promise<void> {
@@ -113,7 +115,7 @@ export default class TrackDialog extends Dialog {
                 `;
 
             await this.renderHTML(html);
-            await this.postRender(item);
+            await this.postRender("details", item);
         } catch (error) {
             console.error((error as Error).message);
         }
