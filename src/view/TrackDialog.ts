@@ -115,12 +115,15 @@ export default class TrackDialog extends Dialog {
         <form class="update-track-form" id="trackid-${item.getId()}">
             <div class="update-form-content">
                 <label for="trackTitle">Title</label>
-                <input type=text name="trackTitle" id="trackTitle" value="${item.title}">
+                <input type=text name="trackTitle" id="trackTitle" value="${
+                    item.title
+                }">
                 <label for="duration">Duration</label>
                 <input type=text name="duration" id="duration" placeholder="MM:SS" value="${item.getDuration()}">
                 <label for="artists">Artist</label>
                 <select multiple name="artists" required id="artist-select">
                 <!-- Insert artists from global array --> 
+                <option value="TEST 1" selected>TEST 1</option>
                 </select>
                 <label for="albums">Album</label>
                 <select multiple name="albums" required id="album-select">
@@ -134,7 +137,7 @@ export default class TrackDialog extends Dialog {
 
         await this.renderHTML(updateFormHTML);
         this.populateDropdown(DataHandler.artistsArr);
-        this.populateDropdown(DataHandler.albumsArr);
+        // this.populateDropdown(DataHandler.albumsArr);
         await this.postRender("update", item);
     }
 
@@ -149,9 +152,17 @@ export default class TrackDialog extends Dialog {
         const dropdown = document.querySelector(`#${type}-select`);
 
         globalArr.map(item => {
+            // console.log(item.name);
+            
+            const hasArtist = DataHandler.artistsArr.some(
+                artist => item.name === artist.name
+            );
+            console.log(hasArtist);
+            
+            
             if (type === "artist") {
                 html = /*html*/ `
-            <option value="${item.name}">${item.name}</option>
+            <option value="${item.name}" ${hasArtist ? 'selected' : ''}>${item.name}</option>
             `;
             } else {
                 html = /*html*/ `

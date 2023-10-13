@@ -104,6 +104,7 @@ export default class TrackDialog extends Dialog {
                 <label for="artists">Artist</label>
                 <select multiple name="artists" required id="artist-select">
                 <!-- Insert artists from global array --> 
+                <option value="TEST 1" selected>TEST 1</option>
                 </select>
                 <label for="albums">Album</label>
                 <select multiple name="albums" required id="album-select">
@@ -115,7 +116,6 @@ export default class TrackDialog extends Dialog {
         `;
         await this.renderHTML(updateFormHTML);
         this.populateDropdown(DataHandler.artistsArr);
-        this.populateDropdown(DataHandler.albumsArr);
         await this.postRender("update", item);
     }
     populateDropdown(globalArr) {
@@ -126,9 +126,11 @@ export default class TrackDialog extends Dialog {
             : (type = "album");
         const dropdown = document.querySelector(`#${type}-select`);
         globalArr.map(item => {
+            const hasArtist = DataHandler.artistsArr.some(artist => item.name === artist.name);
+            console.log(hasArtist);
             if (type === "artist") {
                 html = `
-            <option value="${item.name}">${item.name}</option>
+            <option value="${item.name}" ${hasArtist ? 'selected' : ''}>${item.name}</option>
             `;
             }
             else {
