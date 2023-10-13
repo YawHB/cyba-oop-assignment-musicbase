@@ -56,6 +56,11 @@
     --transition-fast: all 0.1s ease-in-out;
     --transition-slow: all 0.5s ease-in-out;
     --scale-on-hover: scale(1.01);
+
+    /* cursor */
+    --cursor-pointer: pointer;
+    --cursor-default: default;
+    --cursor-not-allowed: not-allowed;
 }
 
 /* reset */
@@ -166,6 +171,7 @@ main .artists-grid .artist-card, main .albums-grid .album-card {
 main .artists-grid .artist-card:hover, main .albums-grid .album-card:hover {
     transform: var(--scale-on-hover);
     box-shadow: var(--shadow-on-hover);
+    cursor: var(--cursor-pointer);
 }
 
 main .artists-grid .artist-card-image, main .albums-grid .album-card-image {
@@ -219,6 +225,10 @@ main .tracks-table tbody tr:nth-child(odd) {
 main .tracks-table tbody tr td {
     font-size: var(--font-size-sm);
     padding: var(--spacing-sm);
+}
+
+main .tracks-table tbody tr td {
+    cursor: var(--cursor-pointer);
 }
 
 /* input fields */
@@ -326,10 +336,12 @@ header .search-container select:focus {
     box-shadow: var(--shadow);
     z-index: 1;
     opacity: 0; /* Initially hidden */
+    pointer-events: none; /* Initially not clickable */
 }
 
 .create-dropdown-content.visible {
     opacity: 1; /* Visible when the "visible" class is added */
+    pointer-events: auto; /* clickable when visible */
 }
 
 .create-dropdown-content button {
@@ -348,3 +360,92 @@ header .search-container select:focus {
     background-color: var(--color-quaternary);
 }
 
+/* dialogs */
+#main-dialog-frame {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-width: 40%;
+    max-height: 60%;
+    background-color: var(--color-tertiary);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    z-index: 100;
+}
+
+#close-dialog-frame-btn {
+    height: 2em;
+    width: 2em;
+    float: right;
+    padding: 0.2rem;
+    cursor: var(--cursor-pointer);
+}
+
+#dialog-frame-content {
+    padding: var(--spacing-base);
+}
+
+/* forms */
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+form input[type="text"], form input[type="number"], form input[type="date"], form input[type="email"], form input[type="password"], form select, form textarea {
+    width: 100%;
+    height: 2.25em;
+    padding: var(--spacing-sm);
+    border: var(--border-solid);
+    border-radius: var(--border-radius-sm);
+    font-size: var(--font-size-base);
+    transition: var(--transition);
+}
+
+form input[type="date"] {
+    height: 3em;
+}
+
+form input[type="text"]:focus, form input[type="number"]:focus, form input[type="date"]:focus, form input[type="email"]:focus, form input[type="password"]:focus, form select:focus, form textarea:focus {
+    outline: none;
+    border: var(--border-solid);
+    box-shadow: var(--shadow);
+}
+
+form button[type="submit"] {
+    width: 100%;
+    height: 2.25em;
+    margin: var(--spacing-base) 0 0 0;
+    padding: var(--spacing-sm);
+    border: var(--border-solid);
+    background: var(--color-primary);
+    border-radius: var(--border-radius-sm);
+    font-size: var(--font-size-base);
+    transition: var(--transition);
+}
+
+form button[type="submit"]:hover {
+    background: var(--color-secondary);
+    box-shadow: var(--shadow);
+}
+
+form button[type="submit"]:focus {
+    outline: none;
+    border: var(--border-solid);
+    box-shadow: var(--shadow);
+}
+
+form button[type="submit"]:disabled {
+    background: var(--color-secondary);
+    box-shadow: none;
+    cursor: not-allowed;
+}
+
+form label {
+    width: 100%;
+    margin-top: var(--spacing-base);
+    font-size: var(--font-size-base);
+
+}
+
+/* button */

@@ -5,11 +5,6 @@ import DataHandler from "../components/dataHandler.js";
 import { artistRenders } from "../app.js";
 
 export default class ArtistDialog extends Dialog {
-    protected async renderHTML(html: string): Promise<void> {
-        Dialog.clear();
-        Dialog.open();
-        Dialog.dialogContent.insertAdjacentHTML("beforeend", html);
-    }
 
     protected async postRender(item: Artist): Promise<void> {
         const updateButton = document.querySelector(".artist-dialog-update-button") as HTMLButtonElement;
@@ -58,7 +53,6 @@ export default class ArtistDialog extends Dialog {
 
             Dialog.close();
             artistRenders.setList(DataHandler.artistsArr);
-            artistRenders.clearList();
             artistRenders.renderList();
         });
     }
@@ -71,7 +65,6 @@ export default class ArtistDialog extends Dialog {
         Dialog.close();
         // render list again
         artistRenders.setList(DataHandler.artistsArr);
-        artistRenders.clearList();
         artistRenders.renderList();
     }
 
@@ -142,7 +135,6 @@ export default class ArtistDialog extends Dialog {
 
                 Dialog.close();
                 artistRenders.setList(DataHandler.artistsArr);
-                artistRenders.clearList();
                 artistRenders.renderList();
             }
         });

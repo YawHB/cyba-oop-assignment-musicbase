@@ -3,12 +3,7 @@ import Album from "../model/Album.js";
 import DataHandler from "../components/dataHandler.js";
 import { albumRenders } from "../app.js";
 export default class AlbumDialog extends Dialog {
-    async renderHTML(html) {
-        Dialog.clear();
-        Dialog.open();
-        Dialog.dialogContent.insertAdjacentHTML("beforeend", html);
-    }
-    async postRender(item) {
+
         try {
             const updateButton = document.querySelector(".album-dialog-update-button");
             const deleteButton = document.querySelector(".album-dialog-delete-button");
@@ -27,22 +22,21 @@ export default class AlbumDialog extends Dialog {
         }
     }
     async create() {
-        console.log("create album");
         const createFormHTML = `
         <h2>Create Album</h2>
         
         <form class="create-album-form">
             <div class="create-form-content">
                 <label for="albumTitle">Title</label>
-                <input type=text name="albumTitle" id="albumTitle" value="">
+                <input type=text name="albumTitle" id="albumTitle" required>
                 <label for="image">Image</label>
-                <input type=text name="image" id="image" value="">
+                <input type=text name="image" id="image" required>
                 <label for="yearOfRelease">Year of release</label>
-                <input type=text name="yearOfRelease" id="yearOfRelease" value="">
+                <input type=text name="yearOfRelease" id="yearOfRelease" required>
                 <label for="artist">Artist</label>
-                <input type=text name="artist" id="artist" value="">
+                <input type=text name="artist" id="artist" required>
+                <button type="submit">Submit album</button>
             </div>
-            <input type="submit" value="Submit album" />
         </form>
         `;
         await this.renderHTML(createFormHTML);
@@ -59,7 +53,6 @@ export default class AlbumDialog extends Dialog {
             DataHandler.albumsArr.push(new Album(title, yearOfRelease, image, newAlbumId));
             Dialog.close();
             albumRenders.setList(DataHandler.albumsArr);
-            albumRenders.clearList();
             albumRenders.renderList();
         });
     }
@@ -70,7 +63,6 @@ export default class AlbumDialog extends Dialog {
             DataHandler.albumsArr.splice(index, 1);
             Dialog.close();
             albumRenders.setList(DataHandler.albumsArr);
-            albumRenders.clearList();
             albumRenders.renderList();
         }
         catch (error) {
@@ -89,13 +81,7 @@ export default class AlbumDialog extends Dialog {
         <h2>${albumData.title}</h2>
         <div class="album-details-image">
             <img src="${albumData.image}" alt="${albumData.title}">
-        </div>
-        <div class="album-details-content">
-            <h3>Album Details</h3>
-            <p>Artist: ${albumData.artists.length === 1
-                ? albumData.artists[0].name
-                : albumData.artists.join(", ").name}</p>
-            <p>Year of release: ${albumData.yearOfRelease}</p>
+a.yearOfRelease}</p>
             <h3>Tracks</h3>
             <ul>
             ${albumData.tracks
@@ -120,22 +106,24 @@ export default class AlbumDialog extends Dialog {
         }
     }
     async update(item) {
-        console.log(item);
+        const albumData = await DataHandler.getAllAlbumData(item.getId());
+        if (!albumData) {
+            throw new Error("No album data found");
+        }
         const updateFormHTML = `
         <h2>Update Album</h2>
-        
         <form class="update-album-form" id="albumId-${item.getId()}">
             <div class="update-form-content">
                 <label for="albumTitle">Title</label>
-                <input type=text name="albumTitle" id="albumTitle" value="${item.title}">
+                <input type=text name="albumTitle" id="albumTitle" value="${albumData.title}">
                 <label for="image">Image</label>
-                <input type=text name="image" id="image" value="${item.image}">
+                <input type=text name="image" id="image" value="${albumData.image}">
                 <label for="yearOfRelease">Year of release</label>
-                 <input type=text name="yearOfRelease" id="yearOfRelease" value="${item.yearOfRelease}">
-                <!-- <label for="artist">Artist</label> 
-                <input type=text name="artist" id="artist" value="${item.artist}"> -->
+                <input type=text name="yearOfRelease" id="yearOfRelease" value="${albumData.yearOfRelease}">
+                <label for="artist">Artist</label> 
+                <input type=text name="artist" id="artist" value="${albumData.artists.length === 1 ? albumData.artists[0].name : albumData.artists.join(", ").name}">
+                <button type="submit">Update album</button>
             </div>
-            <input type="submit" value="Submit album" />
         </form>
         `;
         await this.renderHTML(updateFormHTML);
@@ -147,17 +135,14 @@ export default class AlbumDialog extends Dialog {
             const title = form.albumTitle.value;
             const image = form.image.value;
             const yearOfRelease = parseInt(form.yearOfRelease.value);
-            const albumId = Number(form.id.split("-")[1]);
-            await DataHandler.putData("albums", albumId, {
-                title,
-                image,
-                yearOfRelease,
-            });
+            let artist;
+            if (form.artist.value.includes(", ")) {
+                artist = form.artist.value.split(", ");
+
             const index = DataHandler.albumsArr.findIndex((album) => album.getId() === albumId);
             DataHandler.albumsArr[index] = new Album(title, yearOfRelease, image, albumId);
             Dialog.close();
             albumRenders.setList(DataHandler.albumsArr);
-            albumRenders.clearList();
             albumRenders.renderList();
         });
     }
