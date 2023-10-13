@@ -1,6 +1,5 @@
 import Dialog from "./Dialog.js";
 import DataHandler from "../components/dataHandler.js";
-import Artist from "../model/Artist.js";
 import { createTrack, deleteTrack, updateTrack } from "../controller/track.controller.js";
 export default class TrackDialog extends Dialog {
     async postRender(type, item) {
@@ -104,7 +103,6 @@ export default class TrackDialog extends Dialog {
                 <label for="artists">Artist</label>
                 <select multiple name="artists" required id="artist-select">
                 <!-- Insert artists from global array --> 
-                <option value="TEST 1" selected>TEST 1</option>
                 </select>
                 <label for="albums">Album</label>
                 <select multiple name="albums" required id="album-select">
@@ -115,27 +113,24 @@ export default class TrackDialog extends Dialog {
         </form>
         `;
         await this.renderHTML(updateFormHTML);
-        this.populateDropdown(DataHandler.artistsArr);
+        this.populateDropdown(DataHandler.artistsArr, "artist", item);
+        this.populateDropdown(DataHandler.albumsArr, "album", item);
         await this.postRender("update", item);
     }
-    populateDropdown(globalArr) {
-        let type;
+    populateDropdown(globalArr, type, track) {
         let html;
-        globalArr.every(item => item instanceof Artist)
-            ? (type = "artist")
-            : (type = "album");
-        const dropdown = document.querySelector(`#${type}-select`);
+        const dropdown = Dialog.dialogContent.querySelector(`#${type}-select`);
         globalArr.map(item => {
-            const hasArtist = DataHandler.artistsArr.some(artist => item.name === artist.name);
-            console.log(hasArtist);
             if (type === "artist") {
+                const hasArtist = track.artists.includes(item.name);
                 html = `
-            <option value="${item.name}" ${hasArtist ? 'selected' : ''}>${item.name}</option>
+            <option value="${item.name}" ${hasArtist ? "selected" : ""}>${item.name}</option>
             `;
             }
-            else {
+            if (type === "album") {
+                const hasAlbum = track.albums.includes(item.title);
                 html = `
-            <option value="${item.title}">${item.title}</option>
+            <option value="${item.title}" ${hasAlbum ? "selected" : ""}>${item.title}</option>
             `;
             }
             dropdown?.insertAdjacentHTML("beforeend", html);
