@@ -1,25 +1,41 @@
 import Dialog from "./Dialog.js";
-import Track from "../model/Track.js";
 import DataHandler from "../components/dataHandler.js";
-import { trackRenders } from "../app.js";
 import Artist from "../model/Artist.js";
+import { createTrack, deleteTrack, updateTrack } from "../controller/track.controller.js";
 export default class TrackDialog extends Dialog {
-    async postRender(item) {
-        try {
-            const updateButton = document.querySelector(".track-dialog-update-button");
-            const deleteButton = document.querySelector(".track-dialog-delete-button");
-            if (!updateButton || !deleteButton) {
-                throw new Error("No buttons found");
-            }
-            updateButton.addEventListener("click", () => {
-                this.update(item);
-            });
-            deleteButton.addEventListener("click", () => {
-                this.delete(item);
-            });
-        }
-        catch (error) {
-            console.error(error.message);
+    async postRender(type, item) {
+        switch (type) {
+            case "details":
+                const updateButton = Dialog.dialogContent.querySelector(".track-dialog-update-button");
+                const deleteButton = Dialog.dialogContent.querySelector(".track-dialog-delete-button");
+                if (!updateButton || !deleteButton) {
+                    throw new Error("No buttons found");
+                }
+                updateButton.addEventListener("click", () => {
+                    this.update(item);
+                });
+                deleteButton.addEventListener("click", () => {
+                    this.delete(item);
+                });
+                break;
+            case "create":
+                const createTrackForm = Dialog.dialogContent.querySelector(".create-track-form");
+                createTrackForm.addEventListener("submit", createTrack);
+                break;
+            case "delete":
+                const confirmButton = Dialog.dialogContent.querySelector("#track-dialog-delete-confirm-button");
+                const cancelButton = Dialog.dialogContent.querySelector("#track-dialog-delete-cancel-button");
+                confirmButton.addEventListener("click", () => {
+                    deleteTrack(item);
+                });
+                cancelButton.addEventListener("click", () => {
+                    Dialog.clear();
+                    Dialog.close();
+                });
+                break;
+            case "update":
+                const updateTrackForm = Dialog.dialogContent.querySelector(`#trackid-${item.getId()}`);
+                updateTrackForm.addEventListener("submit", updateTrack);
         }
     }
     async create() {
@@ -30,7 +46,7 @@ export default class TrackDialog extends Dialog {
                 <label for="trackTitle">Title</label>
                 <input type=text name="trackTitle" id="trackTitle" value="">
                 <label for="duration">Duration</label>
-                <input type=text name="duration" id="duration" value="">
+                <input type=text name="duration" id="duration" placeholder="MM:SS" value="">
                 <label for="artists">Artist</label>
                 <input type=text name="artists" id="artists" value="">
                 <label for="albums">Album</label>
@@ -40,35 +56,17 @@ export default class TrackDialog extends Dialog {
         </form>
         `;
         await this.renderHTML(createFormHTML);
-        Dialog.dialogContent
-            .querySelector(".create-track-form")
-            ?.addEventListener("submit", async (event) => {
-            event.preventDefault();
-            const form = event.target;
-            const title = form.trackTitle.value;
-            const duration = parseInt(form.duration.value);
-            const artists = form.artists.value;
-            const albums = form.albums.value;
-            const newTrackId = await DataHandler.postData("tracks", { title, duration, artists, albums });
-            const instancedTrack = new Track(title, duration, artists, albums, newTrackId);
-            DataHandler.tracksArr.push(instancedTrack);
-            Dialog.close();
-            trackRenders.setList(DataHandler.tracksArr);
-            trackRenders.renderList();
-        });
+        await this.postRender("create");
     }
     async delete(item) {
-        try {
-            await DataHandler.deleteData("tracks", item.getId());
-            const index = DataHandler.tracksArr.indexOf(item);
-            DataHandler.tracksArr.splice(index, 1);
-            Dialog.close();
-            trackRenders.setList(DataHandler.tracksArr);
-            trackRenders.renderList();
-        }
-        catch (error) {
-            console.error(error.message);
-        }
+        const html = `
+        <h2>Are you sure you want to delete ${item.title}?</h2>
+
+        <button id="track-dialog-delete-confirm-button">Yes</button>
+        <button id="track-dialog-delete-cancel-button">Cancel</button>
+        `;
+        await this.renderHTML(html);
+        await this.postRender("delete", item);
     }
     async details(item) {
         console.log(item);
@@ -88,7 +86,7 @@ export default class TrackDialog extends Dialog {
                 </article>
                 `;
             await this.renderHTML(html);
-            await this.postRender(item);
+            await this.postRender("details", item);
         }
         catch (error) {
             console.error(error.message);
@@ -97,21 +95,20 @@ export default class TrackDialog extends Dialog {
     async update(item) {
         const updateFormHTML = `
         <h2>Update Track</h2>
-        <form class="update-track-form" id="trackId-${item.getId()}">
+        <form class="update-track-form" id="trackid-${item.getId()}">
             <div class="update-form-content">
                 <label for="trackTitle">Title</label>
                 <input type=text name="trackTitle" id="trackTitle" value="${item.title}">
                 <label for="duration">Duration</label>
-                <input type=text name="duration" id="duration" value="${item.duration}">
+                <input type=text name="duration" id="duration" placeholder="MM:SS" value="${item.getDuration()}">
                 <label for="artists">Artist</label>
-                <select multiple name="artists" id="artist-select">
+                <select multiple name="artists" required id="artist-select">
                 <!-- Insert artists from global array --> 
                 </select>
                 <label for="albums">Album</label>
-                <select multiple name="albums" id="album-select">
+                <select multiple name="albums" required id="album-select">
                 <!-- Insert albums from global array -->
                 </select>
-
             </div>
             <input type="submit" value="Submit track" />
         </form>
@@ -119,23 +116,7 @@ export default class TrackDialog extends Dialog {
         await this.renderHTML(updateFormHTML);
         this.populateDropdown(DataHandler.artistsArr);
         this.populateDropdown(DataHandler.albumsArr);
-        Dialog.dialogContent
-            .querySelector(`#trackId-${item.getId()}`)
-            ?.addEventListener("submit", async (event) => {
-            event.preventDefault();
-            const form = event.target;
-            const title = form.trackTitle.value;
-            const duration = parseInt(form.duration.value);
-            const artists = form.artists.value;
-            const albums = form.albums.value;
-            const response = await DataHandler.putData("tracks", item.getId(), { title, duration, artists, albums });
-            console.log(response);
-            const index = DataHandler.tracksArr.indexOf(item);
-            DataHandler.tracksArr[index] = new Track(title, duration, artists, albums, item.getId());
-            Dialog.close();
-            trackRenders.setList(DataHandler.tracksArr);
-            trackRenders.renderList();
-        });
+        await this.postRender("update", item);
     }
     populateDropdown(globalArr) {
         let type;
@@ -147,12 +128,12 @@ export default class TrackDialog extends Dialog {
         globalArr.map(item => {
             if (type === "artist") {
                 html = `
-            <option value="${item.name.toLowerCase()}">${item.name}</option>
+            <option value="${item.name}">${item.name}</option>
             `;
             }
             else {
                 html = `
-            <option value="${item.title.toLowerCase()}">${item.title}</option>
+            <option value="${item.title}">${item.title}</option>
             `;
             }
             dropdown?.insertAdjacentHTML("beforeend", html);

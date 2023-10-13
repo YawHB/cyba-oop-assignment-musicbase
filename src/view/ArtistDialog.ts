@@ -3,19 +3,44 @@ import Artist from "../model/Artist.js";
 import Album from "../model/Album.js";
 import DataHandler from "../components/dataHandler.js";
 import { artistRenders } from "../app.js";
+import { createArtist, deleteArtist, updateArtist } from "../controller/artist.controller.js";
 
 export default class ArtistDialog extends Dialog {
 
-    protected async postRender(item: Artist): Promise<void> {
-        const updateButton = document.querySelector(".artist-dialog-update-button") as HTMLButtonElement;
-        const deleteButton = document.querySelector(".artist-dialog-delete-button") as HTMLButtonElement;
+    protected async postRender(type: string, item?: Artist): Promise<void> {
 
-        updateButton.addEventListener("click", () => {
-            this.update(item);
-        });
-        deleteButton.addEventListener("click", () => {
-            this.delete(item);
-        });
+        switch (type) {
+            case "details":
+                const updateButton = Dialog.dialogContent.querySelector(".artist-dialog-details-update-button") as HTMLButtonElement;
+                const deleteButton = Dialog.dialogContent.querySelector(".artist-dialog-details-delete-button") as HTMLButtonElement;
+
+                updateButton.addEventListener("click", () => {
+                    this.update(item!);
+                });
+                deleteButton.addEventListener("click", () => {
+                    this.delete(item!);
+                });
+                break;
+            case "delete":
+                const confirmButton = Dialog.dialogContent.querySelector("#artist-dialog-delete-confirm-button") as HTMLButtonElement;
+                const cancelButton = Dialog.dialogContent.querySelector("#artist-dialog-delete-cancel-button") as HTMLButtonElement;
+
+                confirmButton.addEventListener("click", () => {
+                    deleteArtist(item!)
+                });
+                cancelButton.addEventListener("click", () => {
+                    Dialog.clear()
+                    Dialog.close()
+                })
+                break;
+            case "create":
+                const createArtistForm = Dialog.dialogContent.querySelector(".create-artist-form") as HTMLFormElement;
+                createArtistForm.addEventListener("submit", createArtist)
+                break;
+            case "update":
+                const updateArtistForm = Dialog.dialogContent.querySelector(".update-artist-form") as HTMLFormElement;
+                updateArtistForm.addEventListener("submit", updateArtist);
+        }
     }
 
     async create(): Promise<void> {
@@ -31,41 +56,25 @@ export default class ArtistDialog extends Dialog {
                 <input type=text name="image" id="image" value="">
             </div>
 
-            <input type="submit" value="Submit artist" />
+            <button type="submit">Submit artist</button>
         </form>
         `;
 
         await this.renderHTML(html);
-        Dialog.dialogContent.querySelector(".create-artist-form")?.addEventListener("submit", async (event: Event) => {
-            event.preventDefault();
-            const form = event.target as HTMLFormElement;
-
-            const name: string = form.artistName.value;
-            const image: string = form.image.value;
-
-            const newArtist = { name, image };
-            //TODO KALDER EN NY METODE(newArtist)
-            const newArtistId: number = await DataHandler.postData("artists", newArtist);
-
-            const instancedArtist = new Artist(newArtist.name, newArtist.image, newArtistId);
-
-            DataHandler.artistsArr.push(instancedArtist);
-
-            Dialog.close();
-            artistRenders.setList(DataHandler.artistsArr);
-            artistRenders.renderList();
-        });
+        await this.postRender("create");
     }
 
     async delete(item: Artist): Promise<void> {
-        await DataHandler.deleteData("artists", item.getId());
-        const index: number = DataHandler.artistsArr.indexOf(item);
-        console.log(index);
-        DataHandler.artistsArr.splice(index, 1);
-        Dialog.close();
-        // render list again
-        artistRenders.setList(DataHandler.artistsArr);
-        artistRenders.renderList();
+
+        const html = /*html*/ `
+        <h2>Are you sure you want to delete ${item.name}?</h2>
+
+        <button id="artist-dialog-delete-confirm-button">Yes</button>
+        <button id="artist-dialog-delete-cancel-button">Cancel</button>
+        `;
+
+        await this.renderHTML(html);
+        await this.postRender("delete", item);
     }
 
     public async details(item: Artist): Promise<void> {
@@ -86,14 +95,14 @@ export default class ArtistDialog extends Dialog {
             </ul>
         
             <div class="artist-dialog-buttons">
-                <button class="artist-dialog-update-button">Update</button>
-                <button class="artist-dialog-delete-button">Delete</button>
+                <button class="artist-dialog-details-update-button">Update</button>
+                <button class="artist-dialog-details-delete-button">Delete</button>
             </div>
         </article>
         `;
 
         await this.renderHTML(html);
-        await this.postRender(item);
+        await this.postRender("details", item);
     }
 
     async update(item: Artist): Promise<void> {
@@ -115,28 +124,6 @@ export default class ArtistDialog extends Dialog {
         `;
 
         await this.renderHTML(html);
-
-        Dialog.dialogContent.querySelector(".update-artist-form")?.addEventListener("submit", async (event: Event) => {
-            event.preventDefault();
-            const form = event.target as HTMLFormElement;
-
-            const name: string = form.artistName.value;
-            const image: string = form.image.value;
-            const artistId = Number(form.id.split("-")[1]);
-
-            const updatedArtist = { name, image };
-
-            const response = await DataHandler.putData(`artists`, artistId, updatedArtist);
-
-            if (response.affectedRows > 0) {
-                const instancedArtist = new Artist(updatedArtist.name, updatedArtist.image, artistId);
-                const index = DataHandler.artistsArr.findIndex((artist) => artist.getId() === instancedArtist.getId());
-                DataHandler.artistsArr[index] = instancedArtist;
-
-                Dialog.close();
-                artistRenders.setList(DataHandler.artistsArr);
-                artistRenders.renderList();
-            }
-        });
+        await this.postRender("update");
     }
 }

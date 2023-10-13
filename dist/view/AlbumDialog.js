@@ -1,24 +1,41 @@
 import Dialog from "./Dialog.js";
-import Album from "../model/Album.js";
 import DataHandler from "../components/dataHandler.js";
-import { albumRenders } from "../app.js";
+import { createAlbum, deleteAlbum, updateAlbum } from "../controller/album.controller.js";
 export default class AlbumDialog extends Dialog {
-    async postRender(item) {
-        try {
-            const updateButton = document.querySelector(".album-dialog-update-button");
-            const deleteButton = document.querySelector(".album-dialog-delete-button");
-            if (!updateButton || !deleteButton) {
-                throw new Error("No buttons found");
-            }
-            updateButton.addEventListener("click", () => {
-                this.update(item);
-            });
-            deleteButton.addEventListener("click", () => {
-                this.delete(item);
-            });
-        }
-        catch (error) {
-            console.error(error.message);
+    async postRender(type, item) {
+        switch (type) {
+            case "details":
+                const updateButton = Dialog.dialogContent.querySelector(".album-dialog-update-button");
+                const deleteButton = Dialog.dialogContent.querySelector(".album-dialog-delete-button");
+                if (!updateButton || !deleteButton) {
+                    throw new Error("No buttons found");
+                }
+                updateButton.addEventListener("click", () => {
+                    this.update(item);
+                });
+                deleteButton.addEventListener("click", () => {
+                    this.delete(item);
+                });
+                break;
+            case "create":
+                const createAlbumForm = Dialog.dialogContent.querySelector(".create-album-form");
+                createAlbumForm.addEventListener("submit", createAlbum);
+                break;
+            case "delete":
+                const confirmButton = Dialog.dialogContent.querySelector("#album-dialog-delete-confirm-button");
+                const cancelButton = Dialog.dialogContent.querySelector("#album-dialog-delete-cancel-button");
+                confirmButton.addEventListener("click", () => {
+                    deleteAlbum(item);
+                });
+                cancelButton.addEventListener("click", () => {
+                    Dialog.clear();
+                    Dialog.close();
+                });
+                break;
+            case "update":
+                const updateAlbumForm = Dialog.dialogContent.querySelector(".update-album-form");
+                updateAlbumForm.addEventListener("submit", updateAlbum);
+                break;
         }
     }
     async create() {
@@ -40,32 +57,17 @@ export default class AlbumDialog extends Dialog {
         </form>
         `;
         await this.renderHTML(createFormHTML);
-        Dialog.dialogContent.querySelector(".create-album-form")?.addEventListener("submit", async (event) => {
-            event.preventDefault();
-            const form = event.target;
-            const title = form.albumTitle.value;
-            const image = form.image.value;
-            const yearOfRelease = parseInt(form.yearOfRelease.value);
-            const artist = form.artist.value;
-            const newAlbumId = await DataHandler.postData("albums", { title, image, yearOfRelease, artist });
-            DataHandler.albumsArr.push(new Album(title, yearOfRelease, image, newAlbumId));
-            Dialog.close();
-            albumRenders.setList(DataHandler.albumsArr);
-            albumRenders.renderList();
-        });
+        await this.postRender("create");
     }
     async delete(item) {
-        try {
-            await DataHandler.deleteData("albums", item.getId());
-            const index = DataHandler.albumsArr.findIndex((album) => album.getId() === item.getId());
-            DataHandler.albumsArr.splice(index, 1);
-            Dialog.close();
-            albumRenders.setList(DataHandler.albumsArr);
-            albumRenders.renderList();
-        }
-        catch (error) {
-            console.error(error.message);
-        }
+        const html = `
+        <h2>Are you sure you want to delete ${item.title}?</h2>
+
+        <button id="album-dialog-delete-confirm-button">Yes</button>
+        <button id="album-dialog-delete-cancel-button">Cancel</button>
+        `;
+        await this.renderHTML(html);
+        await this.postRender("delete", item);
     }
     async details(item) {
         try {
@@ -101,7 +103,7 @@ export default class AlbumDialog extends Dialog {
         </article>
         `;
             await this.renderHTML(html);
-            await this.postRender(item);
+            await this.postRender("details", item);
         }
         catch (error) {
             console.error(error.message);
@@ -133,27 +135,6 @@ export default class AlbumDialog extends Dialog {
         </form>
         `;
         await this.renderHTML(updateFormHTML);
-        Dialog.dialogContent.querySelector(".update-album-form")?.addEventListener("submit", async (event) => {
-            event.preventDefault();
-            const form = event.target;
-            const title = form.albumTitle.value;
-            const image = form.image.value;
-            const yearOfRelease = parseInt(form.yearOfRelease.value);
-            let artist;
-            if (form.artist.value.includes(", ")) {
-                artist = form.artist.value.split(", ");
-            }
-            else {
-                artist = form.artist.value;
-            }
-            const albumId = Number(form.id.split("-")[1]);
-            console.log(artist);
-            await DataHandler.putData("albums", albumId, { title, image, yearOfRelease, artist });
-            const index = DataHandler.albumsArr.findIndex((album) => album.getId() === albumId);
-            DataHandler.albumsArr[index] = new Album(title, yearOfRelease, image, albumId);
-            Dialog.close();
-            albumRenders.setList(DataHandler.albumsArr);
-            albumRenders.renderList();
-        });
+        await this.postRender("update");
     }
 }

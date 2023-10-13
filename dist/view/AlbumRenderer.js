@@ -22,6 +22,7 @@ export default class AlbumRenderer extends ItemRenderer {
     }
     async postRender(lastElementChild) {
         lastElementChild.addEventListener("click", () => {
+            console.log(this.item);
             new AlbumDialog().details(this.item);
         });
     }

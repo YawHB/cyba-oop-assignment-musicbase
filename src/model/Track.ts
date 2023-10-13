@@ -1,18 +1,16 @@
 export default class Track {
     [key: string]: any;
-    public duration: number;
 
-    constructor(public title: string, duration: number | string, public artists: string, public albums: string, private id: number) {
-        typeof duration == "number" ? (this.duration = duration) : (this.duration = this.setDuration(duration));
+    constructor(public title: string, private duration: number , public artists: string, public albums: string, private id: number) {
     }
 
-    public getTitle(): string {
-        return this.title;
-    }
+    // public getTitle(): string {
+    //     return this.title;
+    // }
 
-    public setTitle(newTitle: string): void {
-        this.title = newTitle;
-    }
+    // public setTitle(newTitle: string): void {
+    //     this.title = newTitle;
+    // }
 
     public getDuration(): string {
         const minutes = Math.floor(this.duration / 60);
@@ -21,9 +19,14 @@ export default class Track {
         return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
     }
 
-    public setDuration(newDuration: string): number {
-        //! Skal laves om. Konverter fra string (MM:SS) til sekunder (number)
-        return Number(newDuration);
+    public setDuration(newDuration: string | number): void {
+        if (typeof newDuration === "string") {
+            const [minutes, seconds] = newDuration.split(":").map(Number);
+            const totalSeconds = minutes * 60 + seconds;
+            this.duration = totalSeconds;
+        } else if (typeof newDuration === "number") {
+            this.duration = newDuration;
+        }
     }
 
     public getId(): number {
