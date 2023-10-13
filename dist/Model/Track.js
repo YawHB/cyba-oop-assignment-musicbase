@@ -1,21 +1,15 @@
 export default class Track {
     title;
+    duration;
     artists;
     albums;
     id;
-    duration;
     constructor(title, duration, artists, albums, id) {
         this.title = title;
+        this.duration = duration;
         this.artists = artists;
         this.albums = albums;
         this.id = id;
-        typeof duration == "number" ? (this.duration = duration) : (this.duration = this.setDuration(duration));
-    }
-    getTitle() {
-        return this.title;
-    }
-    setTitle(newTitle) {
-        this.title = newTitle;
     }
     getDuration() {
         const minutes = Math.floor(this.duration / 60);
@@ -23,7 +17,14 @@ export default class Track {
         return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
     }
     setDuration(newDuration) {
-        return Number(newDuration);
+        if (typeof newDuration === "string") {
+            const [minutes, seconds] = newDuration.split(":").map(Number);
+            const totalSeconds = minutes * 60 + seconds;
+            this.duration = totalSeconds;
+        }
+        else if (typeof newDuration === "number") {
+            this.duration = newDuration;
+        }
     }
     getId() {
         return this.id;

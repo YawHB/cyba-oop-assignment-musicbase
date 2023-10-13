@@ -5,8 +5,8 @@ export default class AlbumDialog extends Dialog {
     async postRender(type, item) {
         switch (type) {
             case "details":
-                const updateButton = document.querySelector(".album-dialog-update-button");
-                const deleteButton = document.querySelector(".album-dialog-delete-button");
+                const updateButton = Dialog.dialogContent.querySelector(".album-dialog-update-button");
+                const deleteButton = Dialog.dialogContent.querySelector(".album-dialog-delete-button");
                 if (!updateButton || !deleteButton) {
                     throw new Error("No buttons found");
                 }

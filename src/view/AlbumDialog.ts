@@ -9,8 +9,8 @@ export default class AlbumDialog extends Dialog {
     protected async postRender(type: string, item?: Album): Promise<void> {
         switch (type) {
             case "details":
-                const updateButton = document.querySelector(".album-dialog-update-button") as HTMLButtonElement;
-                const deleteButton = document.querySelector(".album-dialog-delete-button") as HTMLButtonElement;
+                const updateButton = Dialog.dialogContent.querySelector(".album-dialog-update-button") as HTMLButtonElement;
+                const deleteButton = Dialog.dialogContent.querySelector(".album-dialog-delete-button") as HTMLButtonElement;
 
                 if (!updateButton || !deleteButton) {
                     throw new Error("No buttons found");
@@ -71,7 +71,6 @@ export default class AlbumDialog extends Dialog {
     }
 
     public async delete(item: Album): Promise<void> {
-
         const html = /*html*/ `
         <h2>Are you sure you want to delete ${item.title}?</h2>
 
