@@ -2,14 +2,16 @@ import { artistRenders } from "../app.js";
 import DataHandler from "../components/dataHandler.js";
 import Artist from "../model/Artist.js";
 import Dialog from "../view/Dialog.js";
-async function deleteArtist(artist) {
-    await DataHandler.deleteData("artists", artist.getId());
-    const index = DataHandler.artistsArr.indexOf(artist);
-    console.log(index);
-    DataHandler.artistsArr.splice(index, 1);
+function closeArtistDialog() {
     Dialog.close();
     artistRenders.setList(DataHandler.artistsArr);
     artistRenders.renderList();
+}
+async function deleteArtist(artist) {
+    await DataHandler.deleteData("artists", artist.getId());
+    const index = DataHandler.artistsArr.indexOf(artist);
+    DataHandler.artistsArr.splice(index, 1);
+    closeArtistDialog();
 }
 async function createArtist(event) {
     event.preventDefault();
@@ -20,9 +22,7 @@ async function createArtist(event) {
     const newArtistId = await DataHandler.postData("artists", newArtist);
     const instancedArtist = new Artist(newArtist.name, newArtist.image, newArtistId);
     DataHandler.artistsArr.push(instancedArtist);
-    Dialog.close();
-    artistRenders.setList(DataHandler.artistsArr);
-    artistRenders.renderList();
+    closeArtistDialog();
 }
 async function updateArtist(event) {
     event.preventDefault();
@@ -36,9 +36,7 @@ async function updateArtist(event) {
         const instancedArtist = new Artist(updatedArtist.name, updatedArtist.image, artistId);
         const index = DataHandler.artistsArr.findIndex((artist) => artist.getId() === instancedArtist.getId());
         DataHandler.artistsArr[index] = instancedArtist;
-        Dialog.close();
-        artistRenders.setList(DataHandler.artistsArr);
-        artistRenders.renderList();
+        closeArtistDialog();
     }
 }
 export { deleteArtist, createArtist, updateArtist };

@@ -124,6 +124,6 @@ export default class ArtistDialog extends Dialog {
         `;
 
         await this.renderHTML(html);
-        await this.postRender("update", item);
+        await this.postRender("update");
     }
 }

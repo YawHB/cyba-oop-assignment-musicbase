@@ -3,11 +3,10 @@ import Album from "../model/Album.js";
 import Track from "../model/Track.js";
 import DataHandler from "../components/dataHandler.js";
 import { albumRenders } from "../app.js";
+import { createAlbum, deleteAlbum, updateAlbum } from "../controller/album.controller.js";
 
 export default class AlbumDialog extends Dialog {
-    
     protected async postRender(type: string, item?: Album): Promise<void> {
-        
         switch (type) {
             case "details":
                 const updateButton = document.querySelector(".album-dialog-update-button") as HTMLButtonElement;
@@ -24,16 +23,31 @@ export default class AlbumDialog extends Dialog {
                     this.delete(item!);
                 });
                 break;
-            case "":
-                
+            case "create":
+                const createAlbumForm = Dialog.dialogContent.querySelector(".create-album-form") as HTMLFormElement;
+                createAlbumForm.addEventListener("submit", createAlbum);
+
                 break;
-            
+            case "delete":
+                const confirmButton = Dialog.dialogContent.querySelector("#album-dialog-delete-confirm-button") as HTMLButtonElement;
+                const cancelButton = Dialog.dialogContent.querySelector("#album-dialog-delete-cancel-button") as HTMLButtonElement;
+
+                confirmButton.addEventListener("click", () => {
+                    deleteAlbum(item!);
+                });
+                cancelButton.addEventListener("click", () => {
+                    Dialog.clear();
+                    Dialog.close();
+                });
+                break;
+            case "update":
+                const updateAlbumForm = Dialog.dialogContent.querySelector(".update-album-form") as HTMLFormElement;
+                updateAlbumForm.addEventListener("submit", updateAlbum);
+                break;
         }
-        
     }
 
     public async create(): Promise<void> {
-
         const createFormHTML = /*html*/ `
         <h2>Create Album</h2>
         
@@ -51,41 +65,22 @@ export default class AlbumDialog extends Dialog {
             </div>
         </form>
         `;
+
         await this.renderHTML(createFormHTML);
-
-        Dialog.dialogContent.querySelector(".create-album-form")?.addEventListener("submit", async (event: Event) => {
-            event.preventDefault();
-            const form = event.target as HTMLFormElement;
-
-            const title: string = form.albumTitle.value;
-            const image: string = form.image.value;
-            const yearOfRelease: number = parseInt(form.yearOfRelease.value);
-            const artist: string = form.artist.value;
-
-            const newAlbumId: number = await DataHandler.postData("albums", { title, image, yearOfRelease, artist });
-
-            DataHandler.albumsArr.push(new Album(title, yearOfRelease, image, newAlbumId));
-
-            Dialog.close();
-            albumRenders.setList(DataHandler.albumsArr);
-            albumRenders.renderList();
-        });
+        await this.postRender("create");
     }
 
     public async delete(item: Album): Promise<void> {
-        try {
-            await DataHandler.deleteData("albums", item.getId());
-            const index = DataHandler.albumsArr.findIndex(
-                (album: Album) => album.getId() === item.getId()
-            );
-            DataHandler.albumsArr.splice(index, 1);
-            Dialog.close();
-            // render album list again
-            albumRenders.setList(DataHandler.albumsArr);
-            albumRenders.renderList();
-        } catch (error) {
-            console.error((error as Error).message);
-        }
+
+        const html = /*html*/ `
+        <h2>Are you sure you want to delete ${item.title}?</h2>
+
+        <button id="album-dialog-delete-confirm-button">Yes</button>
+        <button id="album-dialog-delete-cancel-button">Cancel</button>
+        `;
+
+        await this.renderHTML(html);
+        await this.postRender("delete", item);
     }
 
     public async details(item: Album): Promise<void> {
@@ -103,28 +98,15 @@ export default class AlbumDialog extends Dialog {
         </div>
         <div class="album-details-content">
             <h3>Album Details</h3>
-            <p>Artist: ${albumData.artists.length === 1 ? albumData.artists[0].name : albumData.artists.map((item:{id: number, name: string}) =>  ` ${item.name}`)}</p>
+            <p>Artist: ${albumData.artists.length === 1 ? albumData.artists[0].name : albumData.artists.map((item: { id: number; name: string }) => ` ${item.name}`)}</p>
             <p>Year of release: ${albumData.yearOfRelease}</p>
             <h3>Tracks</h3>
             <ul>
             ${albumData.tracks
-                .map(
-                    (track: {
-                        id: number;
-                        title: string;
-                        duration: number;
-                    }): string => {
-                        const foundTrack = DataHandler.tracksArr.find(
-                            (instanciatedTrack) =>
-                                instanciatedTrack.getId() === track.id
-                        );
-                        return /*html*/ `<li>${
-                            foundTrack?.title
-                        } - ${foundTrack?.getDuration()} - ${
-                            foundTrack?.artists
-                        }</li>`;
-                    }
-                )
+                .map((track: { id: number; title: string; duration: number }): string => {
+                    const foundTrack = DataHandler.tracksArr.find((instanciatedTrack) => instanciatedTrack.getId() === track.id);
+                    return /*html*/ `<li>${foundTrack?.title} - ${foundTrack?.getDuration()} - ${foundTrack?.artists}</li>`;
+                })
 
                 .join("")}
             </ul>
@@ -169,33 +151,8 @@ export default class AlbumDialog extends Dialog {
             </div>
         </form>
         `;
+
         await this.renderHTML(updateFormHTML);
-      
-
-        Dialog.dialogContent.querySelector(".update-album-form")?.addEventListener("submit", async (event: Event) => {
-            event.preventDefault();
-            const form = event.target as HTMLFormElement;
-
-            const title: string = form.albumTitle.value;
-            const image: string = form.image.value;
-            const yearOfRelease: number = parseInt(form.yearOfRelease.value);
-            // check if there is more than one artist seperated by comma
-            let artist: string | string [];
-            if (form.artist.value.includes(", ")) {
-                artist = form.artist.value.split(", ");
-            } else {
-                artist = form.artist.value;
-            }
-            const albumId = Number(form.id.split("-")[1]);
-            console.log(artist)
-            await DataHandler.putData("albums", albumId, { title, image, yearOfRelease, artist });
-
-            const index = DataHandler.albumsArr.findIndex((album: Album) => album.getId() === albumId);
-            DataHandler.albumsArr[index] = new Album(title, yearOfRelease, image, albumId);
-
-            Dialog.close();
-            albumRenders.setList(DataHandler.albumsArr);
-            albumRenders.renderList();
-        });
+        await this.postRender("update");
     }
 }

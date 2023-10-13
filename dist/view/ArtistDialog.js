@@ -5,8 +5,8 @@ export default class ArtistDialog extends Dialog {
     async postRender(type, item) {
         switch (type) {
             case "details":
-                const updateButton = document.querySelector(".artist-dialog-details-update-button");
-                const deleteButton = document.querySelector(".artist-dialog-details-delete-button");
+                const updateButton = Dialog.dialogContent.querySelector(".artist-dialog-details-update-button");
+                const deleteButton = Dialog.dialogContent.querySelector(".artist-dialog-details-delete-button");
                 updateButton.addEventListener("click", () => {
                     this.update(item);
                 });
@@ -15,8 +15,8 @@ export default class ArtistDialog extends Dialog {
                 });
                 break;
             case "delete":
-                const confirmButton = document.querySelector("#artist-dialog-delete-confirm-button");
-                const cancelButton = document.querySelector("#artist-dialog-delete-cancel-button");
+                const confirmButton = Dialog.dialogContent.querySelector("#artist-dialog-delete-confirm-button");
+                const cancelButton = Dialog.dialogContent.querySelector("#artist-dialog-delete-cancel-button");
                 confirmButton.addEventListener("click", () => {
                     deleteArtist(item);
                 });
@@ -105,6 +105,6 @@ export default class ArtistDialog extends Dialog {
         </form>
         `;
         await this.renderHTML(html);
-        await this.postRender("update", item);
+        await this.postRender("update");
     }
 }
