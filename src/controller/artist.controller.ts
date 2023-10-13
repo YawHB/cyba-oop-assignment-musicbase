@@ -4,15 +4,20 @@ import Artist from "../model/Artist.js";
 import Dialog from "../view/Dialog.js";
 
 
-async function deleteArtist(artist: Artist) {
-    await DataHandler.deleteData("artists", artist.getId());
-    const index: number = DataHandler.artistsArr.indexOf(artist);
-    
-    DataHandler.artistsArr.splice(index, 1);
-
+function closeArtistDialog() {
     Dialog.close();
     artistRenders.setList(DataHandler.artistsArr);
     artistRenders.renderList();
+}
+
+
+async function deleteArtist(artist: Artist) {
+    await DataHandler.deleteData("artists", artist.getId());
+    const index: number = DataHandler.artistsArr.indexOf(artist);
+
+    DataHandler.artistsArr.splice(index, 1);
+
+    closeArtistDialog();
 }
 
 async function createArtist(event: Event) {
@@ -29,9 +34,7 @@ async function createArtist(event: Event) {
 
     DataHandler.artistsArr.push(instancedArtist);
 
-    Dialog.close();
-    artistRenders.setList(DataHandler.artistsArr);
-    artistRenders.renderList();
+    closeArtistDialog();
 }
 
 async function updateArtist(event: Event) {
@@ -51,10 +54,10 @@ async function updateArtist(event: Event) {
         const index = DataHandler.artistsArr.findIndex((artist) => artist.getId() === instancedArtist.getId());
         DataHandler.artistsArr[index] = instancedArtist;
 
-        Dialog.close();
-        artistRenders.setList(DataHandler.artistsArr);
-        artistRenders.renderList();
+        closeArtistDialog();
     }
 }
+
+
 
 export {deleteArtist, createArtist, updateArtist}
