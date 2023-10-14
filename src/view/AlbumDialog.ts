@@ -144,7 +144,7 @@ export default class AlbumDialog extends Dialog {
 
                 <input type=text name="yearOfRelease" id="yearOfRelease" value="${albumData.yearOfRelease}">
                 <label for="artist">Artist</label> 
-                <input type=text name="artist" id="artist" value="${albumData.artists.length === 1 ? albumData.artists[0].name : albumData.artists.join(", ").name}">
+                <input type=text name="artist" id="artist" value="${albumData.artists.length === 1 ? albumData.artists[0].name : albumData.artists.map((item: { id: number; name: string }) => ` ${item.name}`)}">
                 <button type="submit">Update album</button>
 
             </div>

@@ -67,6 +67,8 @@ class DataHandler {
         data: any
     ): Promise<any> {
         try {
+            console.log(data);
+            
             const response = await fetch(`${this.apiURL}/${endpoint}/${id}`, {
                 method: "PUT",
                 body: JSON.stringify(data),

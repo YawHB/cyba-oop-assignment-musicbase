@@ -44,11 +44,12 @@ async function updateTrack(event) {
     }
     const title = form.trackTitle.value;
     const duration = convertStringDurationToNumber(form.duration.value);
-    const artists = selectedArtists.join(', ');
-    const albums = selectedAlbums.join(', ');
+    const artists = selectedArtists.join(',');
+    const albums = selectedAlbums.join(',');
     const trackId = Number(form.id.split("-")[1]);
-    console.log('artists: ' + artists);
-    const response = await DataHandler.putData("tracks", trackId, { title, duration, artists, albums });
+    console.log(selectedArtists);
+    console.log(selectedAlbums);
+    const response = await DataHandler.putData("tracks", trackId, { title, duration, artists: selectedArtists, albums: selectedAlbums });
     console.log(response);
     const index = DataHandler.tracksArr.findIndex(track => track.getId() === trackId);
     DataHandler.tracksArr[index] = new Track(title, duration, artists, albums, trackId);

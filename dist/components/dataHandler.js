@@ -61,6 +61,7 @@ class DataHandler {
     }
     static async putData(endpoint, id, data) {
         try {
+            console.log(data);
             const response = await fetch(`${this.apiURL}/${endpoint}/${id}`, {
                 method: "PUT",
                 body: JSON.stringify(data),
