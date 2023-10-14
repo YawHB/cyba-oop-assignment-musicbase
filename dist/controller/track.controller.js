@@ -32,11 +32,22 @@ async function deleteTrack(track) {
 async function updateTrack(event) {
     event.preventDefault();
     const form = event.target;
+    const selectedArtists = [];
+    const selectedAlbums = [];
+    for (const artist of form.artists.options) {
+        if (artist.selected)
+            selectedArtists.push(artist.value);
+    }
+    for (const album of form.albums.options) {
+        if (album.selected)
+            selectedAlbums.push(album.value);
+    }
     const title = form.trackTitle.value;
     const duration = convertStringDurationToNumber(form.duration.value);
-    const artists = form.artists.value;
-    const albums = form.albums.value;
+    const artists = selectedArtists.join(', ');
+    const albums = selectedAlbums.join(', ');
     const trackId = Number(form.id.split("-")[1]);
+    console.log('artists: ' + artists);
     const response = await DataHandler.putData("tracks", trackId, { title, duration, artists, albums });
     console.log(response);
     const index = DataHandler.tracksArr.findIndex(track => track.getId() === trackId);

@@ -117,7 +117,6 @@ export default class TrackDialog extends Dialog {
     }
 
     async update(item: Track): Promise<void> {
-        //TODO change input types for artist and album to select with option values from artist and album arrays
         const updateFormHTML = /*html*/ `
         <h2>Update Track</h2>
         <form class="update-track-form" id="trackid-${item.getId()}">
@@ -153,12 +152,14 @@ export default class TrackDialog extends Dialog {
         globalArr.map(item => {
             if (type === "artist") {
                 const hasArtist = track.artists.includes(item.name);
+
                 html = /*html*/ `
             <option value="${item.name}" ${hasArtist ? "selected" : ""}>${item.name}</option>
             `;
             }
             if (type === "album") {
                 const hasAlbum = track.albums.includes(item.title);
+                
                 html = /*html*/ `
             <option value="${item.title}" ${hasAlbum ? "selected" : ""}>${item.title}</option>
             `;

@@ -45,11 +45,25 @@ async function updateTrack(event: Event) {
     event.preventDefault();
     const form = event.target as HTMLFormElement;
 
+    const selectedArtists: string[] = [];
+    const selectedAlbums: string[] = [];
+    
+    for (const artist of form.artists.options) {
+        if(artist.selected) selectedArtists.push(artist.value);
+    }
+    for (const album of form.albums.options) {
+        if(album.selected) selectedAlbums.push(album.value);
+    }
+    
+    
+
     const title: string = form.trackTitle.value;
     const duration: number = convertStringDurationToNumber(form.duration.value);
-    const artists: string = form.artists.value;
-    const albums: string = form.albums.value;
+    const artists: string = selectedArtists.join(', ')
+    const albums: string  = selectedAlbums.join(', ')
     const trackId: number = Number(form.id.split("-")[1]);
+    console.log('artists: ' + artists);
+    
 
     const response = await DataHandler.putData("tracks", trackId, { title, duration, artists, albums });
     console.log(response);
