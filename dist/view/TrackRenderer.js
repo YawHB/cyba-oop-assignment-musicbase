@@ -1,6 +1,7 @@
 import ItemRenderer from "./ItemRenderer.js";
 import TrackDialog from "./TrackDialog.js";
 export default class TrackRenderer extends ItemRenderer {
+    item;
     constructor(item) {
         super();
         this.item = item;

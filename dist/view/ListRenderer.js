@@ -1,14 +1,20 @@
 import ArtistRenderer from "./ArtistRenderer.js";
 export default class ListRenderer {
+    itemRenderer;
+    container;
+    sortContainer;
+    list;
+    sortValue;
+    sortByValue;
+    searchValue;
     constructor(list, container, itemRenderer, sortContainer) {
-        var _a, _b;
         this.itemRenderer = itemRenderer;
         this.container = document.querySelector(`.${container}`);
         this.sortContainer = document.querySelector(`#${sortContainer}`);
         this.list = [];
         this.setList(list);
-        this.sortValue = (_a = this.sortContainer.querySelector(".sort")) === null || _a === void 0 ? void 0 : _a.value;
-        this.sortByValue = (_b = this.sortContainer.querySelector(".sort-order")) === null || _b === void 0 ? void 0 : _b.value;
+        this.sortValue = this.sortContainer.querySelector(".sort")?.value;
+        this.sortByValue = this.sortContainer.querySelector(".sort-order")?.value;
         this.searchValue = "";
         this.postRender();
     }
@@ -67,15 +73,12 @@ export default class ListRenderer {
         }
     }
     postRender() {
-        var _a, _b;
-        (_a = this.sortContainer.querySelector(".sort")) === null || _a === void 0 ? void 0 : _a.addEventListener("change", () => {
-            var _a;
-            this.sortValue = (_a = this.sortContainer.querySelector(".sort")) === null || _a === void 0 ? void 0 : _a.value;
+        this.sortContainer.querySelector(".sort")?.addEventListener("change", () => {
+            this.sortValue = this.sortContainer.querySelector(".sort")?.value;
             this.setSearchValue();
         });
-        (_b = this.sortContainer.querySelector(".sort-order")) === null || _b === void 0 ? void 0 : _b.addEventListener("change", () => {
-            var _a;
-            this.sortByValue = (_a = this.sortContainer.querySelector(".sort-order")) === null || _a === void 0 ? void 0 : _a.value;
+        this.sortContainer.querySelector(".sort-order")?.addEventListener("change", () => {
+            this.sortByValue = this.sortContainer.querySelector(".sort-order")?.value;
             this.setSearchValue();
         });
     }
