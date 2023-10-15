@@ -1,6 +1,13 @@
-export default class Dialog {
-    static dialogWindow = document.querySelector("#main-dialog-frame");
-    static dialogContent = document.querySelector("#main-dialog-content");
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+class Dialog {
     static open() {
         this.dialogWindow.showModal();
     }
@@ -10,9 +17,14 @@ export default class Dialog {
     static clear() {
         this.dialogContent.innerHTML = "";
     }
-    async renderHTML(html) {
-        Dialog.clear();
-        Dialog.open();
-        Dialog.dialogContent.insertAdjacentHTML('beforeend', html);
+    renderHTML(html) {
+        return __awaiter(this, void 0, void 0, function* () {
+            Dialog.clear();
+            Dialog.open();
+            Dialog.dialogContent.insertAdjacentHTML('beforeend', html);
+        });
     }
 }
+Dialog.dialogWindow = document.querySelector("#main-dialog-frame");
+Dialog.dialogContent = document.querySelector("#main-dialog-content");
+export default Dialog;
