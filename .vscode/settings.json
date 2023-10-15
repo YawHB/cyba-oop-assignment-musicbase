@@ -1,4 +1,5 @@
 {
     "appService.defaultWebAppToDeploy": "undefined/subscriptions/d800b5e8-079e-4878-b61f-b6cf61991874/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/cyba-oop-assigment-musicbase",
-    "appService.deploySubpath": "dist"
+    "appService.deploySubpath": "dist",
+    "liveServer.settings.port": 5501
 }
