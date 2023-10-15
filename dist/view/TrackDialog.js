@@ -1,45 +1,57 @@
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 import Dialog from "./Dialog.js";
 import DataHandler from "../components/dataHandler.js";
 import Artist from "../model/Artist.js";
 import { createTrack, deleteTrack, updateTrack } from "../controller/track.controller.js";
 export default class TrackDialog extends Dialog {
-    async postRender(type, item) {
-        switch (type) {
-            case "details":
-                const updateButton = Dialog.dialogContent.querySelector(".track-dialog-update-button");
-                const deleteButton = Dialog.dialogContent.querySelector(".track-dialog-delete-button");
-                if (!updateButton || !deleteButton) {
-                    throw new Error("No buttons found");
-                }
-                updateButton.addEventListener("click", () => {
-                    this.update(item);
-                });
-                deleteButton.addEventListener("click", () => {
-                    this.delete(item);
-                });
-                break;
-            case "create":
-                const createTrackForm = Dialog.dialogContent.querySelector(".create-track-form");
-                createTrackForm.addEventListener("submit", createTrack);
-                break;
-            case "delete":
-                const confirmButton = Dialog.dialogContent.querySelector("#track-dialog-delete-confirm-button");
-                const cancelButton = Dialog.dialogContent.querySelector("#track-dialog-delete-cancel-button");
-                confirmButton.addEventListener("click", () => {
-                    deleteTrack(item);
-                });
-                cancelButton.addEventListener("click", () => {
-                    Dialog.clear();
-                    Dialog.close();
-                });
-                break;
-            case "update":
-                const updateTrackForm = Dialog.dialogContent.querySelector(`#trackid-${item.getId()}`);
-                updateTrackForm.addEventListener("submit", updateTrack);
-        }
+    postRender(type, item) {
+        return __awaiter(this, void 0, void 0, function* () {
+            switch (type) {
+                case "details":
+                    const updateButton = Dialog.dialogContent.querySelector(".track-dialog-update-button");
+                    const deleteButton = Dialog.dialogContent.querySelector(".track-dialog-delete-button");
+                    if (!updateButton || !deleteButton) {
+                        throw new Error("No buttons found");
+                    }
+                    updateButton.addEventListener("click", () => {
+                        this.update(item);
+                    });
+                    deleteButton.addEventListener("click", () => {
+                        this.delete(item);
+                    });
+                    break;
+                case "create":
+                    const createTrackForm = Dialog.dialogContent.querySelector(".create-track-form");
+                    createTrackForm.addEventListener("submit", createTrack);
+                    break;
+                case "delete":
+                    const confirmButton = Dialog.dialogContent.querySelector("#track-dialog-delete-confirm-button");
+                    const cancelButton = Dialog.dialogContent.querySelector("#track-dialog-delete-cancel-button");
+                    confirmButton.addEventListener("click", () => {
+                        deleteTrack(item);
+                    });
+                    cancelButton.addEventListener("click", () => {
+                        Dialog.clear();
+                        Dialog.close();
+                    });
+                    break;
+                case "update":
+                    const updateTrackForm = Dialog.dialogContent.querySelector(`#trackid-${item.getId()}`);
+                    updateTrackForm.addEventListener("submit", updateTrack);
+            }
+        });
     }
-    async create() {
-        const createFormHTML = `
+    create() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const createFormHTML = `
         <h2>Create Track</h2>
         <form class="create-track-form">
             <div class="create-form-content">
@@ -55,23 +67,27 @@ export default class TrackDialog extends Dialog {
             <input type="submit" value="Submit track" />
         </form>
         `;
-        await this.renderHTML(createFormHTML);
-        await this.postRender("create");
+            yield this.renderHTML(createFormHTML);
+            yield this.postRender("create");
+        });
     }
-    async delete(item) {
-        const html = `
+    delete(item) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const html = `
         <h2>Are you sure you want to delete ${item.title}?</h2>
 
         <button id="track-dialog-delete-confirm-button">Yes</button>
         <button id="track-dialog-delete-cancel-button">Cancel</button>
         `;
-        await this.renderHTML(html);
-        await this.postRender("delete", item);
+            yield this.renderHTML(html);
+            yield this.postRender("delete", item);
+        });
     }
-    async details(item) {
-        console.log(item);
-        try {
-            const html = `
+    details(item) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log(item);
+            try {
+                const html = `
                 <article class="track-details">
                 <h2>${item.title}</h2>
                 <h3>Track Details</h3>
@@ -85,15 +101,17 @@ export default class TrackDialog extends Dialog {
                 </div>
                 </article>
                 `;
-            await this.renderHTML(html);
-            await this.postRender("details", item);
-        }
-        catch (error) {
-            console.error(error.message);
-        }
+                yield this.renderHTML(html);
+                yield this.postRender("details", item);
+            }
+            catch (error) {
+                console.error(error.message);
+            }
+        });
     }
-    async update(item) {
-        const updateFormHTML = `
+    update(item) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const updateFormHTML = `
         <h2>Update Track</h2>
         <form class="update-track-form" id="trackid-${item.getId()}">
             <div class="update-form-content">
@@ -113,10 +131,11 @@ export default class TrackDialog extends Dialog {
             <input type="submit" value="Submit track" />
         </form>
         `;
-        await this.renderHTML(updateFormHTML);
-        this.populateDropdown(DataHandler.artistsArr);
-        this.populateDropdown(DataHandler.albumsArr);
-        await this.postRender("update", item);
+            yield this.renderHTML(updateFormHTML);
+            this.populateDropdown(DataHandler.artistsArr);
+            this.populateDropdown(DataHandler.albumsArr);
+            yield this.postRender("update", item);
+        });
     }
     populateDropdown(globalArr) {
         let type;
@@ -136,7 +155,7 @@ export default class TrackDialog extends Dialog {
             <option value="${item.title}">${item.title}</option>
             `;
             }
-            dropdown?.insertAdjacentHTML("beforeend", html);
+            dropdown === null || dropdown === void 0 ? void 0 : dropdown.insertAdjacentHTML("beforeend", html);
         });
     }
 }

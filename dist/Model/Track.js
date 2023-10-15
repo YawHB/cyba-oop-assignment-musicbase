@@ -1,9 +1,4 @@
 export default class Track {
-    title;
-    duration;
-    artists;
-    albums;
-    id;
     constructor(title, duration, artists, albums, id) {
         this.title = title;
         this.duration = duration;

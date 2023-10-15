@@ -1,45 +1,57 @@
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 import Dialog from "./Dialog.js";
 import DataHandler from "../components/dataHandler.js";
 import { createAlbum, deleteAlbum, updateAlbum } from "../controller/album.controller.js";
 export default class AlbumDialog extends Dialog {
-    async postRender(type, item) {
-        switch (type) {
-            case "details":
-                const updateButton = Dialog.dialogContent.querySelector(".album-dialog-update-button");
-                const deleteButton = Dialog.dialogContent.querySelector(".album-dialog-delete-button");
-                if (!updateButton || !deleteButton) {
-                    throw new Error("No buttons found");
-                }
-                updateButton.addEventListener("click", () => {
-                    this.update(item);
-                });
-                deleteButton.addEventListener("click", () => {
-                    this.delete(item);
-                });
-                break;
-            case "create":
-                const createAlbumForm = Dialog.dialogContent.querySelector(".create-album-form");
-                createAlbumForm.addEventListener("submit", createAlbum);
-                break;
-            case "delete":
-                const confirmButton = Dialog.dialogContent.querySelector("#album-dialog-delete-confirm-button");
-                const cancelButton = Dialog.dialogContent.querySelector("#album-dialog-delete-cancel-button");
-                confirmButton.addEventListener("click", () => {
-                    deleteAlbum(item);
-                });
-                cancelButton.addEventListener("click", () => {
-                    Dialog.clear();
-                    Dialog.close();
-                });
-                break;
-            case "update":
-                const updateAlbumForm = Dialog.dialogContent.querySelector(".update-album-form");
-                updateAlbumForm.addEventListener("submit", updateAlbum);
-                break;
-        }
+    postRender(type, item) {
+        return __awaiter(this, void 0, void 0, function* () {
+            switch (type) {
+                case "details":
+                    const updateButton = Dialog.dialogContent.querySelector(".album-dialog-update-button");
+                    const deleteButton = Dialog.dialogContent.querySelector(".album-dialog-delete-button");
+                    if (!updateButton || !deleteButton) {
+                        throw new Error("No buttons found");
+                    }
+                    updateButton.addEventListener("click", () => {
+                        this.update(item);
+                    });
+                    deleteButton.addEventListener("click", () => {
+                        this.delete(item);
+                    });
+                    break;
+                case "create":
+                    const createAlbumForm = Dialog.dialogContent.querySelector(".create-album-form");
+                    createAlbumForm.addEventListener("submit", createAlbum);
+                    break;
+                case "delete":
+                    const confirmButton = Dialog.dialogContent.querySelector("#album-dialog-delete-confirm-button");
+                    const cancelButton = Dialog.dialogContent.querySelector("#album-dialog-delete-cancel-button");
+                    confirmButton.addEventListener("click", () => {
+                        deleteAlbum(item);
+                    });
+                    cancelButton.addEventListener("click", () => {
+                        Dialog.clear();
+                        Dialog.close();
+                    });
+                    break;
+                case "update":
+                    const updateAlbumForm = Dialog.dialogContent.querySelector(".update-album-form");
+                    updateAlbumForm.addEventListener("submit", updateAlbum);
+                    break;
+            }
+        });
     }
-    async create() {
-        const createFormHTML = `
+    create() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const createFormHTML = `
         <h2>Create Album</h2>
         
         <form class="create-album-form">
@@ -56,27 +68,31 @@ export default class AlbumDialog extends Dialog {
             </div>
         </form>
         `;
-        await this.renderHTML(createFormHTML);
-        await this.postRender("create");
+            yield this.renderHTML(createFormHTML);
+            yield this.postRender("create");
+        });
     }
-    async delete(item) {
-        const html = `
+    delete(item) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const html = `
         <h2>Are you sure you want to delete ${item.title}?</h2>
 
         <button id="album-dialog-delete-confirm-button">Yes</button>
         <button id="album-dialog-delete-cancel-button">Cancel</button>
         `;
-        await this.renderHTML(html);
-        await this.postRender("delete", item);
+            yield this.renderHTML(html);
+            yield this.postRender("delete", item);
+        });
     }
-    async details(item) {
-        try {
-            const albumData = await DataHandler.getAllAlbumData(item.getId());
-            if (!albumData) {
-                throw new Error("No album data found");
-            }
-            console.log(albumData.tracks);
-            const html = `
+    details(item) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const albumData = yield DataHandler.getAllAlbumData(item.getId());
+                if (!albumData) {
+                    throw new Error("No album data found");
+                }
+                console.log(albumData.tracks);
+                const html = `
         <article class="album-details">
         <h2>${albumData.title}</h2>
         <div class="album-details-image">
@@ -89,11 +105,11 @@ export default class AlbumDialog extends Dialog {
             <h3>Tracks</h3>
             <ul>
             ${albumData.tracks
-                .map((track) => {
-                const foundTrack = DataHandler.tracksArr.find((instanciatedTrack) => instanciatedTrack.getId() === track.id);
-                return `<li>${foundTrack?.title} - ${foundTrack?.getDuration()} - ${foundTrack?.artists}</li>`;
-            })
-                .join("")}
+                    .map((track) => {
+                    const foundTrack = DataHandler.tracksArr.find((instanciatedTrack) => instanciatedTrack.getId() === track.id);
+                    return `<li>${foundTrack === null || foundTrack === void 0 ? void 0 : foundTrack.title} - ${foundTrack === null || foundTrack === void 0 ? void 0 : foundTrack.getDuration()} - ${foundTrack === null || foundTrack === void 0 ? void 0 : foundTrack.artists}</li>`;
+                })
+                    .join("")}
             </ul>
         </div>
         <div class="album-dialog-buttons">
@@ -102,19 +118,21 @@ export default class AlbumDialog extends Dialog {
         </div>
         </article>
         `;
-            await this.renderHTML(html);
-            await this.postRender("details", item);
-        }
-        catch (error) {
-            console.error(error.message);
-        }
+                yield this.renderHTML(html);
+                yield this.postRender("details", item);
+            }
+            catch (error) {
+                console.error(error.message);
+            }
+        });
     }
-    async update(item) {
-        const albumData = await DataHandler.getAllAlbumData(item.getId());
-        if (!albumData) {
-            throw new Error("No album data found");
-        }
-        const updateFormHTML = `
+    update(item) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const albumData = yield DataHandler.getAllAlbumData(item.getId());
+            if (!albumData) {
+                throw new Error("No album data found");
+            }
+            const updateFormHTML = `
         <h2>Update Album</h2>
         <form class="update-album-form" id="albumId-${item.getId()}">
             <div class="update-form-content">
@@ -134,7 +152,8 @@ export default class AlbumDialog extends Dialog {
             </div>
         </form>
         `;
-        await this.renderHTML(updateFormHTML);
-        await this.postRender("update");
+            yield this.renderHTML(updateFormHTML);
+            yield this.postRender("update");
+        });
     }
 }
