@@ -7,7 +7,7 @@
     "scripts": {
         "start": "app.js",
         "watch": "tsc -w",
-        "build": "app.js"
+        "build": "./dist/app"
     },
     "repository": {
         "type": "git",
