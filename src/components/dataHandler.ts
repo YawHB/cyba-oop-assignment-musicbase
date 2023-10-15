@@ -1,9 +1,11 @@
-import Album from "../model/Album.js";
-import Artist from "../model/Artist.js";
-import Track from "../model/Track.js";
+import Album from '../model/Album.js';
+import Artist from '../model/Artist.js';
+import Track from '../model/Track.js';
 
 class DataHandler {
-    private static apiURL: string = "http://127.0.0.1:3000";
+    // private static apiURL: string = "http://127.0.0.1:3000";
+    private static apiURL: string =
+        'https://cyba-music-base-node-app.azurewebsites.net/';
     public static artistsArr: Artist[] = [];
     public static albumsArr: Album[] = [];
     public static tracksArr: Track[] = [];
@@ -12,10 +14,10 @@ class DataHandler {
     static async postData(endpoint: string, data: any): Promise<any> {
         try {
             const response = await fetch(`${this.apiURL}/${endpoint}`, {
-                method: "POST",
+                method: 'POST',
                 body: JSON.stringify(data),
                 headers: {
-                    "Content-Type": "application/json",
+                    'Content-Type': 'application/json',
                 },
             });
             if (!response.ok) {
@@ -34,11 +36,11 @@ class DataHandler {
                     `Failed to fetch data ${response.status}: ${response.statusText}`
                 );
             }
-            if (endpoint === "artists") {
+            if (endpoint === 'artists') {
                 this.artistsArr = this.prepareArtistData(await response.json());
-            } else if (endpoint === "albums") {
+            } else if (endpoint === 'albums') {
                 this.albumsArr = this.prepareAlbumData(await response.json());
-            } else if (endpoint === "tracks") {
+            } else if (endpoint === 'tracks') {
                 this.tracksArr = this.prepareTrackData(await response.json());
             } else {
                 throw new Error(`Invalid endpoint: ${endpoint}`);
@@ -68,10 +70,10 @@ class DataHandler {
     ): Promise<any> {
         try {
             const response = await fetch(`${this.apiURL}/${endpoint}/${id}`, {
-                method: "PUT",
+                method: 'PUT',
                 body: JSON.stringify(data),
                 headers: {
-                    "Content-Type": "application/json",
+                    'Content-Type': 'application/json',
                 },
             });
             if (!response.ok) {
@@ -88,7 +90,7 @@ class DataHandler {
     static async deleteData(endpoint: string, id: number): Promise<any> {
         try {
             const response = await fetch(`${this.apiURL}/${endpoint}/${id}`, {
-                method: "DELETE",
+                method: 'DELETE',
             });
             if (!response.ok) {
                 throw new Error(
@@ -143,14 +145,14 @@ class DataHandler {
             const response = await fetch(
                 `${this.apiURL}/artists/albums/tracks`,
                 {
-                    method: "POST",
+                    method: 'POST',
                     body: JSON.stringify({
                         artistData,
                         albumData,
                         trackData,
                     }),
                     headers: {
-                        "Content-Type": "application/json",
+                        'Content-Type': 'application/json',
                     },
                 }
             );
