@@ -8,21 +8,24 @@ Start by cloning the repository in terminal:
 git clone https://github.com/YawHB/cyba-oop-assignment-musicbase.git
 ```
 
-```bash
 Then navigate to the directory on your computer:
+
+```bash
 cd cyba-oop-assignment-musicbase
 ```
 
+Install dependencies:
+
 ```bash
-install dependencies
 npm install
 ```
 
 ## Usage
 
+To run the frontend application on localhost, run the following command:
+
 ```bash
-To start the application, run the following command
-npm start
+npm run liveserver
 ```
 
 # cyba-assignment-musicbase-backend

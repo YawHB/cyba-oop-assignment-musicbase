@@ -7,7 +7,8 @@
     "scripts": {
         "start": "app.js",
         "watch": "tsc -w",
-        "build": "./dist/app"
+        "build": "./dist/app",
+        "liveserver": "live-server ./dist"
     },
     "repository": {
         "type": "git",
@@ -22,5 +23,8 @@
     "homepage": "https://github.com/YawHB/cyba-oop-assignment-musicbase#readme",
     "devDependencies": {
         "typescript": "^5.2.2"
+    },
+    "dependencies": {
+        "live-server": "^1.2.2"
     }
 }
