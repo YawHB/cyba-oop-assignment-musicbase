@@ -84,16 +84,15 @@ export default class TrackDialog extends Dialog {
     }
 
     public async details(item: Track): Promise<void> {
-        console.log(item)
         try {
             const html = /*html*/ `
-                <article class="track-details">
+                <article class="track-dialog">
                 <h2>${item.title}</h2>
-                <h3>Track Details</h3>
+                <div class="track-dialog-details-info">
                 <p>Artist: ${item.artists}</p>
                 <p>Album: ${item.albums}</p>
                 <p>Duration: ${item.getDuration()}</p>
-                
+                </div>
                 <div class="track-dialog-buttons">
                     <button class="track-dialog-update-button">Update</button>
                     <button class="track-dialog-delete-button">Delete</button>
@@ -109,7 +108,6 @@ export default class TrackDialog extends Dialog {
     }
 
     async update(item: Track): Promise<void> {
-        //TODO change input types for artist and album to select with option values from artist and album arrays
         const updateFormHTML = /*html*/ `
         <h2>Update Track</h2>
         <form class="update-track-form" id="trackid-${item.getId()}">
@@ -146,7 +144,7 @@ export default class TrackDialog extends Dialog {
             ? (type = "artist")
             : (type = "album");
 
-        const dropdown = document.querySelector(`#${type}-select`);
+        const dropdown = document.querySelector(`#${type}-select`) as HTMLSelectElement;
 
         globalArr.map(item => {
             if (type === "artist") {

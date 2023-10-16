@@ -88,27 +88,27 @@ export default class AlbumDialog extends Dialog {
             if (!albumData) {
                 throw new Error("No album data found");
             }
-            console.log(albumData.tracks);
             const html: string = /*html*/ `
-        <article class="album-details">
+        <article class="album-dialog">
         <h2>${albumData.title}</h2>
-        <div class="album-details-image">
-            <img src="${albumData.image}" alt="${albumData.title}">
-        </div>
-        <div class="album-details-content">
-            <h3>Album Details</h3>
-            <p>Artist: ${albumData.artists.length === 1 ? albumData.artists[0].name : albumData.artists.map((item: { id: number; name: string }) => ` ${item.name}`)}</p>
-            <p>Year of release: ${albumData.yearOfRelease}</p>
-            <h3>Tracks</h3>
-            <ul>
-            ${albumData.tracks
-                .map((track: { id: number; title: string; duration: number }): string => {
-                    const foundTrack = DataHandler.tracksArr.find((instanciatedTrack) => instanciatedTrack.getId() === track.id);
+        <div class="album-dialog-details-content">
+            <div class="album-dialog-details-img">
+                <img src="${albumData.image}" alt="${albumData.title}">
+            </div>
+            <div class="album-dialog-details-info">
+                <h3>Album Details</h3>
+                <p>Artist: ${albumData.artists.length === 1 ? albumData.artists[0].name : albumData.artists.map((item: { id: number; name: string }) => ` ${item.name}`)}</p>
+                <p>Year of release: ${albumData.yearOfRelease}</p>
+                <h3>Tracks</h3>
+                <ul>
+                ${albumData.tracks
+                    .map((track: { id: number; title: string; duration: number }): string => {
+                    const foundTrack = DataHandler.tracksArr.find((instantiatedTrack: Track) => instantiatedTrack.getId() === track.id);
                     return /*html*/ `<li>${foundTrack?.title} - ${foundTrack?.getDuration()} - ${foundTrack?.artists}</li>`;
                 })
-
                 .join("")}
             </ul>
+            </div>
         </div>
         <div class="album-dialog-buttons">
             <button class="album-dialog-update-button">Update</button>

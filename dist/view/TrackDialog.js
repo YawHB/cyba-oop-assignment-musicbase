@@ -69,16 +69,15 @@ export default class TrackDialog extends Dialog {
         await this.postRender("delete", item);
     }
     async details(item) {
-        console.log(item);
         try {
             const html = `
-                <article class="track-details">
+                <article class="track-dialog">
                 <h2>${item.title}</h2>
-                <h3>Track Details</h3>
+                <div class="track-dialog-details-info">
                 <p>Artist: ${item.artists}</p>
                 <p>Album: ${item.albums}</p>
                 <p>Duration: ${item.getDuration()}</p>
-                
+                </div>
                 <div class="track-dialog-buttons">
                     <button class="track-dialog-update-button">Update</button>
                     <button class="track-dialog-delete-button">Delete</button>
