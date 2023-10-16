@@ -83,17 +83,17 @@ export default class ArtistDialog extends Dialog {
         const html = /*html*/ `
         <article class="artist-dialog">
             <h2>${item.name}</h2>
-            <img src="${item.image}" alt="${item.name}">
-            <h3>Albums</h3>
-            <ul>
-            ${artistAlbums
-                .map((album: Album) => {
-                    return /*html*/ `
-                <li>${album.title}</li>`;
-                })
-                .join("")}
-            </ul>
-        
+            <div class="artist-dialog-details-content">
+                <div class="artist-dialog-details-img">
+                    <img src="${item.image}" alt="${item.name}">
+                </div>
+                <div class="artist-dialog-details-info">
+                    <h3>Albums</h3>
+                    <ul>
+                    ${artistAlbums.map((album: Album) => {return /*html*/ `<li>${album.title}</li>`;}).join("")}
+                    </ul>
+                </div>
+            </div>
             <div class="artist-dialog-buttons">
                 <button class="artist-dialog-details-update-button">Update</button>
                 <button class="artist-dialog-details-delete-button">Delete</button>

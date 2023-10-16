@@ -24,7 +24,6 @@ export default class TrackRenderer extends ItemRenderer {
 
     public postRender(lastElementChild: Element): void {
         lastElementChild.addEventListener("click", () => {
-            // TODO RENDER DIALOG CONTENT
             new TrackDialog().details(this.item);
         });
     }

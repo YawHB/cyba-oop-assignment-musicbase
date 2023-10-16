@@ -84,16 +84,15 @@ export default class TrackDialog extends Dialog {
     }
 
     public async details(item: Track): Promise<void> {
-        console.log(item)
         try {
             const html = /*html*/ `
-                <article class="track-details">
+                <article class="track-dialog">
                 <h2>${item.title}</h2>
-                <h3>Track Details</h3>
+                <div class="track-dialog-details-info">
                 <p>Artist: ${item.artists}</p>
                 <p>Album: ${item.albums}</p>
                 <p>Duration: ${item.getDuration()}</p>
-                
+                </div>
                 <div class="track-dialog-buttons">
                     <button class="track-dialog-update-button">Update</button>
                     <button class="track-dialog-delete-button">Delete</button>
@@ -109,7 +108,6 @@ export default class TrackDialog extends Dialog {
     }
 
     async update(item: Track): Promise<void> {
-        //TODO change input types for artist and album to select with option values from artist and album arrays
         const updateFormHTML = /*html*/ `
         <h2>Update Track</h2>
         <form class="update-track-form" id="trackid-${item.getId()}">
@@ -127,35 +125,34 @@ export default class TrackDialog extends Dialog {
                 <!-- Insert albums from global array -->
                 </select>
             </div>
-            <button type="submit">Submit track</button>
+            <input type="submit" value="Submit track" />
         </form>
         `;
 
-
         await this.renderHTML(updateFormHTML);
-        this.populateDropdown(DataHandler.artistsArr);
-        this.populateDropdown(DataHandler.albumsArr);
+        this.populateDropdown(DataHandler.artistsArr, "artist", item);
+        this.populateDropdown(DataHandler.albumsArr, "album", item);
         await this.postRender("update", item);
     }
 
-    private populateDropdown(globalArr: (Artist | Album)[]) {
-        let type: string;
+    private populateDropdown(globalArr: (Artist | Album)[], type: string, track: Track) {
         let html: string;
 
-        globalArr.every(item => item instanceof Artist)
-            ? (type = "artist")
-            : (type = "album");
-
-        const dropdown = document.querySelector(`#${type}-select`);
+        const dropdown = Dialog.dialogContent.querySelector(`#${type}-select`);
 
         globalArr.map(item => {
             if (type === "artist") {
+                const hasArtist = track.artists.includes(item.name);
+
                 html = /*html*/ `
-            <option value="${item.name}">${item.name}</option>
+            <option value="${item.name}" ${hasArtist ? "selected" : ""}>${item.name}</option>
             `;
-            } else {
+            }
+            if (type === "album") {
+                const hasAlbum = track.albums.includes(item.title);
+
                 html = /*html*/ `
-            <option value="${item.title}">${item.title}</option>
+            <option value="${item.title}" ${hasAlbum ? "selected" : ""}>${item.title}</option>
             `;
             }
 

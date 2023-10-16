@@ -107,6 +107,10 @@ h4 {
     font-size: var(--font-size-base);
 }
 
+ul {
+    list-style: none;
+}
+
 header {
     position: fixed;
     top: 0;
@@ -264,23 +268,6 @@ header .search-container select:focus {
     box-shadow: var(--shadow);
 }
 
-/* Dialog */
-
-#main-dialog-frame {
-	/* max-height: 37em; */
-	/* margin: auto; */
-	padding: 1em;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-#btn-close-dialog-modal {
-	float: right;
-    padding: 0.2rem;
-}
-
 /* Media queries */
 
 @media (max-width: 479px) {
@@ -361,15 +348,18 @@ header .search-container select:focus {
 }
 
 /* dialogs */
+
 #main-dialog-frame {
+    padding: var(--spacing-base);
     position: absolute;
     top: 50%;
     left: 50%;
     min-width: 40%;
-    max-height: 60%;
+    max-height: 70%;
     background-color: var(--color-tertiary);
     border-radius: var(--border-radius);
     box-shadow: var(--shadow);
+    transform: translate(-50%, -50%);
     z-index: 100;
 }
 
@@ -385,17 +375,62 @@ header .search-container select:focus {
     padding: var(--spacing-base);
 }
 
+/* dialog buttons */
+
 .artist-dialog-buttons, .album-dialog-buttons, .track-dialog-buttons {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin: var(--spacing-base) 0 0 0;
 }
 
 .artist-dialog-buttons button, .album-dialog-buttons button, .track-dialog-buttons button {
-    display: inline-block;
-    height: 2.25em;
-    width: 47.5%;
-    margin-top: var(--spacing-base);
-    align-content: center;
+    padding: var(--spacing-sm);
+    margin-right: var(--spacing-sm);
+    border: var(--border-solid);
+    border-radius: var(--border-radius-sm);
+    font-size: var(--font-size-base);
+    transition: var(--transition);
+}
+
+/* details dialogs */
+
+.artist-dialog h2, .album-dialog h2, .track-dialog h2 {
+    margin-bottom: var(--spacing-base);
+    text-align: center;
+    color: var(--color-primary);
+}
+
+.artist-dialog-details-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: var(--spacing-base);
+    color: var(--color-primary);
+}
+
+.album-dialog-details-content {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    grid-gap: var(--spacing-base);
+    color: var(--color-primary);
+}
+
+.track-dialog-details-info {
+    display: grid;
+    grid-template-columns: 1fr 1.75fr 1fr;
+    grid-gap: var(--spacing-base);
+    color: var(--color-primary);
+}
+
+.artist-dialog-details-img, .album-dialog-details-img {
+    height: 15em;
+    width: 15em;
+}
+
+.artist-dialog-details-img img, .album-dialog-details-img img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    border-radius: var(--border-radius);
 }
 
 /* forms */
