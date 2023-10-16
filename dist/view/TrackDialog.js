@@ -64,7 +64,7 @@ export default class TrackDialog extends Dialog {
                 <label for="albums">Album</label>
                 <input type=text name="albums" id="albums" value="">
             </div>
-            <input type="submit" value="Submit track" />
+            <button type="submit">Submit track </button>
         </form>
         `;
             yield this.renderHTML(createFormHTML);
@@ -128,7 +128,7 @@ export default class TrackDialog extends Dialog {
                 <!-- Insert albums from global array -->
                 </select>
             </div>
-            <input type="submit" value="Submit track" />
+            <button type="submit">Submit track</button>
         </form>
         `;
             yield this.renderHTML(updateFormHTML);

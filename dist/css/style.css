@@ -385,6 +385,19 @@ header .search-container select:focus {
     padding: var(--spacing-base);
 }
 
+.artist-dialog-buttons, .album-dialog-buttons, .track-dialog-buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.artist-dialog-buttons button, .album-dialog-buttons button, .track-dialog-buttons button {
+    display: inline-block;
+    height: 2.25em;
+    width: 47.5%;
+    margin-top: var(--spacing-base);
+    align-content: center;
+}
+
 /* forms */
 form {
     display: flex;
@@ -400,6 +413,11 @@ form input[type="text"], form input[type="number"], form input[type="date"], for
     border-radius: var(--border-radius-sm);
     font-size: var(--font-size-base);
     transition: var(--transition);
+}
+
+form select {
+    height: 8em;
+    overflow-y: scroll;
 }
 
 form input[type="date"] {
@@ -448,4 +466,21 @@ form label {
 
 }
 
-/* button */
+/* sort */
+#artist-sort-container, #album-sort-container, #track-sort-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: var(--spacing-base) var(--spacing-base) 0 var(--spacing-base);
+    width: 19em;
+}
+
+#artist-sort-container select, #album-sort-container select, #track-sort-container select {
+    width: 47.5%;
+    height: 2.25em;
+    padding: var(--spacing-sm);
+    border: var(--border-solid);
+    border-radius: var(--border-radius-sm);
+    font-size: var(--font-size-base);
+    transition: var(--transition);
+}

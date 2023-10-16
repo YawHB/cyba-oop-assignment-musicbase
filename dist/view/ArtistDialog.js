@@ -118,7 +118,7 @@ export default class ArtistDialog extends Dialog {
                 <label for="image"></label>
                  <input type=text name="image" id="image" value="${item.image}">
             </div>
-            <input type="submit" value="Confirm">
+            <button type="submit">Confirm</button>
 
         </form>
         `;
