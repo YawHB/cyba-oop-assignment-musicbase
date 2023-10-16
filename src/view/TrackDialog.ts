@@ -125,35 +125,34 @@ export default class TrackDialog extends Dialog {
                 <!-- Insert albums from global array -->
                 </select>
             </div>
-            <button type="submit">Submit track</button>
+            <input type="submit" value="Submit track" />
         </form>
         `;
 
-
         await this.renderHTML(updateFormHTML);
-        this.populateDropdown(DataHandler.artistsArr);
-        this.populateDropdown(DataHandler.albumsArr);
+        this.populateDropdown(DataHandler.artistsArr, "artist", item);
+        this.populateDropdown(DataHandler.albumsArr, "album", item);
         await this.postRender("update", item);
     }
 
-    private populateDropdown(globalArr: (Artist | Album)[]) {
-        let type: string;
+    private populateDropdown(globalArr: (Artist | Album)[], type: string, track: Track) {
         let html: string;
 
-        globalArr.every(item => item instanceof Artist)
-            ? (type = "artist")
-            : (type = "album");
-
-        const dropdown = document.querySelector(`#${type}-select`) as HTMLSelectElement;
+        const dropdown = Dialog.dialogContent.querySelector(`#${type}-select`);
 
         globalArr.map(item => {
             if (type === "artist") {
+                const hasArtist = track.artists.includes(item.name);
+
                 html = /*html*/ `
-            <option value="${item.name}">${item.name}</option>
+            <option value="${item.name}" ${hasArtist ? "selected" : ""}>${item.name}</option>
             `;
-            } else {
+            }
+            if (type === "album") {
+                const hasAlbum = track.albums.includes(item.title);
+
                 html = /*html*/ `
-            <option value="${item.title}">${item.title}</option>
+            <option value="${item.title}" ${hasAlbum ? "selected" : ""}>${item.title}</option>
             `;
             }
 
