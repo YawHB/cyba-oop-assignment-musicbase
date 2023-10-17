@@ -1,12 +1,12 @@
 # Deployments on Azure
 
-## Frontend
 
-[https://ambitious-beach-03075e803.3.azurestaticapps.net/](https://ambitious-beach-03075e803.3.azurestaticapps.net/)
 
-## Backend
+[Frontend](https://ambitious-beach-03075e803.3.azurestaticapps.net/)
 
-[https://cyba-music-base-node-app.azurewebsites.net/](https://cyba-music-base-node-app.azurewebsites.net/)
+
+
+[Backend](https://cyba-music-base-node-app.azurewebsites.net/)
 
 # cyba-assignment-musicbase-OOP-frontend
 
