@@ -1,3 +1,13 @@
+# Deployments on Azure
+
+## Frontend
+
+[https://ambitious-beach-03075e803.3.azurestaticapps.net/](https://ambitious-beach-03075e803.3.azurestaticapps.net/)
+
+## Backend
+
+[https://cyba-music-base-node-app.azurewebsites.net/](https://cyba-music-base-node-app.azurewebsites.net/)
+
 # cyba-assignment-musicbase-OOP-frontend
 
 ## Installation
@@ -8,13 +18,13 @@ Start by cloning the repository in terminal:
 git clone https://github.com/YawHB/cyba-oop-assignment-musicbase.git
 ```
 
-Then navigate to the directory on your computer:
+Then navigate to the directory:
 
 ```bash
 cd cyba-oop-assignment-musicbase
 ```
 
-Install dependencies:
+Use the package manager [npm](https://www.npmjs.com/) to install necessary dependencies:
 
 ```bash
 npm install
@@ -40,7 +50,7 @@ Start by cloning the repository in terminal:
 git clone https://github.com/Forkeh/cyba-assignment-musicbase-backend.git
 ```
 
-Then navigate to the directory on your computer:
+Then navigate to the directory:
 
 ```bash
 cd cyba-assignment-musicbase-backend
@@ -68,7 +78,7 @@ DB_PASSWORD = "your_password";
 To run the server, type the following in the terminal:
 
 ```bash
-npm install
+npm start
 ```
 
 In your browser, navigate to [localhost:3000](127.0.0.1:3000) and you should recieve the following message, if the server is running correctly:

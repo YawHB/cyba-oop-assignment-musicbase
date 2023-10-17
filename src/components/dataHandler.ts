@@ -3,9 +3,8 @@ import Artist from '../model/Artist.js';
 import Track from '../model/Track.js';
 
 class DataHandler {
-    // private static apiURL: string = "http://127.0.0.1:3000";
-    private static apiURL: string =
-        'https://cyba-music-base-node-app.azurewebsites.net/';
+    // private static readonly apiURL = "http://127.0.0.1:3000";
+    private static readonly apiURL = "https://cyba-music-base-node-app.azurewebsites.net/";
     public static artistsArr: Artist[] = [];
     public static albumsArr: Album[] = [];
     public static tracksArr: Track[] = [];
@@ -14,10 +13,10 @@ class DataHandler {
     static async postData(endpoint: string, data: any): Promise<any> {
         try {
             const response = await fetch(`${this.apiURL}/${endpoint}`, {
-                method: 'POST',
+                method: "POST",
                 body: JSON.stringify(data),
                 headers: {
-                    'Content-Type': 'application/json',
+                    "Content-Type": "application/json",
                 },
             });
             if (!response.ok) {
@@ -32,15 +31,13 @@ class DataHandler {
         try {
             const response = await fetch(`${this.apiURL}/${endpoint}`);
             if (!response.ok) {
-                throw new Error(
-                    `Failed to fetch data ${response.status}: ${response.statusText}`
-                );
+                throw new Error(`Failed to fetch data ${response.status}: ${response.statusText}`);
             }
-            if (endpoint === 'artists') {
+            if (endpoint === "artists") {
                 this.artistsArr = this.prepareArtistData(await response.json());
-            } else if (endpoint === 'albums') {
+            } else if (endpoint === "albums") {
                 this.albumsArr = this.prepareAlbumData(await response.json());
-            } else if (endpoint === 'tracks') {
+            } else if (endpoint === "tracks") {
                 this.tracksArr = this.prepareTrackData(await response.json());
             } else {
                 throw new Error(`Invalid endpoint: ${endpoint}`);
@@ -53,9 +50,7 @@ class DataHandler {
         try {
             const response = await fetch(`${this.apiURL}/${endpoint}/${id}`);
             if (!response.ok) {
-                throw new Error(
-                    `Failed to fetch data: ${response.status}: ${response.statusText}`
-                );
+                throw new Error(`Failed to fetch data: ${response.status}: ${response.statusText}`);
             }
             return await response.json();
         } catch (error) {
@@ -63,23 +58,17 @@ class DataHandler {
         }
     }
 
-    static async putData(
-        endpoint: string,
-        id: number,
-        data: any
-    ): Promise<any> {
+    static async putData(endpoint: string, id: number, data: any): Promise<any> {
         try {
             const response = await fetch(`${this.apiURL}/${endpoint}/${id}`, {
-                method: 'PUT',
+                method: "PUT",
                 body: JSON.stringify(data),
                 headers: {
-                    'Content-Type': 'application/json',
+                    "Content-Type": "application/json",
                 },
             });
             if (!response.ok) {
-                throw new Error(
-                    `Failed to put data ${response.status}: ${response.statusText}`
-                );
+                throw new Error(`Failed to put data ${response.status}: ${response.statusText}`);
             }
             return await response.json();
         } catch (error) {
@@ -90,12 +79,10 @@ class DataHandler {
     static async deleteData(endpoint: string, id: number): Promise<any> {
         try {
             const response = await fetch(`${this.apiURL}/${endpoint}/${id}`, {
-                method: 'DELETE',
+                method: "DELETE",
             });
             if (!response.ok) {
-                throw new Error(
-                    `Failed to delete data ${response.status}: ${response.statusText}`
-                );
+                throw new Error(`Failed to delete data ${response.status}: ${response.statusText}`);
             }
             return await response.json();
         } catch (error) {
@@ -104,14 +91,9 @@ class DataHandler {
     }
 
     // Search Methods
-    static async searchData(
-        endpoint: string,
-        searchValue: string
-    ): Promise<any> {
+    static async searchData(endpoint: string, searchValue: string): Promise<any> {
         try {
-            const response = await fetch(
-                `${this.apiURL}/${endpoint}/search/${searchValue}`
-            );
+            const response = await fetch(`${this.apiURL}/${endpoint}/search/${searchValue}`);
             if (response.ok) {
                 return [];
             }
@@ -123,9 +105,7 @@ class DataHandler {
 
     static async searchAllData(searchValue: string): Promise<any> {
         try {
-            const response = await fetch(
-                `${this.apiURL}/artists/albums/tracks/${searchValue}`
-            );
+            const response = await fetch(`${this.apiURL}/artists/albums/tracks/${searchValue}`);
             if (!response.ok) {
                 throw new Error(`${response.status}: ${response.statusText}`);
             }
@@ -136,26 +116,19 @@ class DataHandler {
     }
 
     // misc methods
-    static async createAllInOneGo(
-        artistData: string | number | [],
-        albumData: string | number | [],
-        trackData: []
-    ): Promise<any> {
+    static async createAllInOneGo(artistData: string | number | [], albumData: string | number | [], trackData: []): Promise<any> {
         try {
-            const response = await fetch(
-                `${this.apiURL}/artists/albums/tracks`,
-                {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        artistData,
-                        albumData,
-                        trackData,
-                    }),
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                }
-            );
+            const response = await fetch(`${this.apiURL}/artists/albums/tracks`, {
+                method: "POST",
+                body: JSON.stringify({
+                    artistData,
+                    albumData,
+                    trackData,
+                }),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
             if (!response.ok) {
                 throw new Error(`${response.status}: ${response.statusText}`);
             }
@@ -198,24 +171,13 @@ class DataHandler {
 
     private static prepareAlbumData(rawData: RawAlbum[]): Album[] {
         return rawData.map((album: RawAlbum) => {
-            return new Album(
-                album.title,
-                album.yearOfRelease,
-                album.image,
-                album.id
-            );
+            return new Album(album.title, album.yearOfRelease, album.image, album.id);
         });
     }
 
     private static prepareTrackData(rawData: RawTrack[]): Track[] {
         return rawData.map((track: RawTrack) => {
-            return new Track(
-                track.title,
-                track.duration,
-                track.artists,
-                track.albums,
-                track.id
-            );
+            return new Track(track.title, track.duration, track.artists, track.albums, track.id);
         });
     }
 }
