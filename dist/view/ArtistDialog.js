@@ -95,9 +95,9 @@ export default class ArtistDialog extends Dialog {
 
         <form class="update-artist-form" id="artistId-${item.getId()}">
             <div class="update-form-content">
-                <label for="artistName"></label>
+                <label for="artistName">Name</label>
                  <input type=text name="artistName" id="artistName" value="${item.name}">
-                <label for="image"></label>
+                <label for="image">Image</label>
                  <input type=text name="image" id="image" value="${item.image}">
             </div>
             <button type="submit">Confirm</button>
