@@ -2,17 +2,17 @@ import Album from '../model/Album.js';
 import Artist from '../model/Artist.js';
 import Track from '../model/Track.js';
 class DataHandler {
-    static apiURL = 'https://cyba-music-base-node-app.azurewebsites.net/';
+    static apiURL = "https://cyba-music-base-node-app.azurewebsites.net/";
     static artistsArr = [];
     static albumsArr = [];
     static tracksArr = [];
     static async postData(endpoint, data) {
         try {
             const response = await fetch(`${this.apiURL}/${endpoint}`, {
-                method: 'POST',
+                method: "POST",
                 body: JSON.stringify(data),
                 headers: {
-                    'Content-Type': 'application/json',
+                    "Content-Type": "application/json",
                 },
             });
             if (!response.ok) {
@@ -30,13 +30,13 @@ class DataHandler {
             if (!response.ok) {
                 throw new Error(`Failed to fetch data ${response.status}: ${response.statusText}`);
             }
-            if (endpoint === 'artists') {
+            if (endpoint === "artists") {
                 this.artistsArr = this.prepareArtistData(await response.json());
             }
-            else if (endpoint === 'albums') {
+            else if (endpoint === "albums") {
                 this.albumsArr = this.prepareAlbumData(await response.json());
             }
-            else if (endpoint === 'tracks') {
+            else if (endpoint === "tracks") {
                 this.tracksArr = this.prepareTrackData(await response.json());
             }
             else {
@@ -62,10 +62,10 @@ class DataHandler {
     static async putData(endpoint, id, data) {
         try {
             const response = await fetch(`${this.apiURL}/${endpoint}/${id}`, {
-                method: 'PUT',
+                method: "PUT",
                 body: JSON.stringify(data),
                 headers: {
-                    'Content-Type': 'application/json',
+                    "Content-Type": "application/json",
                 },
             });
             if (!response.ok) {
@@ -80,7 +80,7 @@ class DataHandler {
     static async deleteData(endpoint, id) {
         try {
             const response = await fetch(`${this.apiURL}/${endpoint}/${id}`, {
-                method: 'DELETE',
+                method: "DELETE",
             });
             if (!response.ok) {
                 throw new Error(`Failed to delete data ${response.status}: ${response.statusText}`);
@@ -118,14 +118,14 @@ class DataHandler {
     static async createAllInOneGo(artistData, albumData, trackData) {
         try {
             const response = await fetch(`${this.apiURL}/artists/albums/tracks`, {
-                method: 'POST',
+                method: "POST",
                 body: JSON.stringify({
                     artistData,
                     albumData,
                     trackData,
                 }),
                 headers: {
-                    'Content-Type': 'application/json',
+                    "Content-Type": "application/json",
                 },
             });
             if (!response.ok) {
