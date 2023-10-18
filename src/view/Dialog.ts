@@ -30,12 +30,8 @@ export default abstract class Dialog {
     }
 
     protected abstract postRender(type: string, item?: Artist | Album | Track): void;
-
     public abstract create(item: Artist | Album | Track): void
-
     public abstract details(item: Artist | Album | Track): void
-
     public abstract update(item: Artist | Album | Track): void
-
     public abstract delete(item: Artist | Album | Track): void
 }

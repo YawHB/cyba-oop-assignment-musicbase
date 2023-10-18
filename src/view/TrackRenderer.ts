@@ -11,14 +11,12 @@ export default class TrackRenderer extends ItemRenderer {
     }
     public renderHTML(): string {
         return /*html*/ `
-
         <tr>
             <td>${this.item.title}</td>
             <td>${this.item.getDuration()}</td>
             <td>${this.item.artists}</td>
             <td>${this.item.albums}</td>
         </tr>
-        
         `;
     }
 

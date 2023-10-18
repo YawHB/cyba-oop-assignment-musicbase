@@ -1,8 +1,7 @@
 import { albumRenders } from "../app.js";
-import DataHandler from "../components/dataHandler.js";
+import DataHandler from "../components/DataHandler";
 import Album from "../model/Album.js";
 import Dialog from "../view/Dialog.js";
-
 
 async function createAlbum(event: Event) {
     event.preventDefault();
@@ -14,7 +13,6 @@ async function createAlbum(event: Event) {
     const artists: string = form.artist.value;
 
     const newAlbumId: number = await DataHandler.postData("albums", { title, image, yearOfRelease, artists });
-    console.log(newAlbumId);
     
     DataHandler.albumsArr.push(new Album(title, yearOfRelease, image, newAlbumId));
 
@@ -26,7 +24,7 @@ async function createAlbum(event: Event) {
 async function deleteAlbum(album: Album) {
     await DataHandler.deleteData("albums", album.getId());
     const index = DataHandler.albumsArr.indexOf(album);
-    
+
     DataHandler.albumsArr.splice(index, 1);
 
     Dialog.close();

@@ -1,5 +1,5 @@
 "use strict";
-import DataHandler from "./components/dataHandler.js";
+import DataHandler from "./components/DataHandler";
 import AlbumRenderer from "./view/AlbumRenderer.js";
 import ArtistRenderer from "./view/ArtistRenderer.js";
 import ListRenderer from "./view/ListRenderer.js";

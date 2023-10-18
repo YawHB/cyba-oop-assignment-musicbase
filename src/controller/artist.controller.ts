@@ -1,15 +1,13 @@
 import { artistRenders } from "../app.js";
-import DataHandler from "../components/dataHandler.js";
+import DataHandler from "../components/DataHandler";
 import Artist from "../model/Artist.js";
 import Dialog from "../view/Dialog.js";
-
 
 function closeArtistDialog() {
     Dialog.close();
     artistRenders.setList(DataHandler.artistsArr);
     artistRenders.renderList();
 }
-
 
 async function deleteArtist(artist: Artist) {
     await DataHandler.deleteData("artists", artist.getId());

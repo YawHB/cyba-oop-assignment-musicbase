@@ -4,14 +4,6 @@ export default class Track {
     constructor(public title: string, private duration: number , public artists: string, public albums: string, private id: number) {
     }
 
-    // public getTitle(): string {
-    //     return this.title;
-    // }
-
-    // public setTitle(newTitle: string): void {
-    //     this.title = newTitle;
-    // }
-
     public getDuration(): string {
         const minutes = Math.floor(this.duration / 60);
         const remainingSeconds = this.duration % 60;

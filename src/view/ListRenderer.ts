@@ -16,7 +16,7 @@ export default class ListRenderer {
     constructor(
         list: Album[] | Track[] | Artist[],
         container: string,
-        private itemRenderer: any, //TODO skal rettes fra any
+        private itemRenderer: any,
         sortContainer: string
     ) {
         this.container = document.querySelector(`.${container}`) as HTMLElement;
@@ -70,15 +70,13 @@ export default class ListRenderer {
             return this.list;
         }
 
-        const filteredList = this.list.filter((item) => {
+        return this.list.filter((item) => {
             if (item instanceof ArtistRenderer) {
                 return item.item.name.toLowerCase().includes(this.searchValue);
             } else {
                 return item.item.title.toLowerCase().includes(this.searchValue);
             }
         });
-
-        return filteredList;
     }
 
     private sort(list: (AlbumRenderer | TrackRenderer | ArtistRenderer)[]): void {
