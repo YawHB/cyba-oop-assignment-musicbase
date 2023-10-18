@@ -1,5 +1,5 @@
 import { albumRenders } from "../app.js";
-import DataHandler from "../components/DataHandler";
+import DataHandler from "../components/DataHandler.js";
 import Album from "../model/Album.js";
 import Dialog from "../view/Dialog.js";
 
