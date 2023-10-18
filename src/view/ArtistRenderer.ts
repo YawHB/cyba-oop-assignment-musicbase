@@ -20,7 +20,6 @@ export default class ArtistRenderer extends ItemRenderer {
             <h4>${this.item.name}</h4>
         </div>
         </article>
-        
         `;
     }
 

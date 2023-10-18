@@ -49,7 +49,7 @@ export default class ListRenderer {
         if (!this.searchValue) {
             return this.list;
         }
-        const filteredList = this.list.filter((item) => {
+        return this.list.filter((item) => {
             if (item instanceof ArtistRenderer) {
                 return item.item.name.toLowerCase().includes(this.searchValue);
             }
@@ -57,7 +57,6 @@ export default class ListRenderer {
                 return item.item.title.toLowerCase().includes(this.searchValue);
             }
         });
-        return filteredList;
     }
     sort(list) {
         list.sort((b, a) => {

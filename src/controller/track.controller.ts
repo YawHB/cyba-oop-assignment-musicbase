@@ -1,16 +1,12 @@
-import { trackRenders } from "../app.js";
-import DataHandler from "../components/dataHandler.js";
+import {trackRenders} from "../app.js";
+import DataHandler from "../components/DataHandler";
 import Track from "../model/Track.js";
 import Dialog from "../view/Dialog.js";
 
-
-
 function convertStringDurationToNumber(durationString: string): number {
     const [minutes, seconds] = durationString.split(":").map(Number);
-    const totalSeconds = minutes * 60 + seconds;
-    return totalSeconds;
+    return minutes * 60 + seconds;
 }
-
 
 async function createTrack(event: Event) {
     event.preventDefault();
@@ -61,7 +57,7 @@ async function updateTrack(event: Event) {
     const albums: string  = selectedAlbums.join(',')
     const trackId: number = Number(form.id.split("-")[1]);
 
-    const response = await DataHandler.putData("tracks", trackId, { title, duration, artists: selectedArtists, albums: selectedAlbums });
+    await DataHandler.putData("tracks", trackId, { title, duration, artists: selectedArtists, albums: selectedAlbums });
 
     const index = DataHandler.tracksArr.findIndex(track => track.getId() === trackId);
     DataHandler.tracksArr[index] = new Track(title, duration, artists, albums, trackId);
@@ -70,7 +66,5 @@ async function updateTrack(event: Event) {
     trackRenders.setList(DataHandler.tracksArr);
     trackRenders.renderList();
 }
-
-
 
 export { createTrack, deleteTrack, updateTrack }

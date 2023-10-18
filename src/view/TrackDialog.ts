@@ -1,7 +1,6 @@
 import Dialog from "./Dialog.js";
 import Track from "../model/Track.js";
-import DataHandler from "../components/dataHandler.js";
-import { trackRenders } from "../app.js";
+import DataHandler from "../components/DataHandler";
 import Artist from "../model/Artist.js";
 import Album from "../model/Album.js";
 import { createTrack, deleteTrack, updateTrack } from "../controller/track.controller.js";
@@ -9,16 +8,13 @@ import { createTrack, deleteTrack, updateTrack } from "../controller/track.contr
 export default class TrackDialog extends Dialog {
 
     protected async postRender(type: string, item?: Track): Promise<void> {
-        
         switch (type) {
             case "details":
                 const updateButton = Dialog.dialogContent.querySelector(".track-dialog-update-button") as HTMLButtonElement;
                 const deleteButton = Dialog.dialogContent.querySelector(".track-dialog-delete-button") as HTMLButtonElement;
-
                 if (!updateButton || !deleteButton) {
                     throw new Error("No buttons found");
                 }
-
                 updateButton.addEventListener("click", () => {
                     this.update(item!);
                 });

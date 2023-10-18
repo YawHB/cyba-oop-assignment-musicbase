@@ -1,5 +1,5 @@
 import { albumRenders } from "../app.js";
-import DataHandler from "../components/dataHandler.js";
+import DataHandler from "../components/DataHandler";
 import Album from "../model/Album.js";
 import Dialog from "../view/Dialog.js";
 async function createAlbum(event) {
@@ -10,7 +10,6 @@ async function createAlbum(event) {
     const yearOfRelease = parseInt(form.yearOfRelease.value);
     const artists = form.artist.value;
     const newAlbumId = await DataHandler.postData("albums", { title, image, yearOfRelease, artists });
-    console.log(newAlbumId);
     DataHandler.albumsArr.push(new Album(title, yearOfRelease, image, newAlbumId));
     Dialog.close();
     albumRenders.setList(DataHandler.albumsArr);

@@ -1,5 +1,5 @@
 import Dialog from "./Dialog.js";
-import DataHandler from "../components/dataHandler.js";
+import DataHandler from "../components/DataHandler";
 import { createAlbum, deleteAlbum, updateAlbum } from "../controller/album.controller.js";
 export default class AlbumDialog extends Dialog {
     async postRender(type, item) {

@@ -1,5 +1,5 @@
 import { artistRenders } from "../app.js";
-import DataHandler from "../components/dataHandler.js";
+import DataHandler from "../components/DataHandler";
 import Artist from "../model/Artist.js";
 import Dialog from "../view/Dialog.js";
 function closeArtistDialog() {
