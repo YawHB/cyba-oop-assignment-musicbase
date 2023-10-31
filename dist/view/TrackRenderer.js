@@ -16,7 +16,7 @@ export default class TrackRenderer extends ItemRenderer {
         </tr>
         `;
     }
-    postRender(lastElementChild) {
+    async postRender(lastElementChild) {
         lastElementChild.addEventListener("click", () => {
             new TrackDialog().details(this.item);
         });

@@ -36,7 +36,6 @@ export default class ListRenderer {
 
     public renderList(): void {
         this.clearList();
-
         const list = this.search();
         this.sort(list);
 

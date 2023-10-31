@@ -1,7 +1,7 @@
 import Dialog from "./Dialog.js";
 import Artist from "../model/Artist.js";
 import Album from "../model/Album.js";
-import DataHandler from "../components/DataHandler.js";
+import DataHandler from "../utility/DataHandler.js";
 import { createArtist, deleteArtist, updateArtist } from "../controller/artist.controller.js";
 
 export default class ArtistDialog extends Dialog {
@@ -89,7 +89,7 @@ export default class ArtistDialog extends Dialog {
                 <div class="artist-dialog-details-info">
                     <h3>Albums</h3>
                     <ul>
-                    ${artistAlbums.map((album: Album) => {return /*html*/ `<li>${album.title}</li>`;}).join("")}
+                    ${artistAlbums.map((album: Album) => /*html*/ `<li>${album.title}</li>`).join("")}
                     </ul>
                 </div>
             </div>
@@ -107,9 +107,7 @@ export default class ArtistDialog extends Dialog {
     async update(item: Artist): Promise<void> {
         console.log("update");
         const html = /*html*/ `
-
         <h2>Update Artist</h2>
-
         <form class="update-artist-form" id="artistId-${item.getId()}">
             <div class="update-form-content">
                 <label for="artistName">Name</label>
@@ -118,7 +116,6 @@ export default class ArtistDialog extends Dialog {
                  <input type=text name="image" id="image" value="${item.image}">
             </div>
             <button type="submit">Confirm</button>
-
         </form>
         `;
 

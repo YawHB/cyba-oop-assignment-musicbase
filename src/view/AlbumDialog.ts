@@ -1,7 +1,7 @@
 import Dialog from "./Dialog.js";
 import Album from "../model/Album.js";
 import Track from "../model/Track.js";
-import DataHandler from "../components/DataHandler.js";
+import DataHandler from "../utility/DataHandler.js";
 import { createAlbum, deleteAlbum, updateAlbum } from "../controller/album.controller.js";
 
 export default class AlbumDialog extends Dialog {

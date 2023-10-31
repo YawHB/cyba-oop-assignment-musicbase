@@ -1,5 +1,5 @@
 import Dialog from "./Dialog.js";
-import DataHandler from "../components/DataHandler.js";
+import DataHandler from "../utility/DataHandler.js";
 import { createArtist, deleteArtist, updateArtist } from "../controller/artist.controller.js";
 export default class ArtistDialog extends Dialog {
     async postRender(type, item) {
@@ -74,7 +74,7 @@ export default class ArtistDialog extends Dialog {
                 <div class="artist-dialog-details-info">
                     <h3>Albums</h3>
                     <ul>
-                    ${artistAlbums.map((album) => { return `<li>${album.title}</li>`; }).join("")}
+                    ${artistAlbums.map((album) => `<li>${album.title}</li>`).join("")}
                     </ul>
                 </div>
             </div>
@@ -90,9 +90,7 @@ export default class ArtistDialog extends Dialog {
     async update(item) {
         console.log("update");
         const html = `
-
         <h2>Update Artist</h2>
-
         <form class="update-artist-form" id="artistId-${item.getId()}">
             <div class="update-form-content">
                 <label for="artistName">Name</label>
@@ -101,7 +99,6 @@ export default class ArtistDialog extends Dialog {
                  <input type=text name="image" id="image" value="${item.image}">
             </div>
             <button type="submit">Confirm</button>
-
         </form>
         `;
         await this.renderHTML(html);

@@ -14,9 +14,8 @@ export default class Track {
     public setDuration(newDuration: string | number): void {
         if (typeof newDuration === "string") {
             const [minutes, seconds] = newDuration.split(":").map(Number);
-            const totalSeconds = minutes * 60 + seconds;
-            this.duration = totalSeconds;
-        } else if (typeof newDuration === "number") {
+            this.duration = minutes * 60 + seconds;
+        } else {
             this.duration = newDuration;
         }
     }

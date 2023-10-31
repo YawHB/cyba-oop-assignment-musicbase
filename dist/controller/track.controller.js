@@ -1,5 +1,5 @@
 import { trackRenders } from "../app.js";
-import DataHandler from "../components/DataHandler.js";
+import DataHandler from "../utility/DataHandler.js";
 import Track from "../model/Track.js";
 import Dialog from "../view/Dialog.js";
 function convertStringDurationToNumber(durationString) {

@@ -1,5 +1,5 @@
 import Dialog from "./Dialog.js";
-import DataHandler from "../components/DataHandler.js";
+import DataHandler from "../utility/DataHandler.js";
 import { createTrack, deleteTrack, updateTrack } from "../controller/track.controller.js";
 export default class TrackDialog extends Dialog {
     async postRender(type, item) {

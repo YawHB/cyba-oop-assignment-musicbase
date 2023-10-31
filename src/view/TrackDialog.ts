@@ -1,6 +1,6 @@
 import Dialog from "./Dialog.js";
 import Track from "../model/Track.js";
-import DataHandler from "../components/DataHandler.js";
+import DataHandler from "../utility/DataHandler.js";
 import Artist from "../model/Artist.js";
 import Album from "../model/Album.js";
 import { createTrack, deleteTrack, updateTrack } from "../controller/track.controller.js";
